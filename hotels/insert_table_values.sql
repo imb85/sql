@@ -16,19 +16,31 @@ VALUES (1005, 'Quality Inn', 'Seattle');
 
 -- Room values
 INSERT INTO Room (roomNo, hotelNo, roomType, price)
-VALUES (213, '1002', 'Suite', 299.99);
+VALUES (414, 1001, 'Double', 239.99);
 
 INSERT INTO Room (roomNo, hotelNo, roomType, price)
-VALUES (403, '1002', 'Double', 359.99);
+VALUES (213, 1002, 'Suite', 299.99);
 
 INSERT INTO Room (roomNo, hotelNo, roomType, price)
-VALUES (701, '1002', 'Penthouse', 949.99);
+VALUES (403, 1002, 'Double', 359.99);
 
 INSERT INTO Room (roomNo, hotelNo, roomType, price)
-VALUES (516, '1002', 'Double', 369.99);
+VALUES (701, 1002, 'Penthouse', 949.99);
 
 INSERT INTO Room (roomNo, hotelNo, roomType, price)
-VALUES (307, '1003', 'Suite', 229.99);
+VALUES (516, 1002, 'Double', 369.99);
+
+INSERT INTO Room (roomNo, hotelNo, roomType, price)
+VALUES (307, 1003, 'Suite', 229.99);
+
+INSERT INTO Room (roomNo, hotelNo, roomType, price)
+VALUES (212, 1003, 'Suite', 199.99);
+
+INSERT INTO Room (roomNo, hotelNo, roomType, price)
+VALUES (254, 1004, 'Single', 199.99);
+
+INSERT INTO Room (roomNo, hotelNo, roomType, price)
+VALUES (312, 1005, 'Double', 349.99);
 
 -- Guest values
 INSERT INTO Guest (guestNo, guestName, guestAddress)
