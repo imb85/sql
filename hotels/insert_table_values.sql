@@ -18,7 +18,7 @@ VALUES ('1005', 'Quality Inn', 'Seattle');
 INSERT INTO Room (roomNo, hotelNo, roomType, price)
 VALUES ('213', '1002', 'Suite', '299.99');
 
-INSERT INTO Room (rooomNo, hotelNo, roomType, price)
+INSERT INTO Room (roomNo, hotelNo, roomType, price)
 VALUES ('403', '1002', 'Double', '359.99');
 
 INSERT INTO Room (roomNo, hotelNo, roomType, price)
@@ -48,17 +48,17 @@ VALUES ('1738', 'Emma Johnson', 'Miami');
 
 -- Booking values
 INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
-VALUES ('1002', '1734', '2021-03-15', '2021-03-18', '213');
+VALUES ('1002', '1734', DATE'2021-03-15', DATE'2021-03-18', '213');
 
 INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
-VALUES ('1002', '1735', '2021-03-18', '2021-03-21', '403');
+VALUES ('1002', '1735', DATE'2021-03-18', DATE'2021-03-21', '403');
 
 INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
-VALUES ('1002', '1736', '2021-03-17', '2021-03-18', '701');
+VALUES ('1002', '1736', DATE'2021-03-17', DATE'2021-03-18', '701');
 
 INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
-VALUES ('1002', '1737', '2021-03-25', '2021-03-27', '516');
+VALUES ('1002', '1737', DATE'2021-03-25', DATE'2021-03-27', '516');
 
 INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
-VALUES ('1003', '1738', '2021-03-25', '2021-03-30', '307');
+VALUES ('1003', '1738', DATE'2021-03-25', DATE'2021-03-30', '307');
 
