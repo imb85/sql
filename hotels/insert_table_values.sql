@@ -31,6 +31,34 @@ INSERT INTO Room (roomNo, hotelNo, roomType, price)
 VALUES ('307', '1003', 'Suite', '229.99');
 
 -- Guest values
+INSERT INTO Guest (guestNo, guestName, guestAddress)
+VALUES ('1734', 'Bill Smith', 'Fort Lauderdale');
 
+INSERT INTO Guest (guestNo, guestName, guestAddress)
+VALUES ('1735', 'Steven White', 'Coral Gables');
+
+INSERT INTO Guest (guestNo, guestName, guestAddress)
+VALUES ('1736', 'Adam Jones', 'Miami');
+
+INSERT INTO Guest (guestNo, guestName, guestAddress)
+VALUES ('1737', 'Alex Baker', 'Miami');
+
+INSERT INTO Guest (guestNo, guestName, guestAddress)
+VALUES ('1738', 'Emma Johnson', 'Miami');
 
 -- Booking values
+INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
+VALUES ('1002', '1734', '2021-03-15', '2021-03-18', '213');
+
+INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
+VALUES ('1002', '1735', '2021-03-18', '2021-03-21', '403');
+
+INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
+VALUES ('1002', '1736', '2021-03-17', '2021-03-18', '701');
+
+INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
+VALUES ('1002', '1737', '2021-03-25', '2021-03-27', '516');
+
+INSERT INTO Booking (hotelNo, guestNo, dateFrom, dateTo, roomNo)
+VALUES ('1003', '1738', '2021-03-25', '2021-03-30', '307');
+
