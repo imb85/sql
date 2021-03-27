@@ -14,7 +14,8 @@ WHERE hotelNo=(
 -- List the guestNo and guestName of guests who live in Miami alphabetically
 SELECT guestNo, guestName
 FROM Guest
-WHERE guestAddress='Miami';
+WHERE guestAddress LIKE '%Miami%'
+ORDER BY guestName;
 
 -- List the number of rooms in each hotel
 SELECT hotelNo, COUNT(roomNo) AS count
