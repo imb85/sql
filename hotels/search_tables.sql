@@ -17,6 +17,6 @@ FROM Guest
 WHERE guestAddress='Miami';
 
 -- List the number of rooms in each hotel
-SELECT hotelNo, COUNT(roomNo) AS count
+SELECT hotelNome, COUNT(roomNo) AS count
 FROM Room
-GROUP BY hotelNo;
+GROUP BY hotelName;
