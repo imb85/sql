@@ -138,12 +138,12 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,41,0,0,0,0,0,1,0,
-20,0,0,0,0,0,27,60,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-51,0,0,3,52,0,9,93,0,0,0,0,0,1,0,
-66,0,0,3,0,0,13,101,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-93,0,0,3,0,0,15,108,0,0,0,0,0,1,0,
-108,0,0,4,0,0,30,109,0,0,0,0,0,1,0,
+5,0,0,1,0,0,32,36,0,0,0,0,0,1,0,
+20,0,0,0,0,0,27,55,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+51,0,0,3,52,0,9,88,0,0,0,0,0,1,0,
+66,0,0,3,0,0,13,96,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+93,0,0,3,0,0,15,103,0,0,0,0,0,1,0,
+108,0,0,4,0,0,30,104,0,0,0,0,0,1,0,
 };
 
 
@@ -171,43 +171,38 @@ struct hotel_details {
 	asciiz city;
 }; 
 
-void sql_error(msg) 
-    char *msg;
-{ 
-    char err_msg[512];
-    size_t buf_len, msg_len;
+void sql_error(char * msg){ 
+	char err_msg[512];
+	size_t buf_len, msg_len;
 
-    /* EXEC SQL WHENEVER SQLERROR CONTINUE; */ 
+	/* EXEC SQL WHENEVER SQLERROR CONTINUE; */ 
 
 
-    printf("\n%s\n", msg);
+	printf("\n%s\n", msg);
 
-/* Call sqlglm() to get the complete text of the
- * error message.
- */
-    buf_len = sizeof (err_msg);
-    sqlglm(err_msg, &buf_len, &msg_len);
-    printf("%.*s\n", msg_len, err_msg);
+	buf_len = sizeof(err_msg);
+	sqlglm(err_msg, &buf_len, &msg_len);
+	printf("%.*s\n", msg_len, err_msg);
 
-    /* EXEC SQL ROLLBACK RELEASE; */ 
+	/* EXEC SQL ROLLBACK RELEASE; */ 
 
 {
-    struct sqlexd sqlstm;
-    sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 0;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )5;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)4352;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 0;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )5;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
 }
 
 
-    exit(EXIT_FAILURE);
+	exit(EXIT_FAILURE);
 } 
 
 void main(){ 

@@ -21,25 +21,20 @@ struct hotel_details {
 	asciiz city;
 }; 
 
-void sql_error(msg) 
-    char *msg;
-{ 
-    char err_msg[512];
-    size_t buf_len, msg_len;
+void sql_error(char * msg){ 
+	char err_msg[512];
+	size_t buf_len, msg_len;
 
-    EXEC SQL WHENEVER SQLERROR CONTINUE;
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
 
-    printf("\n%s\n", msg);
+	printf("\n%s\n", msg);
 
-/* Call sqlglm() to get the complete text of the
- * error message.
- */
-    buf_len = sizeof (err_msg);
-    sqlglm(err_msg, &buf_len, &msg_len);
-    printf("%.*s\n", msg_len, err_msg);
+	buf_len = sizeof(err_msg);
+	sqlglm(err_msg, &buf_len, &msg_len);
+	printf("%.*s\n", msg_len, err_msg);
 
-    EXEC SQL ROLLBACK RELEASE;
-    exit(EXIT_FAILURE);
+	EXEC SQL ROLLBACK RELEASE;
+	exit(EXIT_FAILURE);
 } 
 
 void main(){ 
