@@ -37,6 +37,15 @@ void sql_error(char * msg){
 	exit(EXIT_FAILURE);
 } 
 
+void main_menu(){
+	printf("Select an option to query the database:\n");
+	printf("  0. Exit the program\n");
+	printf("  1. Search all hotels in a certain city\n");
+	printf("  2. List roomNo, type, and price for the Biltmore Hotel\n");
+	printf("  3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
+	printf("  4. list the number of rooms in each hotel\n");
+}
+
 void show_hotel_details(){
 	char inp_city[100];
 	struct hotel_details *hotel_recv;
@@ -76,8 +85,6 @@ void show_hotel_details(){
 }
 
 void main(){ 
-	
- 
 	/* Connect to ORACLE. */ 
 	strcpy(username, "abk89"); 
 	strcpy(password, "~Ece3038"); 
@@ -87,12 +94,7 @@ void main(){
 	EXEC SQL CONNECT :username IDENTIFIED BY :password; 
 	printf("\nConnected to ORACLE as user: %s\n", username); 
 
-	printf("Select an option to query the database:\n");
-	printf("  0. Exit the program\n");
-	printf("  1. Search all hotels in a certain city\n");
-	printf("  2. List roomNo, type, and price for the Biltmore Hotel\n");
-	printf("  3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
-	printf("  4. list the number of rooms in each hotel\n");
+	main_menu();
 
 	while(1){
 		int inp;

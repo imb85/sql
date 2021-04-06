@@ -139,11 +139,11 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 static short sqlcud0[] =
 {13,4130,1,0,0,
 5,0,0,1,0,0,32,36,0,0,0,0,0,1,0,
-20,0,0,2,52,0,9,59,0,0,0,0,0,1,0,
-35,0,0,2,0,0,13,67,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-62,0,0,2,0,0,15,74,0,0,0,0,0,1,0,
-77,0,0,3,0,0,30,75,0,0,0,0,0,1,0,
-92,0,0,0,0,0,27,87,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+20,0,0,2,52,0,9,68,0,0,0,0,0,1,0,
+35,0,0,2,0,0,13,76,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+62,0,0,2,0,0,15,83,0,0,0,0,0,1,0,
+77,0,0,3,0,0,30,84,0,0,0,0,0,1,0,
+92,0,0,0,0,0,27,94,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
 };
 
 
@@ -204,6 +204,15 @@ void sql_error(char * msg){
 
 	exit(EXIT_FAILURE);
 } 
+
+void main_menu(){
+	printf("Select an option to query the database:\n");
+	printf("  0. Exit the program\n");
+	printf("  1. Search all hotels in a certain city\n");
+	printf("  2. List roomNo, type, and price for the Biltmore Hotel\n");
+	printf("  3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
+	printf("  4. list the number of rooms in each hotel\n");
+}
 
 void show_hotel_details(){
 	char inp_city[100];
@@ -356,8 +365,6 @@ void show_hotel_details(){
 }
 
 void main(){ 
-	
- 
 	/* Connect to ORACLE. */ 
 	strcpy(username, "abk89"); 
 	strcpy(password, "~Ece3038"); 
@@ -416,12 +423,7 @@ void main(){
  
 	printf("\nConnected to ORACLE as user: %s\n", username); 
 
-	printf("Select an option to query the database:\n");
-	printf("  0. Exit the program\n");
-	printf("  1. Search all hotels in a certain city\n");
-	printf("  2. List roomNo, type, and price for the Biltmore Hotel\n");
-	printf("  3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
-	printf("  4. list the number of rooms in each hotel\n");
+	main_menu();
 
 	while(1){
 		int inp;
