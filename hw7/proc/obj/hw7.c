@@ -311,7 +311,7 @@ void main(){
 
 	while(1){
 		int inp;
-		char city[100];
+		char inp_city[100];
 		printf(">> ");
 		scanf("%d", &inp);
 
@@ -323,9 +323,9 @@ void main(){
 			case 1:
 				printf("Option 1 selected\n");
 				printf("Enter a city to search:\n");
-				printf("  >> ");
-				scanf("%s", city);
-				printf("You entered: %s\n", city);
+				printf(">> ");
+				scanf("%s", inp_city);
+				printf("You entered: %s\n", inp_city);
 				
 				/* EXEC SQL DECLARE hotels CURSOR FOR
 					SELECT *
@@ -421,7 +421,7 @@ void main(){
 }
 
 
-					printf("%d %s %s\n", 
+					printf("%-4d  %-25s  %-15s\n", 
 						hotel_recv -> no, 
 						hotel_recv -> name, 
 						hotel_recv -> city);
