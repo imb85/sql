@@ -138,12 +138,12 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,36,0,0,0,0,0,1,0,
-20,0,0,2,52,0,9,68,0,0,0,0,0,1,0,
-35,0,0,2,0,0,13,76,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-62,0,0,2,0,0,15,83,0,0,0,0,0,1,0,
-77,0,0,3,0,0,30,84,0,0,0,0,0,1,0,
-92,0,0,0,0,0,27,106,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+5,0,0,1,0,0,32,51,0,0,0,0,0,1,0,
+20,0,0,2,52,0,9,83,0,0,0,0,0,1,0,
+35,0,0,2,0,0,13,91,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+62,0,0,2,0,0,15,98,0,0,0,0,0,1,0,
+77,0,0,3,0,0,30,99,0,0,0,0,0,1,0,
+92,0,0,0,0,0,27,121,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
 };
 
 
@@ -165,11 +165,26 @@ asciiz username;
 asciiz password; 
 
 struct hotel_details {
-	// For Option 1
 	int no;
 	asciiz name;
 	asciiz city;
 }; 
+
+struct biltmore_hotel_details {
+	int no;
+	asciiz type;
+	float price;
+};
+
+struct guest_details {
+	asciiz name;
+	asciiz addr;
+};
+
+struct room_count {
+	int hotel_no;
+	int room_total;
+};
 
 void sql_error(char * msg){ 
 	char err_msg[512];

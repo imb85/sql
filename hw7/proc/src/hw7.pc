@@ -15,11 +15,26 @@ asciiz username;
 asciiz password; 
 
 struct hotel_details {
-	// For Option 1
 	int no;
 	asciiz name;
 	asciiz city;
 }; 
+
+struct biltmore_hotel_details {
+	int no;
+	asciiz type;
+	float price;
+};
+
+struct guest_details {
+	asciiz name;
+	asciiz addr;
+};
+
+struct room_count {
+	int hotel_no;
+	int room_total;
+};
 
 void sql_error(char * msg){ 
 	char err_msg[512];
