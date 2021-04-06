@@ -143,7 +143,7 @@ static short sqlcud0[] =
 35,0,0,2,0,0,13,76,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
 62,0,0,2,0,0,15,83,0,0,0,0,0,1,0,
 77,0,0,3,0,0,30,84,0,0,0,0,0,1,0,
-92,0,0,0,0,0,27,94,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+92,0,0,0,0,0,27,106,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
 };
 
 
@@ -364,6 +364,18 @@ void city_hotel_details(){
 
 }
 
+void biltmore_hotel_details(){
+
+}
+
+void miami_guests(){
+
+}
+
+void hotel_room_count(){
+
+}
+
 void main(){ 
 	/* Connect to ORACLE. */ 
 	strcpy(username, "abk89"); 
@@ -443,16 +455,19 @@ void main(){
 		
 			case 2:
 				printf("Option 2 selected\n");
+				biltmore_hotel_details();
 
 				break;
 
 			case 3: 
 				printf("Option 3 selected\n");
+				miami_guests();
 
 				break;
 
 			case 4:
 				printf("Option 4 selected\n");
+				hotel_room_count();
 
 				break;
 

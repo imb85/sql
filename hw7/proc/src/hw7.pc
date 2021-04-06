@@ -84,6 +84,18 @@ void city_hotel_details(){
 	EXEC SQL COMMIT WORK RELEASE;
 }
 
+void biltmore_hotel_details(){
+
+}
+
+void miami_guests(){
+
+}
+
+void hotel_room_count(){
+
+}
+
 void main(){ 
 	/* Connect to ORACLE. */ 
 	strcpy(username, "abk89"); 
@@ -114,16 +126,19 @@ void main(){
 		
 			case 2:
 				printf("Option 2 selected\n");
+				biltmore_hotel_details();
 
 				break;
 
 			case 3: 
 				printf("Option 3 selected\n");
+				miami_guests();
 
 				break;
 
 			case 4:
 				printf("Option 4 selected\n");
+				hotel_room_count();
 
 				break;
 
