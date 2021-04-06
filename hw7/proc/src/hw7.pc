@@ -37,13 +37,45 @@ void sql_error(char * msg){
 	exit(EXIT_FAILURE);
 } 
 
-void main(){ 
+void show_hotel_details(){
+	char inp_city[100];
 	struct hotel_details *hotel_recv;
 
 	if((hotel_recv = (struct hotel_details *) malloc(sizeof(struct hotel_details))) == 0){
 		fprintf(stderr, "Memory allocation error.\n");
 		exit(EXIT_FAILURE);
 	}
+
+	printf("Enter a city to search:\n");
+	printf(">> ");
+	scanf("%s", inp_city);
+	printf("You entered: %s\n", inp_city);
+
+	EXEC SQL DECLARE hotels CURSOR FOR
+		SELECT *
+			FROM Hotel
+			WHERE city='Seattle'; // Need to change to take inp_city
+
+	EXEC SQL OPEN hotels;
+
+	printf("No    Name                       City\n");
+	printf("----  -------------------------  ---------------\n");
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	while(1){
+		EXEC SQL FETCH hotels INTO :hotel_recv;
+		printf("%-4d  %-25s  %-15s\n", 
+			hotel_recv -> no, 		
+			hotel_recv -> name, 
+			hotel_recv -> city);
+	}
+
+	EXEC SQL CLOSE hotels;
+	EXEC SQL COMMIT WORK RELEASE;
+}
+
+void main(){ 
 	
  
 	/* Connect to ORACLE. */ 
@@ -64,7 +96,6 @@ void main(){
 
 	while(1){
 		int inp;
-		char inp_city[100];
 		printf(">> ");
 		scanf("%d", &inp);
 
@@ -75,33 +106,7 @@ void main(){
 		
 			case 1:
 				printf("Option 1 selected\n");
-				printf("Enter a city to search:\n");
-				printf(">> ");
-				scanf("%s", inp_city);
-				printf("You entered: %s\n", inp_city);
-				
-				EXEC SQL DECLARE hotels CURSOR FOR
-					SELECT *
-						FROM Hotel
-						WHERE city='Seattle'; // Need to change to take inp_city
-				
-				EXEC SQL OPEN hotels;
-
-				printf("No    Name                       City\n");
-				printf("----  -------------------------  ---------------\n");
-
-				EXEC SQL WHENEVER NOT FOUND DO break;
-
-				while(1){
-					EXEC SQL FETCH hotels INTO :hotel_recv;
-					printf("%-4d  %-25s  %-15s\n", 
-						hotel_recv -> no, 
-						hotel_recv -> name, 
-						hotel_recv -> city);
-				}
-
-				EXEC SQL CLOSE hotels;
-				EXEC SQL COMMIT WORK RELEASE;
+				show_hotel_details();
 	
 				break;
 		

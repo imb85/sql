@@ -129,7 +129,7 @@ static int IAPFAIL = 1403;
 static int IAPFTL  = 535;
 extern void sqliem(/*_ unsigned char *, signed int * _*/);
 
- static char *sq0003 = 
+ static char *sq0002 = 
 "select *  from Hotel where city='Seattle'           ";
 
 typedef struct { unsigned short len; unsigned char arr[1]; } VARCHAR;
@@ -139,11 +139,11 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 static short sqlcud0[] =
 {13,4130,1,0,0,
 5,0,0,1,0,0,32,36,0,0,0,0,0,1,0,
-20,0,0,0,0,0,27,55,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-51,0,0,3,52,0,9,88,0,0,0,0,0,1,0,
-66,0,0,3,0,0,13,96,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-93,0,0,3,0,0,15,103,0,0,0,0,0,1,0,
-108,0,0,4,0,0,30,104,0,0,0,0,0,1,0,
+20,0,0,2,52,0,9,59,0,0,0,0,0,1,0,
+35,0,0,2,0,0,13,67,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+62,0,0,2,0,0,15,74,0,0,0,0,0,1,0,
+77,0,0,3,0,0,30,75,0,0,0,0,0,1,0,
+92,0,0,0,0,0,27,87,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
 };
 
 
@@ -205,13 +205,157 @@ void sql_error(char * msg){
 	exit(EXIT_FAILURE);
 } 
 
-void main(){ 
+void show_hotel_details(){
+	char inp_city[100];
 	struct hotel_details *hotel_recv;
 
 	if((hotel_recv = (struct hotel_details *) malloc(sizeof(struct hotel_details))) == 0){
 		fprintf(stderr, "Memory allocation error.\n");
 		exit(EXIT_FAILURE);
 	}
+
+	printf("Enter a city to search:\n");
+	printf(">> ");
+	scanf("%s", inp_city);
+	printf("You entered: %s\n", inp_city);
+
+	/* EXEC SQL DECLARE hotels CURSOR FOR
+		SELECT *
+			FROM Hotel
+			WHERE city='Seattle'; */ 
+ // Need to change to take inp_city
+
+	/* EXEC SQL OPEN hotels; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 0;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = sq0002;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )20;
+ sqlstm.selerr = (unsigned short)1;
+ sqlstm.sqlpfmem = (unsigned int  )0;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqcmod = (unsigned int )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	printf("No    Name                       City\n");
+	printf("----  -------------------------  ---------------\n");
+
+	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
+
+
+	while(1){
+		/* EXEC SQL FETCH hotels INTO :hotel_recv; */ 
+
+{
+  struct sqlexd sqlstm;
+  sqlstm.sqlvsn = 13;
+  sqlstm.arrsiz = 3;
+  sqlstm.sqladtp = &sqladt;
+  sqlstm.sqltdsp = &sqltds;
+  sqlstm.iters = (unsigned int  )1;
+  sqlstm.offset = (unsigned int  )35;
+  sqlstm.selerr = (unsigned short)1;
+  sqlstm.sqlpfmem = (unsigned int  )0;
+  sqlstm.cud = sqlcud0;
+  sqlstm.sqlest = (unsigned char  *)&sqlca;
+  sqlstm.sqlety = (unsigned short)4352;
+  sqlstm.occurs = (unsigned int  )0;
+  sqlstm.sqfoff = (         int )0;
+  sqlstm.sqfmod = (unsigned int )2;
+  sqlstm.sqhstv[0] = (unsigned char  *)&hotel_recv->no;
+  sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[0] = (         int  )0;
+  sqlstm.sqindv[0] = (         short *)0;
+  sqlstm.sqinds[0] = (         int  )0;
+  sqlstm.sqharm[0] = (unsigned long )0;
+  sqlstm.sqadto[0] = (unsigned short )0;
+  sqlstm.sqtdso[0] = (unsigned short )0;
+  sqlstm.sqhstv[1] = (unsigned char  *)hotel_recv->name;
+  sqlstm.sqhstl[1] = (unsigned long )25;
+  sqlstm.sqhsts[1] = (         int  )0;
+  sqlstm.sqindv[1] = (         short *)0;
+  sqlstm.sqinds[1] = (         int  )0;
+  sqlstm.sqharm[1] = (unsigned long )0;
+  sqlstm.sqadto[1] = (unsigned short )0;
+  sqlstm.sqtdso[1] = (unsigned short )0;
+  sqlstm.sqhstv[2] = (unsigned char  *)hotel_recv->city;
+  sqlstm.sqhstl[2] = (unsigned long )25;
+  sqlstm.sqhsts[2] = (         int  )0;
+  sqlstm.sqindv[2] = (         short *)0;
+  sqlstm.sqinds[2] = (         int  )0;
+  sqlstm.sqharm[2] = (unsigned long )0;
+  sqlstm.sqadto[2] = (unsigned short )0;
+  sqlstm.sqtdso[2] = (unsigned short )0;
+  sqlstm.sqphsv = sqlstm.sqhstv;
+  sqlstm.sqphsl = sqlstm.sqhstl;
+  sqlstm.sqphss = sqlstm.sqhsts;
+  sqlstm.sqpind = sqlstm.sqindv;
+  sqlstm.sqpins = sqlstm.sqinds;
+  sqlstm.sqparm = sqlstm.sqharm;
+  sqlstm.sqparc = sqlstm.sqharc;
+  sqlstm.sqpadto = sqlstm.sqadto;
+  sqlstm.sqptdso = sqlstm.sqtdso;
+  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+  if (sqlca.sqlcode == 1403) break;
+}
+
+
+		printf("%-4d  %-25s  %-15s\n", 
+			hotel_recv -> no, 		
+			hotel_recv -> name, 
+			hotel_recv -> city);
+	}
+
+	/* EXEC SQL CLOSE hotels; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )62;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+	/* EXEC SQL COMMIT WORK RELEASE; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )77;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+}
+
+void main(){ 
 	
  
 	/* Connect to ORACLE. */ 
@@ -230,7 +374,7 @@ void main(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )20;
+ sqlstm.offset = (unsigned int  )92;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -281,7 +425,6 @@ void main(){
 
 	while(1){
 		int inp;
-		char inp_city[100];
 		printf(">> ");
 		scanf("%d", &inp);
 
@@ -292,149 +435,7 @@ void main(){
 		
 			case 1:
 				printf("Option 1 selected\n");
-				printf("Enter a city to search:\n");
-				printf(">> ");
-				scanf("%s", inp_city);
-				printf("You entered: %s\n", inp_city);
-				
-				/* EXEC SQL DECLARE hotels CURSOR FOR
-					SELECT *
-						FROM Hotel
-						WHERE city='Seattle'; */ 
- // Need to change to take inp_city
-				
-				/* EXEC SQL OPEN hotels; */ 
-
-{
-    struct sqlexd sqlstm;
-    sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.stmt = sq0003;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )51;
-    sqlstm.selerr = (unsigned short)1;
-    sqlstm.sqlpfmem = (unsigned int  )0;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)4352;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlstm.sqcmod = (unsigned int )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
-}
-
-
-
-				printf("No    Name                       City\n");
-				printf("----  -------------------------  ---------------\n");
-
-				/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
-
-
-				while(1){
-					/* EXEC SQL FETCH hotels INTO :hotel_recv; */ 
-
-{
-     struct sqlexd sqlstm;
-     sqlstm.sqlvsn = 13;
-     sqlstm.arrsiz = 4;
-     sqlstm.sqladtp = &sqladt;
-     sqlstm.sqltdsp = &sqltds;
-     sqlstm.iters = (unsigned int  )1;
-     sqlstm.offset = (unsigned int  )66;
-     sqlstm.selerr = (unsigned short)1;
-     sqlstm.sqlpfmem = (unsigned int  )0;
-     sqlstm.cud = sqlcud0;
-     sqlstm.sqlest = (unsigned char  *)&sqlca;
-     sqlstm.sqlety = (unsigned short)4352;
-     sqlstm.occurs = (unsigned int  )0;
-     sqlstm.sqfoff = (         int )0;
-     sqlstm.sqfmod = (unsigned int )2;
-     sqlstm.sqhstv[0] = (unsigned char  *)&hotel_recv->no;
-     sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
-     sqlstm.sqhsts[0] = (         int  )0;
-     sqlstm.sqindv[0] = (         short *)0;
-     sqlstm.sqinds[0] = (         int  )0;
-     sqlstm.sqharm[0] = (unsigned long )0;
-     sqlstm.sqadto[0] = (unsigned short )0;
-     sqlstm.sqtdso[0] = (unsigned short )0;
-     sqlstm.sqhstv[1] = (unsigned char  *)hotel_recv->name;
-     sqlstm.sqhstl[1] = (unsigned long )25;
-     sqlstm.sqhsts[1] = (         int  )0;
-     sqlstm.sqindv[1] = (         short *)0;
-     sqlstm.sqinds[1] = (         int  )0;
-     sqlstm.sqharm[1] = (unsigned long )0;
-     sqlstm.sqadto[1] = (unsigned short )0;
-     sqlstm.sqtdso[1] = (unsigned short )0;
-     sqlstm.sqhstv[2] = (unsigned char  *)hotel_recv->city;
-     sqlstm.sqhstl[2] = (unsigned long )25;
-     sqlstm.sqhsts[2] = (         int  )0;
-     sqlstm.sqindv[2] = (         short *)0;
-     sqlstm.sqinds[2] = (         int  )0;
-     sqlstm.sqharm[2] = (unsigned long )0;
-     sqlstm.sqadto[2] = (unsigned short )0;
-     sqlstm.sqtdso[2] = (unsigned short )0;
-     sqlstm.sqphsv = sqlstm.sqhstv;
-     sqlstm.sqphsl = sqlstm.sqhstl;
-     sqlstm.sqphss = sqlstm.sqhsts;
-     sqlstm.sqpind = sqlstm.sqindv;
-     sqlstm.sqpins = sqlstm.sqinds;
-     sqlstm.sqparm = sqlstm.sqharm;
-     sqlstm.sqparc = sqlstm.sqharc;
-     sqlstm.sqpadto = sqlstm.sqadto;
-     sqlstm.sqptdso = sqlstm.sqtdso;
-     sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-     if (sqlca.sqlcode == 1403) break;
-     if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
-}
-
-
-					printf("%-4d  %-25s  %-15s\n", 
-						hotel_recv -> no, 
-						hotel_recv -> name, 
-						hotel_recv -> city);
-				}
-
-				/* EXEC SQL CLOSE hotels; */ 
-
-{
-    struct sqlexd sqlstm;
-    sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )93;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)4352;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
-}
-
-
-				/* EXEC SQL COMMIT WORK RELEASE; */ 
-
-{
-    struct sqlexd sqlstm;
-    sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )108;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)4352;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
-}
-
-
+				show_hotel_details();
 	
 				break;
 		
