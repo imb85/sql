@@ -138,22 +138,14 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,55,0,0,0,0,0,1,0,
-20,0,0,0,0,0,27,77,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-51,0,0,3,68,0,9,118,0,0,0,0,0,1,0,
-66,0,0,3,0,0,13,133,0,0,3,0,0,1,0,2,97,0,0,2,4,0,0,2,4,0,0,
-93,0,0,3,0,0,15,139,0,0,0,0,0,1,0,
-108,0,0,4,0,0,30,143,0,0,0,0,0,1,0,
+5,0,0,1,0,0,32,46,0,0,0,0,0,1,0,
+20,0,0,0,0,0,27,65,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+51,0,0,3,68,0,9,106,0,0,0,0,0,1,0,
+66,0,0,3,0,0,13,121,0,0,3,0,0,1,0,2,97,0,0,2,4,0,0,2,4,0,0,
+93,0,0,3,0,0,15,127,0,0,0,0,0,1,0,
+108,0,0,4,0,0,30,131,0,0,0,0,0,1,0,
 };
 
-
-/*
- *  procdemo.pc
- *
- *  This program connects to ORACLE, declares and opens a cursor, 
- *  fetches the names, salaries, and commissions of all
- *  salespeople, displays the results, then closes the cursor. 
- */ 
 
 #include <stdio.h>
 #include <string.h>
@@ -178,8 +170,7 @@ typedef char asciiz[PWD_LEN];
 asciiz     username; 
 asciiz     password; 
 
-struct emp_info 
-{ 
+struct emp_info { 
     asciiz     emp_name; 
     float      salary; 
     float      commission; 
@@ -224,75 +215,72 @@ void sql_error(msg)
     exit(EXIT_FAILURE);
 } 
 
-void main() 
-{ 
-    struct emp_info *emp_rec_ptr; 
+void main(){ 
+	struct emp_info *emp_rec_ptr; 
 
-/* Allocate memory for emp_info struct. */ 
-    if ((emp_rec_ptr = 
-        (struct emp_info *) malloc(sizeof(struct emp_info))) == 0)
-    { 
-        fprintf(stderr, "Memory allocation error.\n"); 
-        exit(EXIT_FAILURE); 
-    } 
+	/* Allocate memory for emp_info struct. */ 
+	if ((emp_rec_ptr = (struct emp_info *) malloc(sizeof(struct emp_info))) == 0){ 
+		fprintf(stderr, "Memory allocation error.\n"); 
+		exit(EXIT_FAILURE); 
+	} 
  
-/* Connect to ORACLE. */ 
-    strcpy(username, "scott"); 
-    strcpy(password, "tiger"); 
+	/* Connect to ORACLE. */ 
+	strcpy(username, "scott"); 
+	strcpy(password, "tiger"); 
  
-    /* EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error--"); */ 
+	/* EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error--"); */ 
 
  
-    /* EXEC SQL CONNECT :username IDENTIFIED BY :password; */ 
+	/* EXEC SQL CONNECT :username IDENTIFIED BY :password; */ 
 
 {
-    struct sqlexd sqlstm;
-    sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.iters = (unsigned int  )10;
-    sqlstm.offset = (unsigned int  )20;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)4352;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlstm.sqhstv[0] = (unsigned char  *)username;
-    sqlstm.sqhstl[0] = (unsigned long )11;
-    sqlstm.sqhsts[0] = (         int  )11;
-    sqlstm.sqindv[0] = (         short *)0;
-    sqlstm.sqinds[0] = (         int  )0;
-    sqlstm.sqharm[0] = (unsigned long )0;
-    sqlstm.sqadto[0] = (unsigned short )0;
-    sqlstm.sqtdso[0] = (unsigned short )0;
-    sqlstm.sqhstv[1] = (unsigned char  *)password;
-    sqlstm.sqhstl[1] = (unsigned long )11;
-    sqlstm.sqhsts[1] = (         int  )11;
-    sqlstm.sqindv[1] = (         short *)0;
-    sqlstm.sqinds[1] = (         int  )0;
-    sqlstm.sqharm[1] = (unsigned long )0;
-    sqlstm.sqadto[1] = (unsigned short )0;
-    sqlstm.sqtdso[1] = (unsigned short )0;
-    sqlstm.sqphsv = sqlstm.sqhstv;
-    sqlstm.sqphsl = sqlstm.sqhstl;
-    sqlstm.sqphss = sqlstm.sqhsts;
-    sqlstm.sqpind = sqlstm.sqindv;
-    sqlstm.sqpins = sqlstm.sqinds;
-    sqlstm.sqparm = sqlstm.sqharm;
-    sqlstm.sqparc = sqlstm.sqharc;
-    sqlstm.sqpadto = sqlstm.sqadto;
-    sqlstm.sqptdso = sqlstm.sqtdso;
-    sqlstm.sqlcmax = (unsigned int )100;
-    sqlstm.sqlcmin = (unsigned int )2;
-    sqlstm.sqlcincr = (unsigned int )1;
-    sqlstm.sqlctimeout = (unsigned int )0;
-    sqlstm.sqlcnowait = (unsigned int )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 4;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )10;
+ sqlstm.offset = (unsigned int  )20;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqhstv[0] = (unsigned char  *)username;
+ sqlstm.sqhstl[0] = (unsigned long )11;
+ sqlstm.sqhsts[0] = (         int  )11;
+ sqlstm.sqindv[0] = (         short *)0;
+ sqlstm.sqinds[0] = (         int  )0;
+ sqlstm.sqharm[0] = (unsigned long )0;
+ sqlstm.sqadto[0] = (unsigned short )0;
+ sqlstm.sqtdso[0] = (unsigned short )0;
+ sqlstm.sqhstv[1] = (unsigned char  *)password;
+ sqlstm.sqhstl[1] = (unsigned long )11;
+ sqlstm.sqhsts[1] = (         int  )11;
+ sqlstm.sqindv[1] = (         short *)0;
+ sqlstm.sqinds[1] = (         int  )0;
+ sqlstm.sqharm[1] = (unsigned long )0;
+ sqlstm.sqadto[1] = (unsigned short )0;
+ sqlstm.sqtdso[1] = (unsigned short )0;
+ sqlstm.sqphsv = sqlstm.sqhstv;
+ sqlstm.sqphsl = sqlstm.sqhstl;
+ sqlstm.sqphss = sqlstm.sqhsts;
+ sqlstm.sqpind = sqlstm.sqindv;
+ sqlstm.sqpins = sqlstm.sqinds;
+ sqlstm.sqparm = sqlstm.sqharm;
+ sqlstm.sqparc = sqlstm.sqharc;
+ sqlstm.sqpadto = sqlstm.sqadto;
+ sqlstm.sqptdso = sqlstm.sqtdso;
+ sqlstm.sqlcmax = (unsigned int )100;
+ sqlstm.sqlcmin = (unsigned int )2;
+ sqlstm.sqlcincr = (unsigned int )1;
+ sqlstm.sqlctimeout = (unsigned int )0;
+ sqlstm.sqlcnowait = (unsigned int )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+ if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
 }
 
  
-    printf("\nConnected to ORACLE as user: %s\n", username); 
+	printf("\nConnected to ORACLE as user: %s\n", username); 
 
 	printf("Select an option to query the database:\n");
 	printf("  0. Exit the program\n");

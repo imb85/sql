@@ -1,11 +1,3 @@
-/*
- *  procdemo.pc
- *
- *  This program connects to ORACLE, declares and opens a cursor, 
- *  fetches the names, salaries, and commissions of all
- *  salespeople, displays the results, then closes the cursor. 
- */ 
-
 #include <stdio.h>
 #include <string.h>
 #include <sqlca.h>
@@ -28,8 +20,7 @@ EXEC SQL TYPE asciiz IS CHARZ(PWD_LEN) REFERENCE;
 asciiz     username; 
 asciiz     password; 
 
-struct emp_info 
-{ 
+struct emp_info { 
     asciiz     emp_name; 
     float      salary; 
     float      commission; 
@@ -56,26 +47,23 @@ void sql_error(msg)
     exit(EXIT_FAILURE);
 } 
 
-void main() 
-{ 
-    struct emp_info *emp_rec_ptr; 
+void main(){ 
+	struct emp_info *emp_rec_ptr; 
 
-/* Allocate memory for emp_info struct. */ 
-    if ((emp_rec_ptr = 
-        (struct emp_info *) malloc(sizeof(struct emp_info))) == 0)
-    { 
-        fprintf(stderr, "Memory allocation error.\n"); 
-        exit(EXIT_FAILURE); 
-    } 
+	/* Allocate memory for emp_info struct. */ 
+	if ((emp_rec_ptr = (struct emp_info *) malloc(sizeof(struct emp_info))) == 0){ 
+		fprintf(stderr, "Memory allocation error.\n"); 
+		exit(EXIT_FAILURE); 
+	} 
  
-/* Connect to ORACLE. */ 
-    strcpy(username, "scott"); 
-    strcpy(password, "tiger"); 
+	/* Connect to ORACLE. */ 
+	strcpy(username, "scott"); 
+	strcpy(password, "tiger"); 
  
-    EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error--");
+	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error--");
  
-    EXEC SQL CONNECT :username IDENTIFIED BY :password; 
-    printf("\nConnected to ORACLE as user: %s\n", username); 
+	EXEC SQL CONNECT :username IDENTIFIED BY :password; 
+	printf("\nConnected to ORACLE as user: %s\n", username); 
 
 	printf("Select an option to query the database:\n");
 	printf("  0. Exit the program\n");
