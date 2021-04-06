@@ -138,12 +138,12 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,52,0,0,0,0,0,1,0,
-20,0,0,0,0,0,27,78,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-51,0,0,3,52,0,9,111,0,0,0,0,0,1,0,
-66,0,0,3,0,0,13,119,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-93,0,0,3,0,0,15,126,0,0,0,0,0,1,0,
-108,0,0,4,0,0,30,127,0,0,0,0,0,1,0,
+5,0,0,1,0,0,32,42,0,0,0,0,0,1,0,
+20,0,0,0,0,0,27,61,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+51,0,0,3,52,0,9,94,0,0,0,0,0,1,0,
+66,0,0,3,0,0,13,102,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+93,0,0,3,0,0,15,109,0,0,0,0,0,1,0,
+108,0,0,4,0,0,30,110,0,0,0,0,0,1,0,
 };
 
 
@@ -157,26 +157,16 @@ static short sqlcud0[] =
 #define UNAME_LEN      20 
 #define PWD_LEN        11 
  
-/*
- * Use the precompiler typedef'ing capability to create
- * null-terminated strings for the authentication host
- * variables. (This isn't really necessary--plain char *'s
- * would work as well. This is just for illustration.)
- */
 typedef char asciiz[PWD_LEN]; 
 
 /* EXEC SQL TYPE asciiz IS CHARZ(PWD_LEN) REFERENCE; */ 
  
-asciiz     username; 
-asciiz     password; 
 
-struct emp_info { 
-    asciiz     emp_name; 
-    float      salary; 
-    float      commission; 
-};
+asciiz username; 
+asciiz password; 
 
 struct hotel_details {
+	// For Option 1
 	int no;
 	asciiz name;
 	asciiz city;
@@ -222,14 +212,7 @@ void sql_error(msg)
 } 
 
 void main(){ 
-	struct emp_info *emp_rec_ptr; 
 	struct hotel_details *hotel_recv;
-
-	/* Allocate memory for emp_info struct. */ 
-	if ((emp_rec_ptr = (struct emp_info *) malloc(sizeof(struct emp_info))) == 0){ 
-		fprintf(stderr, "Memory allocation error.\n"); 
-		exit(EXIT_FAILURE); 
-	} 
 
 	if((hotel_recv = (struct hotel_details *) malloc(sizeof(struct hotel_details))) == 0){
 		fprintf(stderr, "Memory allocation error.\n");
