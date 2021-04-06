@@ -78,11 +78,32 @@ void main()
     printf("\nConnected to ORACLE as user: %s\n", username); 
 
 	printf("Select an option to query the database:\n");
+	printf("  0. Exit the program\n");
 	printf("  1. Search all hotels in a certain city\n");
 	printf("  2. List roomNo, type, and price for the Biltmore Hotel\n");
 	printf("  3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
 	printf("  4. list the number of rooms in each hotel\n");
 
+	while(1){
+		int inp;
+		printf(">> ");
+		scanf("%d", &inp);
+
+		switch(inp){
+			case 0:
+				printf("Program finished!\n");
+				return;
+		
+			case 1:
+				printf("Option 1 selected\n");
+				break;
+		
+			default:	
+				printf("Invalid input \"%d\", please try again\n", inp);
+				break;
+		}
+	}
+	
  
 /* Declare the cursor. All static SQL explicit cursors
  * contain SELECT commands. 'salespeople' is a SQL identifier,

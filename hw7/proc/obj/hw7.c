@@ -140,10 +140,10 @@ static short sqlcud0[] =
 {13,4130,1,0,0,
 5,0,0,1,0,0,32,55,0,0,0,0,0,1,0,
 20,0,0,0,0,0,27,77,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-51,0,0,3,68,0,9,90,0,0,0,0,0,1,0,
-66,0,0,3,0,0,13,105,0,0,3,0,0,1,0,2,97,0,0,2,4,0,0,2,4,0,0,
-93,0,0,3,0,0,15,111,0,0,0,0,0,1,0,
-108,0,0,4,0,0,30,115,0,0,0,0,0,1,0,
+51,0,0,3,68,0,9,118,0,0,0,0,0,1,0,
+66,0,0,3,0,0,13,133,0,0,3,0,0,1,0,2,97,0,0,2,4,0,0,2,4,0,0,
+93,0,0,3,0,0,15,139,0,0,0,0,0,1,0,
+108,0,0,4,0,0,30,143,0,0,0,0,0,1,0,
 };
 
 
@@ -293,6 +293,34 @@ void main()
 
  
     printf("\nConnected to ORACLE as user: %s\n", username); 
+
+	printf("Select an option to query the database:\n");
+	printf("  0. Exit the program\n");
+	printf("  1. Search all hotels in a certain city\n");
+	printf("  2. List roomNo, type, and price for the Biltmore Hotel\n");
+	printf("  3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
+	printf("  4. list the number of rooms in each hotel\n");
+
+	while(1){
+		int inp;
+		printf(">> ");
+		scanf("%d", &inp);
+
+		switch(inp){
+			case 0:
+				printf("Program finished!\n");
+				return;
+		
+			case 1:
+				printf("Option 1 selected\n");
+				break;
+		
+			default:	
+				printf("Invalid input \"%d\", please try again\n", inp);
+				break;
+		}
+	}
+	
  
 /* Declare the cursor. All static SQL explicit cursors
  * contain SELECT commands. 'salespeople' is a SQL identifier,
