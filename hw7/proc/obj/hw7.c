@@ -138,12 +138,12 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,42,0,0,0,0,0,1,0,
-20,0,0,0,0,0,27,61,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-51,0,0,3,52,0,9,94,0,0,0,0,0,1,0,
-66,0,0,3,0,0,13,102,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-93,0,0,3,0,0,15,109,0,0,0,0,0,1,0,
-108,0,0,4,0,0,30,110,0,0,0,0,0,1,0,
+5,0,0,1,0,0,32,41,0,0,0,0,0,1,0,
+20,0,0,0,0,0,27,60,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+51,0,0,3,52,0,9,93,0,0,0,0,0,1,0,
+66,0,0,3,0,0,13,101,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+93,0,0,3,0,0,15,108,0,0,0,0,0,1,0,
+108,0,0,4,0,0,30,109,0,0,0,0,0,1,0,
 };
 
 
@@ -154,12 +154,11 @@ static short sqlcud0[] =
 #include <sqlda.h>
 #include <sqlcpr.h>
 
-#define UNAME_LEN      20 
-#define PWD_LEN        11 
+#define STR_LEN 25 
  
-typedef char asciiz[PWD_LEN]; 
+typedef char asciiz[STR_LEN]; 
 
-/* EXEC SQL TYPE asciiz IS CHARZ(PWD_LEN) REFERENCE; */ 
+/* EXEC SQL TYPE asciiz IS CHARZ(STR_LEN) REFERENCE; */ 
  
 
 asciiz username; 
@@ -242,16 +241,16 @@ void main(){
  sqlstm.sqlety = (unsigned short)4352;
  sqlstm.occurs = (unsigned int  )0;
  sqlstm.sqhstv[0] = (unsigned char  *)username;
- sqlstm.sqhstl[0] = (unsigned long )11;
- sqlstm.sqhsts[0] = (         int  )11;
+ sqlstm.sqhstl[0] = (unsigned long )25;
+ sqlstm.sqhsts[0] = (         int  )25;
  sqlstm.sqindv[0] = (         short *)0;
  sqlstm.sqinds[0] = (         int  )0;
  sqlstm.sqharm[0] = (unsigned long )0;
  sqlstm.sqadto[0] = (unsigned short )0;
  sqlstm.sqtdso[0] = (unsigned short )0;
  sqlstm.sqhstv[1] = (unsigned char  *)password;
- sqlstm.sqhstl[1] = (unsigned long )11;
- sqlstm.sqhsts[1] = (         int  )11;
+ sqlstm.sqhstl[1] = (unsigned long )25;
+ sqlstm.sqhsts[1] = (         int  )25;
  sqlstm.sqindv[1] = (         short *)0;
  sqlstm.sqinds[1] = (         int  )0;
  sqlstm.sqharm[1] = (unsigned long )0;
@@ -367,7 +366,7 @@ void main(){
      sqlstm.sqadto[0] = (unsigned short )0;
      sqlstm.sqtdso[0] = (unsigned short )0;
      sqlstm.sqhstv[1] = (unsigned char  *)hotel_recv->name;
-     sqlstm.sqhstl[1] = (unsigned long )11;
+     sqlstm.sqhstl[1] = (unsigned long )25;
      sqlstm.sqhsts[1] = (         int  )0;
      sqlstm.sqindv[1] = (         short *)0;
      sqlstm.sqinds[1] = (         int  )0;
@@ -375,7 +374,7 @@ void main(){
      sqlstm.sqadto[1] = (unsigned short )0;
      sqlstm.sqtdso[1] = (unsigned short )0;
      sqlstm.sqhstv[2] = (unsigned char  *)hotel_recv->city;
-     sqlstm.sqhstl[2] = (unsigned long )11;
+     sqlstm.sqhstl[2] = (unsigned long )25;
      sqlstm.sqhsts[2] = (         int  )0;
      sqlstm.sqindv[2] = (         short *)0;
      sqlstm.sqinds[2] = (         int  )0;

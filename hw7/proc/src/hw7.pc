@@ -5,12 +5,11 @@
 #include <sqlda.h>
 #include <sqlcpr.h>
 
-#define UNAME_LEN      20 
-#define PWD_LEN        11 
+#define STR_LEN 25 
  
-typedef char asciiz[PWD_LEN]; 
+typedef char asciiz[STR_LEN]; 
 
-EXEC SQL TYPE asciiz IS CHARZ(PWD_LEN) REFERENCE; 
+EXEC SQL TYPE asciiz IS CHARZ(STR_LEN) REFERENCE; 
 
 asciiz username; 
 asciiz password; 
