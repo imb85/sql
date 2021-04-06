@@ -132,9 +132,6 @@ extern void sqliem(/*_ unsigned char *, signed int * _*/);
  static char *sq0003 = 
 "select *  from Hotel where city='Seattle'           ";
 
- static char *sq0005 = 
-"select ENAME ,SAL ,COMM  from EMP where JOB like 'SALES%'           ";
-
 typedef struct { unsigned short len; unsigned char arr[1]; } VARCHAR;
 typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 
@@ -147,10 +144,6 @@ static short sqlcud0[] =
 66,0,0,3,0,0,13,119,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
 93,0,0,3,0,0,15,126,0,0,0,0,0,1,0,
 108,0,0,4,0,0,30,127,0,0,0,0,0,1,0,
-123,0,0,5,68,0,9,164,0,0,0,0,0,1,0,
-138,0,0,5,0,0,13,179,0,0,3,0,0,1,0,2,97,0,0,2,4,0,0,2,4,0,0,
-165,0,0,5,0,0,15,185,0,0,0,0,0,1,0,
-180,0,0,6,0,0,30,189,0,0,0,0,0,1,0,
 };
 
 
@@ -318,7 +311,7 @@ void main(){
 		switch(inp){
 			case 0:
 				printf("Program finished!\n");
-				return;
+				exit(EXIT_SUCCESS);
 		
 			case 1:
 				printf("Option 1 selected\n");
@@ -331,8 +324,8 @@ void main(){
 					SELECT *
 						FROM Hotel
 						WHERE city='Seattle'; */ 
-
-
+ // Need to change to take inp_city
+				
 				/* EXEC SQL OPEN hotels; */ 
 
 {
@@ -489,160 +482,4 @@ void main(){
 				break;
 		}
 	}
-	
- 
-/* Declare the cursor. All static SQL explicit cursors
- * contain SELECT commands. 'salespeople' is a SQL identifier,
- * not a (C) host variable.
- */
-    /* EXEC SQL DECLARE salespeople CURSOR FOR 
-        SELECT ENAME, SAL, COMM 
-            FROM EMP 
-            WHERE JOB LIKE 'SALES%'; */ 
- 
- 
-/* Open the cursor. */
-    /* EXEC SQL OPEN salespeople; */ 
-
-{
-    struct sqlexd sqlstm;
-    sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.stmt = sq0005;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )123;
-    sqlstm.selerr = (unsigned short)1;
-    sqlstm.sqlpfmem = (unsigned int  )0;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)4352;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlstm.sqcmod = (unsigned int )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
 }
-
- 
- 
-/* Get ready to print results. */
-    printf("\n\nThe company's salespeople are--\n\n");
-    printf("Salesperson   Salary   Commission\n"); 
-    printf("-----------   ------   ----------\n"); 
- 
-/* Loop, fetching all salesperson's statistics.
- * Cause the program to break the loop when no more
- * data can be retrieved on the cursor.
- */
-    /* EXEC SQL WHENEVER NOT FOUND DO break; */ 
- 
-
-    for (;;) 
-    { 
-        /* EXEC SQL FETCH salespeople INTO :emp_rec_ptr; */ 
-
-{
-        struct sqlexd sqlstm;
-        sqlstm.sqlvsn = 13;
-        sqlstm.arrsiz = 4;
-        sqlstm.sqladtp = &sqladt;
-        sqlstm.sqltdsp = &sqltds;
-        sqlstm.iters = (unsigned int  )1;
-        sqlstm.offset = (unsigned int  )138;
-        sqlstm.selerr = (unsigned short)1;
-        sqlstm.sqlpfmem = (unsigned int  )0;
-        sqlstm.cud = sqlcud0;
-        sqlstm.sqlest = (unsigned char  *)&sqlca;
-        sqlstm.sqlety = (unsigned short)4352;
-        sqlstm.occurs = (unsigned int  )0;
-        sqlstm.sqfoff = (         int )0;
-        sqlstm.sqfmod = (unsigned int )2;
-        sqlstm.sqhstv[0] = (unsigned char  *)emp_rec_ptr->emp_name;
-        sqlstm.sqhstl[0] = (unsigned long )11;
-        sqlstm.sqhsts[0] = (         int  )0;
-        sqlstm.sqindv[0] = (         short *)0;
-        sqlstm.sqinds[0] = (         int  )0;
-        sqlstm.sqharm[0] = (unsigned long )0;
-        sqlstm.sqadto[0] = (unsigned short )0;
-        sqlstm.sqtdso[0] = (unsigned short )0;
-        sqlstm.sqhstv[1] = (unsigned char  *)&emp_rec_ptr->salary;
-        sqlstm.sqhstl[1] = (unsigned long )sizeof(float);
-        sqlstm.sqhsts[1] = (         int  )0;
-        sqlstm.sqindv[1] = (         short *)0;
-        sqlstm.sqinds[1] = (         int  )0;
-        sqlstm.sqharm[1] = (unsigned long )0;
-        sqlstm.sqadto[1] = (unsigned short )0;
-        sqlstm.sqtdso[1] = (unsigned short )0;
-        sqlstm.sqhstv[2] = (unsigned char  *)&emp_rec_ptr->commission;
-        sqlstm.sqhstl[2] = (unsigned long )sizeof(float);
-        sqlstm.sqhsts[2] = (         int  )0;
-        sqlstm.sqindv[2] = (         short *)0;
-        sqlstm.sqinds[2] = (         int  )0;
-        sqlstm.sqharm[2] = (unsigned long )0;
-        sqlstm.sqadto[2] = (unsigned short )0;
-        sqlstm.sqtdso[2] = (unsigned short )0;
-        sqlstm.sqphsv = sqlstm.sqhstv;
-        sqlstm.sqphsl = sqlstm.sqhstl;
-        sqlstm.sqphss = sqlstm.sqhsts;
-        sqlstm.sqpind = sqlstm.sqindv;
-        sqlstm.sqpins = sqlstm.sqinds;
-        sqlstm.sqparm = sqlstm.sqharm;
-        sqlstm.sqparc = sqlstm.sqharc;
-        sqlstm.sqpadto = sqlstm.sqadto;
-        sqlstm.sqptdso = sqlstm.sqtdso;
-        sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-        if (sqlca.sqlcode == 1403) break;
-        if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
-}
-
- 
-        printf("%s %9.2f %12.2f\n", emp_rec_ptr->emp_name, 
-                emp_rec_ptr->salary, emp_rec_ptr->commission); 
-    } 
- 
-/* Close the cursor. */
-    /* EXEC SQL CLOSE salespeople; */ 
-
-{
-    struct sqlexd sqlstm;
-    sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )165;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)4352;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
-}
-
- 
- 
-    printf("\nGOOD-BYE!!\n\n");
-
-    /* EXEC SQL COMMIT WORK RELEASE; */ 
-
-{
-    struct sqlexd sqlstm;
-    sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 4;
-    sqlstm.sqladtp = &sqladt;
-    sqlstm.sqltdsp = &sqltds;
-    sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )180;
-    sqlstm.cud = sqlcud0;
-    sqlstm.sqlest = (unsigned char  *)&sqlca;
-    sqlstm.sqlety = (unsigned short)4352;
-    sqlstm.occurs = (unsigned int  )0;
-    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-    if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
-}
-
- 
-    exit(EXIT_SUCCESS); 
-} 
-
