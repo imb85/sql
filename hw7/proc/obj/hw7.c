@@ -214,7 +214,7 @@ void main_menu(){
 	printf("  4. list the number of rooms in each hotel\n");
 }
 
-void show_hotel_details(){
+void city_hotel_details(){
 	char inp_city[100];
 	struct hotel_details *hotel_recv;
 
@@ -437,7 +437,7 @@ void main(){
 		
 			case 1:
 				printf("Option 1 selected\n");
-				show_hotel_details();
+				city_hotel_details();
 	
 				break;
 		
