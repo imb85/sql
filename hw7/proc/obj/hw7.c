@@ -138,12 +138,12 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,46,0,0,0,0,0,1,0,
-20,0,0,0,0,0,27,65,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-51,0,0,3,68,0,9,106,0,0,0,0,0,1,0,
-66,0,0,3,0,0,13,121,0,0,3,0,0,1,0,2,97,0,0,2,4,0,0,2,4,0,0,
-93,0,0,3,0,0,15,127,0,0,0,0,0,1,0,
-108,0,0,4,0,0,30,131,0,0,0,0,0,1,0,
+5,0,0,1,0,0,32,52,0,0,0,0,0,1,0,
+20,0,0,0,0,0,27,71,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+51,0,0,3,68,0,9,136,0,0,0,0,0,1,0,
+66,0,0,3,0,0,13,151,0,0,3,0,0,1,0,2,97,0,0,2,4,0,0,2,4,0,0,
+93,0,0,3,0,0,15,157,0,0,0,0,0,1,0,
+108,0,0,4,0,0,30,161,0,0,0,0,0,1,0,
 };
 
 
@@ -174,6 +174,12 @@ struct emp_info {
     asciiz     emp_name; 
     float      salary; 
     float      commission; 
+};
+
+struct hotel_details {
+	int hotel_no;
+	asciiz hotel_name;
+	asciiz city;
 }; 
 
 void sql_error(msg) 
@@ -291,6 +297,7 @@ void main(){
 
 	while(1){
 		int inp;
+		char city[100];
 		printf(">> ");
 		scanf("%d", &inp);
 
@@ -301,10 +308,33 @@ void main(){
 		
 			case 1:
 				printf("Option 1 selected\n");
+				printf("Enter a city to search:\n");
+				printf("  >> ");
+				scanf("%s", city);
+				printf("You entered: %s\n", city);
+				printf("Hotel No    Hotel Name                 City\n");
+				printf("----------  -------------------------  ---------------");
+
 				break;
 		
+			case 2:
+				printf("Option 2 selected\n");
+
+				break;
+
+			case 3: 
+				printf("Option 3 selected\n");
+
+				break;
+
+			case 4:
+				printf("Option 4 selected\n");
+
+				break;
+
 			default:	
 				printf("Invalid input \"%d\", please try again\n", inp);
+
 				break;
 		}
 	}

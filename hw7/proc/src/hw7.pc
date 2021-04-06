@@ -24,6 +24,12 @@ struct emp_info {
     asciiz     emp_name; 
     float      salary; 
     float      commission; 
+};
+
+struct hotel_details {
+	int hotel_no;
+	asciiz hotel_name;
+	asciiz city;
 }; 
 
 void sql_error(msg) 
@@ -74,6 +80,7 @@ void main(){
 
 	while(1){
 		int inp;
+		char city[100];
 		printf(">> ");
 		scanf("%d", &inp);
 
@@ -84,22 +91,33 @@ void main(){
 		
 			case 1:
 				printf("Option 1 selected\n");
+				printf("Enter a city to search:\n");
+				printf("  >> ");
+				scanf("%s", city);
+				printf("You entered: %s\n", city);
+				printf("Hotel No    Hotel Name                 City\n");
+				printf("----------  -------------------------  ---------------\n");
+
 				break;
 		
 			case 2:
 				printf("Option 2 selected\n");
+
 				break;
 
 			case 3: 
 				printf("Option 3 selected\n");
+
 				break;
 
 			case 4:
 				printf("Option 4 selected\n");
+
 				break;
 
 			default:	
 				printf("Invalid input \"%d\", please try again\n", inp);
+
 				break;
 		}
 	}
