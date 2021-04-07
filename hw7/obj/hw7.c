@@ -130,7 +130,7 @@ static int IAPFTL  = 535;
 extern void sqliem(/*_ unsigned char *, signed int * _*/);
 
  static char *sq0002 = 
-"select *  from Hotel where city='Seattle'           ";
+"select *  from Hotel where city=:b0           ";
 
  static char *sq0004 = 
 "select roomNo ,roomType ,price  from Room where hotelNo=1002           ";
@@ -150,23 +150,23 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 static short sqlcud0[] =
 {13,4130,1,0,0,
 5,0,0,1,0,0,32,52,0,0,0,0,0,1,0,
-20,0,0,2,52,0,9,84,0,0,0,0,0,1,0,
-35,0,0,2,0,0,13,93,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-62,0,0,2,0,0,15,100,0,0,0,0,0,1,0,
-77,0,0,3,0,0,30,101,0,0,0,0,0,1,0,
-92,0,0,4,71,0,9,121,0,0,0,0,0,1,0,
-107,0,0,4,0,0,13,130,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,4,0,0,
-134,0,0,4,0,0,15,137,0,0,0,0,0,1,0,
-149,0,0,5,0,0,30,138,0,0,0,0,0,1,0,
-164,0,0,6,102,0,9,155,0,0,0,0,0,1,0,
-179,0,0,6,0,0,13,164,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-206,0,0,6,0,0,15,170,0,0,0,0,0,1,0,
-221,0,0,7,0,0,30,171,0,0,0,0,0,1,0,
-236,0,0,8,93,0,9,188,0,0,0,0,0,1,0,
-251,0,0,8,0,0,13,195,0,0,2,0,0,1,0,2,3,0,0,2,3,0,0,
-274,0,0,8,0,0,15,201,0,0,0,0,0,1,0,
-289,0,0,9,0,0,30,202,0,0,0,0,0,1,0,
-304,0,0,0,0,0,27,212,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+20,0,0,2,46,0,9,84,0,0,1,1,0,1,0,1,97,0,0,
+39,0,0,2,0,0,13,93,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+66,0,0,2,0,0,15,100,0,0,0,0,0,1,0,
+81,0,0,3,0,0,30,101,0,0,0,0,0,1,0,
+96,0,0,4,71,0,9,121,0,0,0,0,0,1,0,
+111,0,0,4,0,0,13,130,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,4,0,0,
+138,0,0,4,0,0,15,137,0,0,0,0,0,1,0,
+153,0,0,5,0,0,30,138,0,0,0,0,0,1,0,
+168,0,0,6,102,0,9,155,0,0,0,0,0,1,0,
+183,0,0,6,0,0,13,164,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+210,0,0,6,0,0,15,170,0,0,0,0,0,1,0,
+225,0,0,7,0,0,30,171,0,0,0,0,0,1,0,
+240,0,0,8,93,0,9,188,0,0,0,0,0,1,0,
+255,0,0,8,0,0,13,195,0,0,2,0,0,1,0,2,3,0,0,2,3,0,0,
+278,0,0,8,0,0,15,201,0,0,0,0,0,1,0,
+293,0,0,9,0,0,30,202,0,0,0,0,0,1,0,
+308,0,0,0,0,0,27,212,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
 };
 
 
@@ -246,11 +246,11 @@ void sql_error(char * msg){
 
 void main_menu(){
 	printf("Select an option to query the database:\n");
-	printf("  0. Exit the program\n");
-	printf("  1. Search all hotels in a certain city\n");
-	printf("  2. List roomNo, type, and price for the Biltmore Hotel\n");
-	printf("  3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
-	printf("  4. list the number of rooms in each hotel\n");
+	printf("0. Exit the program\n");
+	printf("1. Search all hotels in a certain city\n");
+	printf("2. List roomNo, type, and price for the Biltmore Hotel\n");
+	printf("3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
+	printf("4. list the number of rooms in each hotel\n");
 }
 
 void city_hotel_details(){
@@ -270,15 +270,15 @@ void city_hotel_details(){
 	/* EXEC SQL DECLARE hotels CURSOR FOR
 		SELECT *
 			FROM Hotel
-			WHERE city='Seattle'; */ 
- // Need to change to take inp_city
+			WHERE city=:inp_city; */ 
+
 
 	/* EXEC SQL OPEN hotels; */ 
 
 {
  struct sqlexd sqlstm;
  sqlstm.sqlvsn = 13;
- sqlstm.arrsiz = 0;
+ sqlstm.arrsiz = 1;
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.stmt = sq0002;
@@ -291,6 +291,23 @@ void city_hotel_details(){
  sqlstm.sqlety = (unsigned short)4352;
  sqlstm.occurs = (unsigned int  )0;
  sqlstm.sqcmod = (unsigned int )0;
+ sqlstm.sqhstv[0] = (unsigned char  *)inp_city;
+ sqlstm.sqhstl[0] = (unsigned long )100;
+ sqlstm.sqhsts[0] = (         int  )0;
+ sqlstm.sqindv[0] = (         short *)0;
+ sqlstm.sqinds[0] = (         int  )0;
+ sqlstm.sqharm[0] = (unsigned long )0;
+ sqlstm.sqadto[0] = (unsigned short )0;
+ sqlstm.sqtdso[0] = (unsigned short )0;
+ sqlstm.sqphsv = sqlstm.sqhstv;
+ sqlstm.sqphsl = sqlstm.sqhstl;
+ sqlstm.sqphss = sqlstm.sqhsts;
+ sqlstm.sqpind = sqlstm.sqindv;
+ sqlstm.sqpins = sqlstm.sqinds;
+ sqlstm.sqparm = sqlstm.sqharm;
+ sqlstm.sqparc = sqlstm.sqharc;
+ sqlstm.sqpadto = sqlstm.sqadto;
+ sqlstm.sqptdso = sqlstm.sqtdso;
  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
 }
 
@@ -313,7 +330,7 @@ void city_hotel_details(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )35;
+  sqlstm.offset = (unsigned int  )39;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -375,7 +392,7 @@ void city_hotel_details(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )62;
+ sqlstm.offset = (unsigned int  )66;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -393,7 +410,7 @@ void city_hotel_details(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )77;
+ sqlstm.offset = (unsigned int  )81;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -416,12 +433,12 @@ void biltmore_hotel_details(){
 		SELECT roomNo, roomType, price
 			FROM Room
 			WHERE hotelNo=1002; */ 
-
+ // Need to change to use subquery
 			/*	(
 				SELECT hotelNo
 				FROM Hotel
 				WHERE hotelName='Biltmore Hotel');
-*/
+			*/
 	/* EXEC SQL OPEN rooms; */ 
 
 {
@@ -432,7 +449,7 @@ void biltmore_hotel_details(){
  sqlstm.sqltdsp = &sqltds;
  sqlstm.stmt = sq0004;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )92;
+ sqlstm.offset = (unsigned int  )96;
  sqlstm.selerr = (unsigned short)1;
  sqlstm.sqlpfmem = (unsigned int  )0;
  sqlstm.cud = sqlcud0;
@@ -462,7 +479,7 @@ void biltmore_hotel_details(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )107;
+  sqlstm.offset = (unsigned int  )111;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -524,7 +541,7 @@ void biltmore_hotel_details(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )134;
+ sqlstm.offset = (unsigned int  )138;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -542,7 +559,7 @@ void biltmore_hotel_details(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )149;
+ sqlstm.offset = (unsigned int  )153;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -578,7 +595,7 @@ void miami_guests(){
  sqlstm.sqltdsp = &sqltds;
  sqlstm.stmt = sq0006;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )164;
+ sqlstm.offset = (unsigned int  )168;
  sqlstm.selerr = (unsigned short)1;
  sqlstm.sqlpfmem = (unsigned int  )0;
  sqlstm.cud = sqlcud0;
@@ -608,7 +625,7 @@ void miami_guests(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )179;
+  sqlstm.offset = (unsigned int  )183;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -669,7 +686,7 @@ void miami_guests(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )206;
+ sqlstm.offset = (unsigned int  )210;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -687,7 +704,7 @@ void miami_guests(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )221;
+ sqlstm.offset = (unsigned int  )225;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -723,7 +740,7 @@ void hotel_room_count(){
  sqlstm.sqltdsp = &sqltds;
  sqlstm.stmt = sq0008;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )236;
+ sqlstm.offset = (unsigned int  )240;
  sqlstm.selerr = (unsigned short)1;
  sqlstm.sqlpfmem = (unsigned int  )0;
  sqlstm.cud = sqlcud0;
@@ -750,7 +767,7 @@ void hotel_room_count(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )251;
+  sqlstm.offset = (unsigned int  )255;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -803,7 +820,7 @@ void hotel_room_count(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )274;
+ sqlstm.offset = (unsigned int  )278;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -821,7 +838,7 @@ void hotel_room_count(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )289;
+ sqlstm.offset = (unsigned int  )293;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -833,11 +850,11 @@ void hotel_room_count(){
 }
 
 void main(){ 
-	/* Connect to ORACLE. */ 
+	/* Connect to Oracle */ 
 	strcpy(username, "abk89"); 
 	strcpy(password, "~Ece3038"); 
  
-	/* EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error--"); */ 
+	/* EXEC SQL WHENEVER SQLERROR DO sql_error("Oracle error: "); */ 
 
  
 	/* EXEC SQL CONNECT :username IDENTIFIED BY :password; */ 
@@ -849,7 +866,7 @@ void main(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )304;
+ sqlstm.offset = (unsigned int  )308;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -885,11 +902,11 @@ void main(){
  sqlstm.sqlctimeout = (unsigned int )0;
  sqlstm.sqlcnowait = (unsigned int )0;
  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
- if (sqlca.sqlcode < 0) sql_error("ORACLE error--");
+ if (sqlca.sqlcode < 0) sql_error("Oracle error: ");
 }
 
  
-	printf("\nConnected to ORACLE as user: %s\n", username); 
+	printf("\nConnected to Oracle as %s\n", username); 
 
 	main_menu();
 
@@ -904,32 +921,23 @@ void main(){
 				exit(EXIT_SUCCESS);
 		
 			case 1:
-				printf("Option 1 selected\n");
 				city_hotel_details();
-	
 				break;
 		
 			case 2:
-				printf("Option 2 selected\n");
 				biltmore_hotel_details();
-
 				break;
 
 			case 3: 
-				printf("Option 3 selected\n");
 				miami_guests();
-
 				break;
 
 			case 4:
-				printf("Option 4 selected\n");
 				hotel_room_count();
-
 				break;
 
 			default:	
 				printf("Invalid input \"%d\", please try again\n", inp);
-
 				break;
 		}
 	}

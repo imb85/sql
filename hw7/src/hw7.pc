@@ -74,12 +74,11 @@ void city_hotel_details(){
 	printf("Enter a city to search:\n");
 	printf(">> ");
 	scanf("%s", inp_city);
-	printf("You entered: %s\n", inp_city);
 
 	EXEC SQL DECLARE hotels CURSOR FOR
 		SELECT *
 			FROM Hotel
-			WHERE city='Seattle'; // Need to change to take inp_city
+			WHERE city=:inp_city;
 
 	EXEC SQL OPEN hotels;
 
