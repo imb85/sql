@@ -111,12 +111,11 @@ void biltmore_hotel_details(){
 	EXEC SQL DECLARE rooms CURSOR FOR
 		SELECT roomNo, roomType, price
 			FROM Room
-			WHERE hotelNo=1002; // Need to change to use subquery
-			/*	(
+			WHERE hotelNo=(
 				SELECT hotelNo
 				FROM Hotel
 				WHERE hotelName='Biltmore Hotel');
-			*/
+			
 	EXEC SQL OPEN rooms;
 
 	/* Table header */
