@@ -27,6 +27,7 @@ struct biltmore_hotel_details {
 };
 
 struct guest_details {
+	int no;
 	asciiz name;
 	asciiz addr;
 };
@@ -100,15 +101,103 @@ void city_hotel_details(){
 }
 
 void biltmore_hotel_details(){
+	struct biltmore_hotel_details *room_recv;
+	
+	if((room_recv = (struct biltmore_hotel_details *) malloc(sizeof(struct biltmore_hotel_details))) == 0){
+		fprintf(stderr, "Memory allocation error.\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	EXEC SQL DECLARE rooms CURSOR FOR
+		SELECT roomNo, roomType, price
+			FROM Room
+			WHERE hotelNo=1002;
+			/*	(
+				SELECT hotelNo
+				FROM Hotel
+				WHERE hotelName='Biltmore Hotel');
+*/
+	EXEC SQL OPEN rooms;
 
+	/* Table header */
+	printf("No    Type                  Price\n");
+	printf("----  --------------------  -------\n");
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	while(1){
+		EXEC SQL FETCH rooms INTO :room_recv;
+		printf("%-4d  %-20s  %-4.2f\n", 
+			room_recv -> no,
+			room_recv -> type,
+			room_recv -> price);
+	}
+
+	EXEC SQL CLOSE rooms;
+	EXEC SQL COMMIT WORK RELEASE;
 }
 
 void miami_guests(){
+	struct guest_details *guest_recv;
+	
+	if((guest_recv = (struct guest_details *) malloc(sizeof(struct guest_details))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
 
+	EXEC SQL DECLARE guests CURSOR FOR
+		SELECT guestNo, guestName
+			FROM Guest
+			WHERE guestAddress LIKE '%Miami%'
+			ORDER BY guestName;
+
+	EXEC SQL OPEN guests;
+
+	/* Table header */
+	printf("No    Name\n");
+	printf("----  -------------------------------\n");
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	while(1){
+		EXEC SQL FETCH guests INTO :guest_recv;
+		printf("%-4d  %-20s\n",
+			guest_recv -> no,
+			guest_recv -> name);
+	}
+
+	EXEC SQL CLOSE guests;
+	EXEC SQL COMMIT WORK RELEASE;
 }
 
 void hotel_room_count(){
+	struct room_count *room_no_recv;
 
+	if((room_no_recv = (struct room_count *) malloc(sizeof(struct room_count))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	EXEC SQL DECLARE room_total CURSOR FOR
+		SELECT hotelNo, COUNT(roomNo) AS count
+			FROM Room
+			GROUP BY hotelNo;
+
+	EXEC SQL OPEN room_total;
+
+	/* Table header */
+	printf("Hotel No  Room Total\n");
+	printf("--------  ----------\n");
+
+	while(1){
+		EXEC SQL FETCH room_total INTO :room_no_recv;
+		printf("%d,  %d\n", 
+			room_no_recv -> hotel_no,
+			room_no_recv -> room_total);
+	}
+
+	EXEC SQL CLOSE room_total;
+	EXEC SQL COMMIT WORK RELEASE;
 }
 
 void main(){ 

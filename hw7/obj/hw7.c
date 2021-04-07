@@ -132,18 +132,40 @@ extern void sqliem(/*_ unsigned char *, signed int * _*/);
  static char *sq0002 = 
 "select *  from Hotel where city='Seattle'           ";
 
+ static char *sq0004 = 
+"select roomNo ,roomType ,price  from Room where hotelNo=1002           ";
+
+ static char *sq0006 = 
+"select guestNo ,guestName  from Guest where guestAddress like '%Miami%' orde\
+r by guestName            ";
+
+ static char *sq0008 = 
+"select hotelNo ,count(roomNo) count  from Room  group by hotelNo           ";
+
 typedef struct { unsigned short len; unsigned char arr[1]; } VARCHAR;
 typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,51,0,0,0,0,0,1,0,
-20,0,0,2,52,0,9,83,0,0,0,0,0,1,0,
-35,0,0,2,0,0,13,91,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-62,0,0,2,0,0,15,98,0,0,0,0,0,1,0,
-77,0,0,3,0,0,30,99,0,0,0,0,0,1,0,
-92,0,0,0,0,0,27,121,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+5,0,0,1,0,0,32,52,0,0,0,0,0,1,0,
+20,0,0,2,52,0,9,84,0,0,0,0,0,1,0,
+35,0,0,2,0,0,13,92,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+62,0,0,2,0,0,15,99,0,0,0,0,0,1,0,
+77,0,0,3,0,0,30,100,0,0,0,0,0,1,0,
+92,0,0,4,71,0,9,120,0,0,0,0,0,1,0,
+107,0,0,4,0,0,13,129,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,4,0,0,
+134,0,0,4,0,0,15,136,0,0,0,0,0,1,0,
+149,0,0,5,0,0,30,137,0,0,0,0,0,1,0,
+164,0,0,6,102,0,9,154,0,0,0,0,0,1,0,
+179,0,0,6,0,0,13,163,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+206,0,0,6,0,0,15,169,0,0,0,0,0,1,0,
+221,0,0,7,0,0,30,170,0,0,0,0,0,1,0,
+236,0,0,8,75,0,9,186,0,0,0,0,0,1,0,
+251,0,0,8,0,0,13,193,0,0,2,0,0,1,0,2,3,0,0,2,3,0,0,
+274,0,0,8,0,0,15,199,0,0,0,0,0,1,0,
+289,0,0,9,0,0,30,200,0,0,0,0,0,1,0,
+304,0,0,0,0,0,27,210,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
 };
 
 
@@ -177,6 +199,7 @@ struct biltmore_hotel_details {
 };
 
 struct guest_details {
+	int no;
 	asciiz name;
 	asciiz addr;
 };
@@ -380,14 +403,429 @@ void city_hotel_details(){
 }
 
 void biltmore_hotel_details(){
+	struct biltmore_hotel_details *room_recv;
+	
+	if((room_recv = (struct biltmore_hotel_details *) malloc(sizeof(struct biltmore_hotel_details))) == 0){
+		fprintf(stderr, "Memory allocation error.\n");
+		exit(EXIT_FAILURE);
+	}
+	
+	/* EXEC SQL DECLARE rooms CURSOR FOR
+		SELECT roomNo, roomType, price
+			FROM Room
+			WHERE hotelNo=1002; */ 
+
+			/*	(
+				SELECT hotelNo
+				FROM Hotel
+				WHERE hotelName='Biltmore Hotel');
+*/
+	/* EXEC SQL OPEN rooms; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = sq0004;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )92;
+ sqlstm.selerr = (unsigned short)1;
+ sqlstm.sqlpfmem = (unsigned int  )0;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqcmod = (unsigned int )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	/* Table header */
+	printf("No    Type                  Price\n");
+	printf("----  --------------------  -------\n");
+
+	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
+
+
+	while(1){
+		/* EXEC SQL FETCH rooms INTO :room_recv; */ 
+
+{
+  struct sqlexd sqlstm;
+  sqlstm.sqlvsn = 13;
+  sqlstm.arrsiz = 3;
+  sqlstm.sqladtp = &sqladt;
+  sqlstm.sqltdsp = &sqltds;
+  sqlstm.iters = (unsigned int  )1;
+  sqlstm.offset = (unsigned int  )107;
+  sqlstm.selerr = (unsigned short)1;
+  sqlstm.sqlpfmem = (unsigned int  )0;
+  sqlstm.cud = sqlcud0;
+  sqlstm.sqlest = (unsigned char  *)&sqlca;
+  sqlstm.sqlety = (unsigned short)4352;
+  sqlstm.occurs = (unsigned int  )0;
+  sqlstm.sqfoff = (         int )0;
+  sqlstm.sqfmod = (unsigned int )2;
+  sqlstm.sqhstv[0] = (unsigned char  *)&room_recv->no;
+  sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[0] = (         int  )0;
+  sqlstm.sqindv[0] = (         short *)0;
+  sqlstm.sqinds[0] = (         int  )0;
+  sqlstm.sqharm[0] = (unsigned long )0;
+  sqlstm.sqadto[0] = (unsigned short )0;
+  sqlstm.sqtdso[0] = (unsigned short )0;
+  sqlstm.sqhstv[1] = (unsigned char  *)room_recv->type;
+  sqlstm.sqhstl[1] = (unsigned long )25;
+  sqlstm.sqhsts[1] = (         int  )0;
+  sqlstm.sqindv[1] = (         short *)0;
+  sqlstm.sqinds[1] = (         int  )0;
+  sqlstm.sqharm[1] = (unsigned long )0;
+  sqlstm.sqadto[1] = (unsigned short )0;
+  sqlstm.sqtdso[1] = (unsigned short )0;
+  sqlstm.sqhstv[2] = (unsigned char  *)&room_recv->price;
+  sqlstm.sqhstl[2] = (unsigned long )sizeof(float);
+  sqlstm.sqhsts[2] = (         int  )0;
+  sqlstm.sqindv[2] = (         short *)0;
+  sqlstm.sqinds[2] = (         int  )0;
+  sqlstm.sqharm[2] = (unsigned long )0;
+  sqlstm.sqadto[2] = (unsigned short )0;
+  sqlstm.sqtdso[2] = (unsigned short )0;
+  sqlstm.sqphsv = sqlstm.sqhstv;
+  sqlstm.sqphsl = sqlstm.sqhstl;
+  sqlstm.sqphss = sqlstm.sqhsts;
+  sqlstm.sqpind = sqlstm.sqindv;
+  sqlstm.sqpins = sqlstm.sqinds;
+  sqlstm.sqparm = sqlstm.sqharm;
+  sqlstm.sqparc = sqlstm.sqharc;
+  sqlstm.sqpadto = sqlstm.sqadto;
+  sqlstm.sqptdso = sqlstm.sqtdso;
+  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+  if (sqlca.sqlcode == 1403) break;
+}
+
+
+		printf("%-4d  %-20s  %-4.2f\n", 
+			room_recv -> no,
+			room_recv -> type,
+			room_recv -> price);
+	}
+
+	/* EXEC SQL CLOSE rooms; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )134;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+	/* EXEC SQL COMMIT WORK RELEASE; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )149;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
 
 }
 
 void miami_guests(){
+	struct guest_details *guest_recv;
+	
+	if((guest_recv = (struct guest_details *) malloc(sizeof(struct guest_details))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	/* EXEC SQL DECLARE guests CURSOR FOR
+		SELECT guestNo, guestName
+			FROM Guest
+			WHERE guestAddress LIKE '%Miami%'
+			ORDER BY guestName; */ 
+
+
+	/* EXEC SQL OPEN guests; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = sq0006;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )164;
+ sqlstm.selerr = (unsigned short)1;
+ sqlstm.sqlpfmem = (unsigned int  )0;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqcmod = (unsigned int )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	/* Table header */
+	printf("No    Name\n");
+	printf("----  -------------------------------\n");
+
+	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
+
+
+	while(1){
+		/* EXEC SQL FETCH guests INTO :guest_recv; */ 
+
+{
+  struct sqlexd sqlstm;
+  sqlstm.sqlvsn = 13;
+  sqlstm.arrsiz = 3;
+  sqlstm.sqladtp = &sqladt;
+  sqlstm.sqltdsp = &sqltds;
+  sqlstm.iters = (unsigned int  )1;
+  sqlstm.offset = (unsigned int  )179;
+  sqlstm.selerr = (unsigned short)1;
+  sqlstm.sqlpfmem = (unsigned int  )0;
+  sqlstm.cud = sqlcud0;
+  sqlstm.sqlest = (unsigned char  *)&sqlca;
+  sqlstm.sqlety = (unsigned short)4352;
+  sqlstm.occurs = (unsigned int  )0;
+  sqlstm.sqfoff = (         int )0;
+  sqlstm.sqfmod = (unsigned int )2;
+  sqlstm.sqhstv[0] = (unsigned char  *)&guest_recv->no;
+  sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[0] = (         int  )0;
+  sqlstm.sqindv[0] = (         short *)0;
+  sqlstm.sqinds[0] = (         int  )0;
+  sqlstm.sqharm[0] = (unsigned long )0;
+  sqlstm.sqadto[0] = (unsigned short )0;
+  sqlstm.sqtdso[0] = (unsigned short )0;
+  sqlstm.sqhstv[1] = (unsigned char  *)guest_recv->name;
+  sqlstm.sqhstl[1] = (unsigned long )25;
+  sqlstm.sqhsts[1] = (         int  )0;
+  sqlstm.sqindv[1] = (         short *)0;
+  sqlstm.sqinds[1] = (         int  )0;
+  sqlstm.sqharm[1] = (unsigned long )0;
+  sqlstm.sqadto[1] = (unsigned short )0;
+  sqlstm.sqtdso[1] = (unsigned short )0;
+  sqlstm.sqhstv[2] = (unsigned char  *)guest_recv->addr;
+  sqlstm.sqhstl[2] = (unsigned long )25;
+  sqlstm.sqhsts[2] = (         int  )0;
+  sqlstm.sqindv[2] = (         short *)0;
+  sqlstm.sqinds[2] = (         int  )0;
+  sqlstm.sqharm[2] = (unsigned long )0;
+  sqlstm.sqadto[2] = (unsigned short )0;
+  sqlstm.sqtdso[2] = (unsigned short )0;
+  sqlstm.sqphsv = sqlstm.sqhstv;
+  sqlstm.sqphsl = sqlstm.sqhstl;
+  sqlstm.sqphss = sqlstm.sqhsts;
+  sqlstm.sqpind = sqlstm.sqindv;
+  sqlstm.sqpins = sqlstm.sqinds;
+  sqlstm.sqparm = sqlstm.sqharm;
+  sqlstm.sqparc = sqlstm.sqharc;
+  sqlstm.sqpadto = sqlstm.sqadto;
+  sqlstm.sqptdso = sqlstm.sqtdso;
+  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+  if (sqlca.sqlcode == 1403) break;
+}
+
+
+		printf("%-4d  %-20s\n",
+			guest_recv -> no,
+			guest_recv -> name);
+	}
+
+	/* EXEC SQL CLOSE guests; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )206;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+	/* EXEC SQL COMMIT WORK RELEASE; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )221;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
 
 }
 
 void hotel_room_count(){
+	struct room_count *room_no_recv;
+
+	if((room_no_recv = (struct room_count *) malloc(sizeof(struct room_count))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	/* EXEC SQL DECLARE room_total CURSOR FOR
+		SELECT hotelNo, COUNT(roomNo) AS count
+			FROM Room
+			GROUP BY hotelNo; */ 
+
+
+	/* EXEC SQL OPEN room_total; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = sq0008;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )236;
+ sqlstm.selerr = (unsigned short)1;
+ sqlstm.sqlpfmem = (unsigned int  )0;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqcmod = (unsigned int )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	/* Table header */
+	printf("Hotel No  Room Total\n");
+	printf("--------  ----------\n");
+
+	while(1){
+		/* EXEC SQL FETCH room_total INTO :room_no_recv; */ 
+
+{
+  struct sqlexd sqlstm;
+  sqlstm.sqlvsn = 13;
+  sqlstm.arrsiz = 3;
+  sqlstm.sqladtp = &sqladt;
+  sqlstm.sqltdsp = &sqltds;
+  sqlstm.iters = (unsigned int  )1;
+  sqlstm.offset = (unsigned int  )251;
+  sqlstm.selerr = (unsigned short)1;
+  sqlstm.sqlpfmem = (unsigned int  )0;
+  sqlstm.cud = sqlcud0;
+  sqlstm.sqlest = (unsigned char  *)&sqlca;
+  sqlstm.sqlety = (unsigned short)4352;
+  sqlstm.occurs = (unsigned int  )0;
+  sqlstm.sqfoff = (         int )0;
+  sqlstm.sqfmod = (unsigned int )2;
+  sqlstm.sqhstv[0] = (unsigned char  *)&room_no_recv->hotel_no;
+  sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[0] = (         int  )0;
+  sqlstm.sqindv[0] = (         short *)0;
+  sqlstm.sqinds[0] = (         int  )0;
+  sqlstm.sqharm[0] = (unsigned long )0;
+  sqlstm.sqadto[0] = (unsigned short )0;
+  sqlstm.sqtdso[0] = (unsigned short )0;
+  sqlstm.sqhstv[1] = (unsigned char  *)&room_no_recv->room_total;
+  sqlstm.sqhstl[1] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[1] = (         int  )0;
+  sqlstm.sqindv[1] = (         short *)0;
+  sqlstm.sqinds[1] = (         int  )0;
+  sqlstm.sqharm[1] = (unsigned long )0;
+  sqlstm.sqadto[1] = (unsigned short )0;
+  sqlstm.sqtdso[1] = (unsigned short )0;
+  sqlstm.sqphsv = sqlstm.sqhstv;
+  sqlstm.sqphsl = sqlstm.sqhstl;
+  sqlstm.sqphss = sqlstm.sqhsts;
+  sqlstm.sqpind = sqlstm.sqindv;
+  sqlstm.sqpins = sqlstm.sqinds;
+  sqlstm.sqparm = sqlstm.sqharm;
+  sqlstm.sqparc = sqlstm.sqharc;
+  sqlstm.sqpadto = sqlstm.sqadto;
+  sqlstm.sqptdso = sqlstm.sqtdso;
+  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+  if (sqlca.sqlcode == 1403) break;
+}
+
+
+		printf("%d,  %d\n", 
+			room_no_recv -> hotel_no,
+			room_no_recv -> room_total);
+	}
+
+	/* EXEC SQL CLOSE room_total; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )274;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+	/* EXEC SQL COMMIT WORK RELEASE; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 3;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )289;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
 
 }
 
@@ -408,7 +846,7 @@ void main(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )92;
+ sqlstm.offset = (unsigned int  )304;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
