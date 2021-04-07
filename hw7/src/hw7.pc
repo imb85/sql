@@ -55,11 +55,11 @@ void sql_error(char * msg){
 
 void main_menu(){
 	printf("Select an option to query the database:\n");
-	printf("  0. Exit the program\n");
-	printf("  1. Search all hotels in a certain city\n");
-	printf("  2. List roomNo, type, and price for the Biltmore Hotel\n");
-	printf("  3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
-	printf("  4. list the number of rooms in each hotel\n");
+	printf("0. Exit the program\n");
+	printf("1. Search all hotels in a certain city\n");
+	printf("2. List roomNo, type, and price for the Biltmore Hotel\n");
+	printf("3. List guestNo and guestName of guests who live in Miami (sorted by name)\n");
+	printf("4. list the number of rooms in each hotel\n");
 }
 
 void city_hotel_details(){
@@ -112,12 +112,12 @@ void biltmore_hotel_details(){
 	EXEC SQL DECLARE rooms CURSOR FOR
 		SELECT roomNo, roomType, price
 			FROM Room
-			WHERE hotelNo=1002;
+			WHERE hotelNo=1002; // Need to change to use subquery
 			/*	(
 				SELECT hotelNo
 				FROM Hotel
 				WHERE hotelName='Biltmore Hotel');
-*/
+			*/
 	EXEC SQL OPEN rooms;
 
 	/* Table header */
@@ -203,14 +203,14 @@ void hotel_room_count(){
 }
 
 void main(){ 
-	/* Connect to ORACLE. */ 
+	/* Connect to Oracle */ 
 	strcpy(username, "abk89"); 
 	strcpy(password, "~Ece3038"); 
  
-	EXEC SQL WHENEVER SQLERROR DO sql_error("ORACLE error--");
+	EXEC SQL WHENEVER SQLERROR DO sql_error("Oracle error: ");
  
 	EXEC SQL CONNECT :username IDENTIFIED BY :password; 
-	printf("\nConnected to ORACLE as user: %s\n", username); 
+	printf("\nConnected to Oracle as %s\n", username); 
 
 	main_menu();
 
@@ -225,32 +225,23 @@ void main(){
 				exit(EXIT_SUCCESS);
 		
 			case 1:
-				printf("Option 1 selected\n");
 				city_hotel_details();
-	
 				break;
 		
 			case 2:
-				printf("Option 2 selected\n");
 				biltmore_hotel_details();
-
 				break;
 
 			case 3: 
-				printf("Option 3 selected\n");
 				miami_guests();
-
 				break;
 
 			case 4:
-				printf("Option 4 selected\n");
 				hotel_room_count();
-
 				break;
 
 			default:	
 				printf("Invalid input \"%d\", please try again\n", inp);
-
 				break;
 		}
 	}
