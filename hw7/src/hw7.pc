@@ -83,6 +83,7 @@ void city_hotel_details(){
 
 	EXEC SQL OPEN hotels;
 
+	/* Table header */
 	printf("No    Name                       City\n");
 	printf("----  -------------------------  ---------------\n");
 
@@ -181,7 +182,8 @@ void hotel_room_count(){
 	EXEC SQL DECLARE room_total CURSOR FOR
 		SELECT hotelNo, COUNT(roomNo) AS count
 			FROM Room
-			GROUP BY hotelNo;
+			GROUP BY hotelNo
+			ORDER BY hotelNo;
 
 	EXEC SQL OPEN room_total;
 
@@ -191,7 +193,7 @@ void hotel_room_count(){
 
 	while(1){
 		EXEC SQL FETCH room_total INTO :room_no_recv;
-		printf("%d,  %d\n", 
+		printf("%-8d  %-10d\n", 
 			room_no_recv -> hotel_no,
 			room_no_recv -> room_total);
 	}
