@@ -97,7 +97,6 @@ void city_hotel_details(){
 	}
 
 	EXEC SQL CLOSE hotels;
-	EXEC SQL COMMIT WORK RELEASE;
 }
 
 void biltmore_hotel_details(){
@@ -133,7 +132,6 @@ void biltmore_hotel_details(){
 	}
 
 	EXEC SQL CLOSE rooms;
-	EXEC SQL COMMIT WORK RELEASE;
 }
 
 void miami_guests(){
@@ -166,7 +164,6 @@ void miami_guests(){
 	}
 
 	EXEC SQL CLOSE guests;
-	EXEC SQL COMMIT WORK RELEASE;
 }
 
 void hotel_room_count(){
@@ -197,7 +194,6 @@ void hotel_room_count(){
 	}
 
 	EXEC SQL CLOSE room_total;
-	EXEC SQL COMMIT WORK RELEASE;
 }
 
 void main(){ 
@@ -220,8 +216,9 @@ void main(){
 		switch(inp){
 			case 0:
 				printf("Program finished!\n");
+				EXEC SQL COMMIT WORK RELEASE;
 				exit(EXIT_SUCCESS);
-		
+
 			case 1:
 				city_hotel_details();
 				break;

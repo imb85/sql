@@ -132,15 +132,15 @@ extern void sqliem(/*_ unsigned char *, signed int * _*/);
  static char *sq0002 = 
 "select *  from Hotel where city=:b0           ";
 
- static char *sq0004 = 
+ static char *sq0003 = 
 "select roomNo ,roomType ,price  from Room where hotelNo=(select hotelNo  fro\
 m Hotel where hotelName='Biltmore Hotel')           ";
 
- static char *sq0006 = 
+ static char *sq0004 = 
 "select guestNo ,guestName  from Guest where guestAddress like '%Miami%' orde\
 r by guestName            ";
 
- static char *sq0008 = 
+ static char *sq0005 = 
 "select hotelNo ,count(roomNo) count  from Room  group by hotelNo order by ho\
 telNo            ";
 
@@ -154,20 +154,17 @@ static short sqlcud0[] =
 20,0,0,2,46,0,9,83,0,0,1,1,0,1,0,1,97,0,0,
 39,0,0,2,0,0,13,92,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
 66,0,0,2,0,0,15,99,0,0,0,0,0,1,0,
-81,0,0,3,0,0,30,100,0,0,0,0,0,1,0,
-96,0,0,4,128,0,9,119,0,0,0,0,0,1,0,
-111,0,0,4,0,0,13,128,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,4,0,0,
-138,0,0,4,0,0,15,135,0,0,0,0,0,1,0,
-153,0,0,5,0,0,30,136,0,0,0,0,0,1,0,
-168,0,0,6,102,0,9,153,0,0,0,0,0,1,0,
-183,0,0,6,0,0,13,162,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
-210,0,0,6,0,0,15,168,0,0,0,0,0,1,0,
-225,0,0,7,0,0,30,169,0,0,0,0,0,1,0,
-240,0,0,8,93,0,9,186,0,0,0,0,0,1,0,
-255,0,0,8,0,0,13,193,0,0,2,0,0,1,0,2,3,0,0,2,3,0,0,
-278,0,0,8,0,0,15,199,0,0,0,0,0,1,0,
-293,0,0,9,0,0,30,200,0,0,0,0,0,1,0,
-308,0,0,0,0,0,27,210,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+81,0,0,3,128,0,9,118,0,0,0,0,0,1,0,
+96,0,0,3,0,0,13,127,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,4,0,0,
+123,0,0,3,0,0,15,134,0,0,0,0,0,1,0,
+138,0,0,4,102,0,9,151,0,0,0,0,0,1,0,
+153,0,0,4,0,0,13,160,0,0,3,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,
+180,0,0,4,0,0,15,166,0,0,0,0,0,1,0,
+195,0,0,5,93,0,9,183,0,0,0,0,0,1,0,
+210,0,0,5,0,0,13,190,0,0,2,0,0,1,0,2,3,0,0,2,3,0,0,
+233,0,0,5,0,0,15,196,0,0,0,0,0,1,0,
+248,0,0,0,0,0,27,206,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+279,0,0,7,0,0,30,219,0,0,0,0,0,1,0,
 };
 
 
@@ -401,24 +398,6 @@ void city_hotel_details(){
 }
 
 
-	/* EXEC SQL COMMIT WORK RELEASE; */ 
-
-{
- struct sqlexd sqlstm;
- sqlstm.sqlvsn = 13;
- sqlstm.arrsiz = 3;
- sqlstm.sqladtp = &sqladt;
- sqlstm.sqltdsp = &sqltds;
- sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )81;
- sqlstm.cud = sqlcud0;
- sqlstm.sqlest = (unsigned char  *)&sqlca;
- sqlstm.sqlety = (unsigned short)4352;
- sqlstm.occurs = (unsigned int  )0;
- sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-}
-
-
 }
 
 void biltmore_hotel_details(){
@@ -446,9 +425,9 @@ void biltmore_hotel_details(){
  sqlstm.arrsiz = 3;
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
- sqlstm.stmt = sq0004;
+ sqlstm.stmt = sq0003;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )96;
+ sqlstm.offset = (unsigned int  )81;
  sqlstm.selerr = (unsigned short)1;
  sqlstm.sqlpfmem = (unsigned int  )0;
  sqlstm.cud = sqlcud0;
@@ -478,7 +457,7 @@ void biltmore_hotel_details(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )111;
+  sqlstm.offset = (unsigned int  )96;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -540,25 +519,7 @@ void biltmore_hotel_details(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )138;
- sqlstm.cud = sqlcud0;
- sqlstm.sqlest = (unsigned char  *)&sqlca;
- sqlstm.sqlety = (unsigned short)4352;
- sqlstm.occurs = (unsigned int  )0;
- sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-}
-
-
-	/* EXEC SQL COMMIT WORK RELEASE; */ 
-
-{
- struct sqlexd sqlstm;
- sqlstm.sqlvsn = 13;
- sqlstm.arrsiz = 3;
- sqlstm.sqladtp = &sqladt;
- sqlstm.sqltdsp = &sqltds;
- sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )153;
+ sqlstm.offset = (unsigned int  )123;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -592,9 +553,9 @@ void miami_guests(){
  sqlstm.arrsiz = 3;
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
- sqlstm.stmt = sq0006;
+ sqlstm.stmt = sq0004;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )168;
+ sqlstm.offset = (unsigned int  )138;
  sqlstm.selerr = (unsigned short)1;
  sqlstm.sqlpfmem = (unsigned int  )0;
  sqlstm.cud = sqlcud0;
@@ -624,7 +585,7 @@ void miami_guests(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )183;
+  sqlstm.offset = (unsigned int  )153;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -685,25 +646,7 @@ void miami_guests(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )210;
- sqlstm.cud = sqlcud0;
- sqlstm.sqlest = (unsigned char  *)&sqlca;
- sqlstm.sqlety = (unsigned short)4352;
- sqlstm.occurs = (unsigned int  )0;
- sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-}
-
-
-	/* EXEC SQL COMMIT WORK RELEASE; */ 
-
-{
- struct sqlexd sqlstm;
- sqlstm.sqlvsn = 13;
- sqlstm.arrsiz = 3;
- sqlstm.sqladtp = &sqladt;
- sqlstm.sqltdsp = &sqltds;
- sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )225;
+ sqlstm.offset = (unsigned int  )180;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -737,9 +680,9 @@ void hotel_room_count(){
  sqlstm.arrsiz = 3;
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
- sqlstm.stmt = sq0008;
+ sqlstm.stmt = sq0005;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )240;
+ sqlstm.offset = (unsigned int  )195;
  sqlstm.selerr = (unsigned short)1;
  sqlstm.sqlpfmem = (unsigned int  )0;
  sqlstm.cud = sqlcud0;
@@ -766,7 +709,7 @@ void hotel_room_count(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )255;
+  sqlstm.offset = (unsigned int  )210;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -819,25 +762,7 @@ void hotel_room_count(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )278;
- sqlstm.cud = sqlcud0;
- sqlstm.sqlest = (unsigned char  *)&sqlca;
- sqlstm.sqlety = (unsigned short)4352;
- sqlstm.occurs = (unsigned int  )0;
- sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
-}
-
-
-	/* EXEC SQL COMMIT WORK RELEASE; */ 
-
-{
- struct sqlexd sqlstm;
- sqlstm.sqlvsn = 13;
- sqlstm.arrsiz = 3;
- sqlstm.sqladtp = &sqladt;
- sqlstm.sqltdsp = &sqltds;
- sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )293;
+ sqlstm.offset = (unsigned int  )233;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -865,7 +790,7 @@ void main(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )308;
+ sqlstm.offset = (unsigned int  )248;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -917,8 +842,27 @@ void main(){
 		switch(inp){
 			case 0:
 				printf("Program finished!\n");
+				/* EXEC SQL COMMIT WORK RELEASE; */ 
+
+{
+    struct sqlexd sqlstm;
+    sqlstm.sqlvsn = 13;
+    sqlstm.arrsiz = 4;
+    sqlstm.sqladtp = &sqladt;
+    sqlstm.sqltdsp = &sqltds;
+    sqlstm.iters = (unsigned int  )1;
+    sqlstm.offset = (unsigned int  )279;
+    sqlstm.cud = sqlcud0;
+    sqlstm.sqlest = (unsigned char  *)&sqlca;
+    sqlstm.sqlety = (unsigned short)4352;
+    sqlstm.occurs = (unsigned int  )0;
+    sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+    if (sqlca.sqlcode < 0) sql_error("Oracle error: ");
+}
+
+
 				exit(EXIT_SUCCESS);
-		
+
 			case 1:
 				city_hotel_details();
 				break;
