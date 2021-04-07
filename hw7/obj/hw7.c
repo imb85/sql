@@ -441,8 +441,8 @@ void biltmore_hotel_details(){
 
 
 	/* Table header */
-	printf("No    Type                  Price\n");
-	printf("----  --------------------  -------\n");
+	printf("No    Type                      Price\n");
+	printf("----  ------------------------  -------\n");
 
 	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
 
@@ -504,7 +504,7 @@ void biltmore_hotel_details(){
 }
 
 
-		printf("%-4d  %-20s  %-4.2f\n", 
+		printf("%-4d  %-20s  %-7.2f\n", 
 			room_recv -> no,
 			room_recv -> type,
 			room_recv -> price);
