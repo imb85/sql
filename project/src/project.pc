@@ -1,0 +1,79 @@
+#include <stdio.h>
+#include <string.h>
+#include <sqlca.h>
+#include <stdlib.h>
+#include <sqlda.h>
+#include <sqlcpr.h>
+
+#define STR_LEN 25 
+ 
+typedef char asciiz[STR_LEN]; 
+
+EXEC SQL TYPE asciiz IS CHARZ(STR_LEN) REFERENCE; 
+
+asciiz username; 
+asciiz password; 
+
+void sql_error(char * msg){ 
+	char err_msg[512];
+	size_t buf_len, msg_len;
+
+	EXEC SQL WHENEVER SQLERROR CONTINUE;
+
+	printf("\n%s\n", msg);
+
+	buf_len = sizeof(err_msg);
+	sqlglm(err_msg, &buf_len, &msg_len);
+	printf("%.*s\n", msg_len, err_msg);
+
+	EXEC SQL ROLLBACK RELEASE;
+	exit(EXIT_FAILURE);
+} 
+
+void main_menu(){
+	printf("Select an option to query the database:\n");
+	printf("0. Exit the program\n");
+}
+
+void main(){ 
+	/* Connect to Oracle */ 
+	strcpy(username, "abk89"); 
+	strcpy(password, "~Ece3038");
+	
+	EXEC SQL WHENEVER SQLERROR DO sql_error("Oracle error: ");
+ 
+	EXEC SQL CONNECT :username IDENTIFIED BY :password; 
+	printf("\nConnected to Oracle as user: %s\n", username); 
+ 
+	main_menu();
+
+	while(1){
+		int inp;
+		printf(">> ");
+		scanf("%d", &inp);
+
+		switch(inp){
+			case 0:
+				printf("Program finished!\n");
+				EXEC SQL COMMIT WORK RELEASE;
+				exit(EXIT_SUCCESS);
+
+			case 1:
+				break;
+		
+			case 2:
+				break;
+
+			case 3: 
+				break;
+
+			case 4:
+				break;
+
+			default:	
+				printf("Invalid input \"%d\", please try again\n", inp);
+				break;
+		}
+	}
+} 
+
