@@ -116,6 +116,7 @@ void main_menu(){
 	printf("0. Exit the program\n");
 	printf("1. Add customer\n");
 	printf("2. Delete employee\n");
+	printf("3. Update order description\n");
 }
 
 void add_customer(){
@@ -160,6 +161,43 @@ void delete_employee(){
 	printf("Employee successfully deleted\n");	
 }
 
+void update_order_description(){
+	int o_no;
+
+	printf("Enter order_no >> ");
+	scanf("%d", &o_no);
+	printf("Enter new description >> ");
+	
+}
+
+void show_orders_by_vehicle(){
+
+}
+
+void show_line_items(){
+
+}
+
+void show_orders_by_date(){
+
+}
+
+void items_by_procedure(){
+
+}
+
+void all_procedures_by_order(){
+
+}
+
+void employee_invoices(){
+
+}
+
+void invoice_details(){
+
+}
+
 void main(){ 
 	/* Connect to Oracle */ 
 	strcpy(username, "abk89"); 
@@ -192,9 +230,35 @@ void main(){
 				break;
 
 			case 3: 
+				update_order_description();
 				break;
 
 			case 4:
+				show_orders_by_vehicle();
+				break;
+
+			case 5:
+				show_line_items();				
+				break;
+
+			case 6:
+				show_orders_by_date();
+				break;
+
+			case 7:
+				items_by_procedure();
+				break;
+			
+			case 8:
+				all_procedures_by_order();
+				break;
+		
+			case 9: 
+				employee_invoices();
+				break;
+
+			case 10:
+				invoice_details();
 				break;
 
 			default:	
@@ -202,5 +266,5 @@ void main(){
 				break;
 		}
 	}
-} 
+}
 

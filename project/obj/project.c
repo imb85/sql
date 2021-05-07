@@ -136,13 +136,13 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 static short sqlcud0[] =
 {13,4130,1,0,0,
 5,0,0,1,0,0,32,110,0,0,0,0,0,1,0,
-20,0,0,2,140,0,3,143,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,
+20,0,0,2,140,0,3,144,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,
 1,97,0,0,1,97,0,0,1,97,0,0,1,97,0,0,
-71,0,0,3,0,0,29,145,0,0,0,0,0,1,0,
-86,0,0,4,45,0,2,156,0,0,1,1,0,1,0,1,3,0,0,
-105,0,0,5,0,0,29,158,0,0,0,0,0,1,0,
-120,0,0,0,0,0,27,170,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-151,0,0,7,0,0,30,183,0,0,0,0,0,1,0,
+71,0,0,3,0,0,29,146,0,0,0,0,0,1,0,
+86,0,0,4,45,0,2,157,0,0,1,1,0,1,0,1,3,0,0,
+105,0,0,5,0,0,29,159,0,0,0,0,0,1,0,
+120,0,0,0,0,0,27,208,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+151,0,0,7,0,0,30,221,0,0,0,0,0,1,0,
 };
 
 
@@ -283,6 +283,7 @@ void main_menu(){
 	printf("0. Exit the program\n");
 	printf("1. Add customer\n");
 	printf("2. Delete employee\n");
+	printf("3. Update order description\n");
 }
 
 void add_customer(){
@@ -497,6 +498,43 @@ void delete_employee(){
 	printf("Employee successfully deleted\n");	
 }
 
+void update_order_description(){
+	int o_no;
+
+	printf("Enter order_no >> ");
+	scanf("%d", &o_no);
+	printf("Enter new description >> ");
+	
+}
+
+void show_orders_by_vehicle(){
+
+}
+
+void show_line_items(){
+
+}
+
+void show_orders_by_date(){
+
+}
+
+void items_by_procedure(){
+
+}
+
+void all_procedures_by_order(){
+
+}
+
+void employee_invoices(){
+
+}
+
+void invoice_details(){
+
+}
+
 void main(){ 
 	/* Connect to Oracle */ 
 	strcpy(username, "abk89"); 
@@ -596,9 +634,35 @@ void main(){
 				break;
 
 			case 3: 
+				update_order_description();
 				break;
 
 			case 4:
+				show_orders_by_vehicle();
+				break;
+
+			case 5:
+				show_line_items();				
+				break;
+
+			case 6:
+				show_orders_by_date();
+				break;
+
+			case 7:
+				items_by_procedure();
+				break;
+			
+			case 8:
+				all_procedures_by_order();
+				break;
+		
+			case 9: 
+				employee_invoices();
+				break;
+
+			case 10:
+				invoice_details();
 				break;
 
 			default:	
@@ -606,5 +670,5 @@ void main(){
 				break;
 		}
 	}
-} 
+}
 
