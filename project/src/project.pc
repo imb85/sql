@@ -14,6 +14,41 @@ EXEC SQL TYPE asciiz IS CHARZ(STR_LEN) REFERENCE;
 asciiz username; 
 asciiz password; 
 
+struct customers {
+	int customer_no;
+	asciiz fname;
+	asciiz lname;
+	int house_no;
+	asciiz street;
+	asciiz city;
+	asciiz state;
+	asciiz phone;
+	asciiz email;
+};
+
+struct vehicles {
+	int customer_no;
+	asciiz vin;
+	int year;
+	asciiz make;
+	asciiz model;
+	asciiz trim;
+};
+
+struct payments {
+	int customer_no;
+	int payment_no;
+	asciiz card_no;
+	asciiz ccv;
+	asciiz exp;
+};
+
+struct orders {
+
+};
+
+
+
 void sql_error(char * msg){ 
 	char err_msg[512];
 	size_t buf_len, msg_len;
@@ -33,6 +68,37 @@ void sql_error(char * msg){
 void main_menu(){
 	printf("Select an option to query the database:\n");
 	printf("0. Exit the program\n");
+	printf("1. Add customer\n");
+}
+
+void add_customer(){
+	struct customer new_customer;
+	int c_no;
+
+	printf("Enter customer_no >> ");
+	scanf("%d", new_customer.customer_no);
+	printf("Enter fname >> ");
+	scanf("%s", new_customer.fname);
+	printf("Enter lname >> ");
+	scanf("%s", new_customer.lname);
+	printf("Enter house_no >> ");
+	scanf("%d", new_customer.house_no);
+	printf("Enter street >> ");
+	scanf("%s", new_customer.street);
+	printf("Enter city >> ");
+	scanf("%s", new_customer.city);
+	printf("Enter state >> ");
+	scanf("%s", new_customer.state);
+	printf("Enter phone >> ");
+	scanf("%s", new_customer.phone);
+	printf("Enter email >> ");
+	scanf("%s", new_customer.email);
+
+	EXEC SQL set transaction read write;
+	EXEC SQL insert into Customers (customer_no, fname, lname, house_no, street, city, state, phone, email)
+	values(:new_customer);
+	EXEC SQL commit;
+	printf("New customer %d added \n", new_customer.customer_no);
 }
 
 void main(){ 
@@ -59,6 +125,7 @@ void main(){
 				exit(EXIT_SUCCESS);
 
 			case 1:
+				add_customer();
 				break;
 		
 			case 2:
