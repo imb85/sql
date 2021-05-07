@@ -68,7 +68,7 @@ CREATE TABLE Invoices(
 	FOREIGN KEY (customer_no) REFERENCES Customers(customer_no),
 	FOREIGN KEY (vin) REFERENCES Vehicles(vin),
 	FOREIGN KEY (employee_no) REFERENCES Employees(employee_no),
-	FOREIGN KEY (order_no) REFERNECES Orders(order_no)	
+	FOREIGN KEY (order_no) REFERENCES Orders(order_no)	
 );
 
 CREATE TABLE Notes(
