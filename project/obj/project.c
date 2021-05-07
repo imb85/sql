@@ -103,16 +103,16 @@ static struct sqlexd {
    unsigned int   sqcmod;
    unsigned int   sqfmod;
    unsigned int   sqlpfmem;
-   unsigned char  *sqhstv[4];
-   unsigned long  sqhstl[4];
-            int   sqhsts[4];
-            short *sqindv[4];
-            int   sqinds[4];
-   unsigned long  sqharm[4];
-   unsigned long  *sqharc[4];
-   unsigned short  sqadto[4];
-   unsigned short  sqtdso[4];
-} sqlstm = {13,4};
+   unsigned char  *sqhstv[9];
+   unsigned long  sqhstl[9];
+            int   sqhsts[9];
+            short *sqindv[9];
+            int   sqinds[9];
+   unsigned long  sqharm[9];
+   unsigned long  *sqharc[9];
+   unsigned short  sqadto[9];
+   unsigned short  sqtdso[9];
+} sqlstm = {13,9};
 
 /* SQLLIB Prototypes */
 extern sqlcxt (/*_ void **, unsigned int *,
@@ -135,9 +135,12 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,29,0,0,0,0,0,1,0,
-20,0,0,0,0,0,27,45,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-51,0,0,3,0,0,30,58,0,0,0,0,0,1,0,
+5,0,0,1,0,0,32,64,0,0,0,0,0,1,0,
+20,0,0,2,140,0,3,97,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,1,
+97,0,0,1,97,0,0,1,97,0,0,1,97,0,0,
+71,0,0,3,0,0,29,99,0,0,0,0,0,1,0,
+86,0,0,0,0,0,27,115,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+117,0,0,5,0,0,30,128,0,0,0,0,0,1,0,
 };
 
 
@@ -157,6 +160,41 @@ typedef char asciiz[STR_LEN];
 
 asciiz username; 
 asciiz password; 
+
+struct customers {
+	int customer_no;
+	asciiz fname;
+	asciiz lname;
+	int house_no;
+	asciiz street;
+	asciiz city;
+	asciiz state;
+	asciiz phone;
+	asciiz email;
+};
+
+struct vehicles {
+	int customer_no;
+	asciiz vin;
+	int year;
+	asciiz make;
+	asciiz model;
+	asciiz trim;
+};
+
+struct payments {
+	int customer_no;
+	int payment_no;
+	asciiz card_no;
+	asciiz ccv;
+	asciiz exp;
+};
+
+/*
+struct orders {
+
+};
+*/
 
 void sql_error(char * msg){ 
 	char err_msg[512];
@@ -195,6 +233,159 @@ void sql_error(char * msg){
 void main_menu(){
 	printf("Select an option to query the database:\n");
 	printf("0. Exit the program\n");
+	printf("1. Add customer\n");
+	printf("2. Delete employee\n");
+}
+
+void add_customer(){
+	struct customers new_customer;
+
+	printf("Enter customer_no >> ");
+	scanf("%d", &new_customer.customer_no);
+	printf("Enter fname >> ");
+	scanf("%s", &new_customer.fname);
+	printf("Enter lname >> ");
+	scanf("%s", &new_customer.lname);
+	printf("Enter house_no >> ");
+	scanf("%d", &new_customer.house_no);
+	printf("Enter street >> ");
+	scanf("%s", &new_customer.street);
+	printf("Enter city >> ");
+	scanf("%s", &new_customer.city);
+	printf("Enter state >> ");
+	scanf("%s", &new_customer.state);
+	printf("Enter phone >> ");
+	scanf("%s", &new_customer.phone);
+	printf("Enter email >> ");
+	scanf("%s", &new_customer.email);
+
+	/* EXEC SQL INSERT INTO  Customers (customer_no, fname, lname, house_no, street, city, state, phone, email)
+	VALUES(:new_customer); */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = "insert into Customers (customer_no,fname,lname,house_no,stre\
+et,city,state,phone,email) values (:s1 ,:s2 ,:s3 ,:s4 ,:s5 ,:s6 ,:s7 ,:s8 ,:s9\
+ )";
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )20;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqhstv[0] = (unsigned char  *)&new_customer.customer_no;
+ sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+ sqlstm.sqhsts[0] = (         int  )0;
+ sqlstm.sqindv[0] = (         short *)0;
+ sqlstm.sqinds[0] = (         int  )0;
+ sqlstm.sqharm[0] = (unsigned long )0;
+ sqlstm.sqadto[0] = (unsigned short )0;
+ sqlstm.sqtdso[0] = (unsigned short )0;
+ sqlstm.sqhstv[1] = (unsigned char  *)new_customer.fname;
+ sqlstm.sqhstl[1] = (unsigned long )25;
+ sqlstm.sqhsts[1] = (         int  )0;
+ sqlstm.sqindv[1] = (         short *)0;
+ sqlstm.sqinds[1] = (         int  )0;
+ sqlstm.sqharm[1] = (unsigned long )0;
+ sqlstm.sqadto[1] = (unsigned short )0;
+ sqlstm.sqtdso[1] = (unsigned short )0;
+ sqlstm.sqhstv[2] = (unsigned char  *)new_customer.lname;
+ sqlstm.sqhstl[2] = (unsigned long )25;
+ sqlstm.sqhsts[2] = (         int  )0;
+ sqlstm.sqindv[2] = (         short *)0;
+ sqlstm.sqinds[2] = (         int  )0;
+ sqlstm.sqharm[2] = (unsigned long )0;
+ sqlstm.sqadto[2] = (unsigned short )0;
+ sqlstm.sqtdso[2] = (unsigned short )0;
+ sqlstm.sqhstv[3] = (unsigned char  *)&new_customer.house_no;
+ sqlstm.sqhstl[3] = (unsigned long )sizeof(int);
+ sqlstm.sqhsts[3] = (         int  )0;
+ sqlstm.sqindv[3] = (         short *)0;
+ sqlstm.sqinds[3] = (         int  )0;
+ sqlstm.sqharm[3] = (unsigned long )0;
+ sqlstm.sqadto[3] = (unsigned short )0;
+ sqlstm.sqtdso[3] = (unsigned short )0;
+ sqlstm.sqhstv[4] = (unsigned char  *)new_customer.street;
+ sqlstm.sqhstl[4] = (unsigned long )25;
+ sqlstm.sqhsts[4] = (         int  )0;
+ sqlstm.sqindv[4] = (         short *)0;
+ sqlstm.sqinds[4] = (         int  )0;
+ sqlstm.sqharm[4] = (unsigned long )0;
+ sqlstm.sqadto[4] = (unsigned short )0;
+ sqlstm.sqtdso[4] = (unsigned short )0;
+ sqlstm.sqhstv[5] = (unsigned char  *)new_customer.city;
+ sqlstm.sqhstl[5] = (unsigned long )25;
+ sqlstm.sqhsts[5] = (         int  )0;
+ sqlstm.sqindv[5] = (         short *)0;
+ sqlstm.sqinds[5] = (         int  )0;
+ sqlstm.sqharm[5] = (unsigned long )0;
+ sqlstm.sqadto[5] = (unsigned short )0;
+ sqlstm.sqtdso[5] = (unsigned short )0;
+ sqlstm.sqhstv[6] = (unsigned char  *)new_customer.state;
+ sqlstm.sqhstl[6] = (unsigned long )25;
+ sqlstm.sqhsts[6] = (         int  )0;
+ sqlstm.sqindv[6] = (         short *)0;
+ sqlstm.sqinds[6] = (         int  )0;
+ sqlstm.sqharm[6] = (unsigned long )0;
+ sqlstm.sqadto[6] = (unsigned short )0;
+ sqlstm.sqtdso[6] = (unsigned short )0;
+ sqlstm.sqhstv[7] = (unsigned char  *)new_customer.phone;
+ sqlstm.sqhstl[7] = (unsigned long )25;
+ sqlstm.sqhsts[7] = (         int  )0;
+ sqlstm.sqindv[7] = (         short *)0;
+ sqlstm.sqinds[7] = (         int  )0;
+ sqlstm.sqharm[7] = (unsigned long )0;
+ sqlstm.sqadto[7] = (unsigned short )0;
+ sqlstm.sqtdso[7] = (unsigned short )0;
+ sqlstm.sqhstv[8] = (unsigned char  *)new_customer.email;
+ sqlstm.sqhstl[8] = (unsigned long )25;
+ sqlstm.sqhsts[8] = (         int  )0;
+ sqlstm.sqindv[8] = (         short *)0;
+ sqlstm.sqinds[8] = (         int  )0;
+ sqlstm.sqharm[8] = (unsigned long )0;
+ sqlstm.sqadto[8] = (unsigned short )0;
+ sqlstm.sqtdso[8] = (unsigned short )0;
+ sqlstm.sqphsv = sqlstm.sqhstv;
+ sqlstm.sqphsl = sqlstm.sqhstl;
+ sqlstm.sqphss = sqlstm.sqhsts;
+ sqlstm.sqpind = sqlstm.sqindv;
+ sqlstm.sqpins = sqlstm.sqinds;
+ sqlstm.sqparm = sqlstm.sqharm;
+ sqlstm.sqparc = sqlstm.sqharc;
+ sqlstm.sqpadto = sqlstm.sqadto;
+ sqlstm.sqptdso = sqlstm.sqtdso;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+	/* EXEC SQL COMMIT; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )71;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	printf("New customer successfully added\n");
+}
+
+void delete_employee(){
+
 }
 
 void main(){ 
@@ -210,11 +401,11 @@ void main(){
 {
  struct sqlexd sqlstm;
  sqlstm.sqlvsn = 13;
- sqlstm.arrsiz = 4;
+ sqlstm.arrsiz = 9;
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )20;
+ sqlstm.offset = (unsigned int  )86;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -271,11 +462,11 @@ void main(){
 {
     struct sqlexd sqlstm;
     sqlstm.sqlvsn = 13;
-    sqlstm.arrsiz = 4;
+    sqlstm.arrsiz = 9;
     sqlstm.sqladtp = &sqladt;
     sqlstm.sqltdsp = &sqltds;
     sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )51;
+    sqlstm.offset = (unsigned int  )117;
     sqlstm.cud = sqlcud0;
     sqlstm.sqlest = (unsigned char  *)&sqlca;
     sqlstm.sqlety = (unsigned short)4352;
@@ -288,9 +479,11 @@ void main(){
 				exit(EXIT_SUCCESS);
 
 			case 1:
+				add_customer();
 				break;
 		
 			case 2:
+				delete_employee();
 				break;
 
 			case 3: 

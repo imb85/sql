@@ -43,11 +43,11 @@ struct payments {
 	asciiz exp;
 };
 
+/*
 struct orders {
 
 };
-
-
+*/
 
 void sql_error(char * msg){ 
 	char err_msg[512];
@@ -69,36 +69,40 @@ void main_menu(){
 	printf("Select an option to query the database:\n");
 	printf("0. Exit the program\n");
 	printf("1. Add customer\n");
+	printf("2. Delete employee\n");
 }
 
 void add_customer(){
-	struct customer new_customer;
-	int c_no;
+	struct customers new_customer;
 
 	printf("Enter customer_no >> ");
-	scanf("%d", new_customer.customer_no);
+	scanf("%d", &new_customer.customer_no);
 	printf("Enter fname >> ");
-	scanf("%s", new_customer.fname);
+	scanf("%s", &new_customer.fname);
 	printf("Enter lname >> ");
-	scanf("%s", new_customer.lname);
+	scanf("%s", &new_customer.lname);
 	printf("Enter house_no >> ");
-	scanf("%d", new_customer.house_no);
+	scanf("%d", &new_customer.house_no);
 	printf("Enter street >> ");
-	scanf("%s", new_customer.street);
+	scanf("%s", &new_customer.street);
 	printf("Enter city >> ");
-	scanf("%s", new_customer.city);
+	scanf("%s", &new_customer.city);
 	printf("Enter state >> ");
-	scanf("%s", new_customer.state);
+	scanf("%s", &new_customer.state);
 	printf("Enter phone >> ");
-	scanf("%s", new_customer.phone);
+	scanf("%s", &new_customer.phone);
 	printf("Enter email >> ");
-	scanf("%s", new_customer.email);
+	scanf("%s", &new_customer.email);
 
-	EXEC SQL set transaction read write;
-	EXEC SQL insert into Customers (customer_no, fname, lname, house_no, street, city, state, phone, email)
-	values(:new_customer);
-	EXEC SQL commit;
-	printf("New customer %d added \n", new_customer.customer_no);
+	EXEC SQL INSERT INTO  Customers (customer_no, fname, lname, house_no, street, city, state, phone, email)
+	VALUES(:new_customer);
+	EXEC SQL COMMIT;
+
+	printf("New customer successfully added\n");
+}
+
+void delete_employee(){
+
 }
 
 void main(){ 
@@ -129,6 +133,7 @@ void main(){
 				break;
 		
 			case 2:
+				delete_employee();
 				break;
 
 			case 3: 
