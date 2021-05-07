@@ -43,11 +43,57 @@ struct payments {
 	asciiz exp;
 };
 
-/*
-struct orders {
 
+struct orders {
+	int order_no;
+	asciiz vin;
+	asciiz start_date;
+	asciiz end_date;
+	int employee_no;
+	int odometer_in;
+	int odometer_out;
 };
-*/
+
+struct invoices {
+	int invoice_no;
+	int customer_no;
+	asciiz vin;
+	int order_no;
+	int employee_no;
+	asciiz status;
+	int balance;
+	asciiz date_printed;
+	asciiz date_paid;
+};
+
+struct employees {
+	int employee_no;
+	asciiz fname;
+	asciiz lname;
+	asciiz position;
+	asciiz phone;
+};
+
+struct notes {
+	int note_no;
+	int order_no;
+	asciiz description;
+};
+
+struct items {
+	int item_no;
+	int order_no;
+	int procedure_no;
+	asciiz description;
+	int cost;
+};
+
+struct procedures {
+	int procedure_no;
+	int order_no;
+	asciiz description;
+	int cost;
+};
 
 void sql_error(char * msg){ 
 	char err_msg[512];
@@ -102,7 +148,7 @@ void add_customer(){
 }
 
 void delete_employee(){
-
+	
 }
 
 void main(){ 

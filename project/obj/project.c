@@ -135,12 +135,12 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 /* CUD (Compilation Unit Data) Array */
 static short sqlcud0[] =
 {13,4130,1,0,0,
-5,0,0,1,0,0,32,64,0,0,0,0,0,1,0,
-20,0,0,2,140,0,3,97,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,1,
-97,0,0,1,97,0,0,1,97,0,0,1,97,0,0,
-71,0,0,3,0,0,29,99,0,0,0,0,0,1,0,
-86,0,0,0,0,0,27,115,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-117,0,0,5,0,0,30,128,0,0,0,0,0,1,0,
+5,0,0,1,0,0,32,110,0,0,0,0,0,1,0,
+20,0,0,2,140,0,3,143,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,
+1,97,0,0,1,97,0,0,1,97,0,0,1,97,0,0,
+71,0,0,3,0,0,29,145,0,0,0,0,0,1,0,
+86,0,0,0,0,0,27,161,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+117,0,0,5,0,0,30,174,0,0,0,0,0,1,0,
 };
 
 
@@ -190,11 +190,57 @@ struct payments {
 	asciiz exp;
 };
 
-/*
-struct orders {
 
+struct orders {
+	int order_no;
+	asciiz vin;
+	asciiz start_date;
+	asciiz end_date;
+	int employee_no;
+	int odometer_in;
+	int odometer_out;
 };
-*/
+
+struct invoices {
+	int invoice_no;
+	int customer_no;
+	asciiz vin;
+	int order_no;
+	int employee_no;
+	asciiz status;
+	int balance;
+	asciiz date_printed;
+	asciiz date_paid;
+};
+
+struct employees {
+	int employee_no;
+	asciiz fname;
+	asciiz lname;
+	asciiz position;
+	asciiz phone;
+};
+
+struct notes {
+	int note_no;
+	int order_no;
+	asciiz description;
+};
+
+struct items {
+	int item_no;
+	int order_no;
+	int procedure_no;
+	asciiz description;
+	int cost;
+};
+
+struct procedures {
+	int procedure_no;
+	int order_no;
+	asciiz description;
+	int cost;
+};
 
 void sql_error(char * msg){ 
 	char err_msg[512];
@@ -385,7 +431,7 @@ et,city,state,phone,email) values (:s1 ,:s2 ,:s3 ,:s4 ,:s5 ,:s6 ,:s7 ,:s8 ,:s9\
 }
 
 void delete_employee(){
-
+	
 }
 
 void main(){ 
