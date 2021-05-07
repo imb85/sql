@@ -148,7 +148,16 @@ void add_customer(){
 }
 
 void delete_employee(){
+	int e_no;
 	
+	printf("Enter employee_no >> ");
+	scanf("%d", &e_no);
+
+	EXEC SQL DELETE FROM Employees
+	WHERE employee_no = :e_no;
+	EXEC SQL COMMIT;
+
+	printf("Employee successfully deleted\n");	
 }
 
 void main(){ 

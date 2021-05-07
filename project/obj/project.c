@@ -139,8 +139,10 @@ static short sqlcud0[] =
 20,0,0,2,140,0,3,143,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,
 1,97,0,0,1,97,0,0,1,97,0,0,1,97,0,0,
 71,0,0,3,0,0,29,145,0,0,0,0,0,1,0,
-86,0,0,0,0,0,27,161,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-117,0,0,5,0,0,30,174,0,0,0,0,0,1,0,
+86,0,0,4,45,0,2,156,0,0,1,1,0,1,0,1,3,0,0,
+105,0,0,5,0,0,29,158,0,0,0,0,0,1,0,
+120,0,0,0,0,0,27,170,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+151,0,0,7,0,0,30,183,0,0,0,0,0,1,0,
 };
 
 
@@ -431,7 +433,68 @@ et,city,state,phone,email) values (:s1 ,:s2 ,:s3 ,:s4 ,:s5 ,:s6 ,:s7 ,:s8 ,:s9\
 }
 
 void delete_employee(){
+	int e_no;
 	
+	printf("Enter employee_no >> ");
+	scanf("%d", &e_no);
+
+	/* EXEC SQL DELETE FROM Employees
+	WHERE employee_no = :e_no; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = "delete  from Employees  where employee_no=:b0";
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )86;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqhstv[0] = (unsigned char  *)&e_no;
+ sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+ sqlstm.sqhsts[0] = (         int  )0;
+ sqlstm.sqindv[0] = (         short *)0;
+ sqlstm.sqinds[0] = (         int  )0;
+ sqlstm.sqharm[0] = (unsigned long )0;
+ sqlstm.sqadto[0] = (unsigned short )0;
+ sqlstm.sqtdso[0] = (unsigned short )0;
+ sqlstm.sqphsv = sqlstm.sqhstv;
+ sqlstm.sqphsl = sqlstm.sqhstl;
+ sqlstm.sqphss = sqlstm.sqhsts;
+ sqlstm.sqpind = sqlstm.sqindv;
+ sqlstm.sqpins = sqlstm.sqinds;
+ sqlstm.sqparm = sqlstm.sqharm;
+ sqlstm.sqparc = sqlstm.sqharc;
+ sqlstm.sqpadto = sqlstm.sqadto;
+ sqlstm.sqptdso = sqlstm.sqtdso;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+	/* EXEC SQL COMMIT; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )105;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	printf("Employee successfully deleted\n");	
 }
 
 void main(){ 
@@ -451,7 +514,7 @@ void main(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )86;
+ sqlstm.offset = (unsigned int  )120;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -512,7 +575,7 @@ void main(){
     sqlstm.sqladtp = &sqladt;
     sqlstm.sqltdsp = &sqltds;
     sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )117;
+    sqlstm.offset = (unsigned int  )151;
     sqlstm.cud = sqlcud0;
     sqlstm.sqlest = (unsigned char  *)&sqlca;
     sqlstm.sqlety = (unsigned short)4352;
