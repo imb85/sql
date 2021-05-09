@@ -403,8 +403,70 @@ void employee_invoices(){
 }
 
 // Query 10
+// Completed
 void invoice_details(){
+	struct invoice *invoice_recv;
+	struct vehicle *vehicle_recv;
+	int i_no;
 
+	if((invoice_recv = (struct invoice *) malloc(sizeof(struct invoice))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	if((vehicle_recv = (struct vehicle *) malloc(sizeof(struct vehicle))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	printf("Enter invoice_no >> ");
+	scanf("%d", &i_no);	
+
+	EXEC SQL DECLARE invoices CURSOR FOR
+		SELECT * 
+			FROM Invoices
+			WHERE invoice_no = :i_no;
+
+	EXEC SQL OPEN invoices;
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	while(1){
+		EXEC SQL FETCH invoices INTO :invoice_recv;	
+	}
+
+	EXEC SQL CLOSE invoices;
+
+	EXEC SQL DECLARE vehicles CURSOR FOR
+		SELECT *
+			FROM Vehicles
+			WHERE vin = (SELECT vin
+					FROM Invoices
+					WHERE invoice_no = :i_no);
+
+	EXEC SQL OPEN vehicles;
+	
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	while(1){
+		EXEC SQL FETCH vehicles INTO :vehicle_recv;
+	}
+	
+	EXEC SQL CLOSE vehicles;
+
+	// Table header
+	printf("customer_no  status                year  make            model            odometer_in  odometer_out  vin                 \n");
+	printf("-----------  --------------------  ----  --------------- ---------------  -----------  ------------  --------------------\n");
+
+	printf("%-11d  %-20s  %-4d  %-15s  %-15s  %-11d  %-12d  %s\n",
+		invoice_recv -> customer_no,
+		invoice_recv -> status,
+		vehicle_recv -> year,
+		vehicle_recv -> make,
+		vehicle_recv -> model,
+		invoice_recv -> odometer_in,
+		invoice_recv -> odometer_out,
+		invoice_recv -> vin);
 }
 
 void main(){ 
