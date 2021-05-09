@@ -173,7 +173,7 @@ void delete_employee(){
 }
 
 // Query 3
-// Incomplete
+// Incomplete, gets stuck in loop
 void update_order_description(){
 	struct note *note_recv;
 	int o_no;
@@ -217,13 +217,13 @@ void update_order_description(){
 	printf("Enter new desciption >> ");
 	scanf("%d", new_desc);
 
-	EXEC SQL WHENEVER NOT FOUND stop;
+	EXEC SQL WHENEVER NOT FOUND continue;
 
-	EXEC SQL UPDATE Notes
-		SET description = :new_desc 
-		WHERE note_no = :n_no
-		AND order_no = :o_no;
-	EXEC SQL COMMIT;
+		EXEC SQL UPDATE Notes
+			SET description = :new_desc 
+			WHERE note_no = :n_no
+			AND order_no = :o_no;
+		EXEC SQL COMMIT;
 
 	printf("Note successfully updated\n");
 }
@@ -241,7 +241,6 @@ void show_orders_by_vehicle(){
 
 	printf("Enter vin >> ");
 	scanf("%s", v);
-	printf("you entered %s \n", v);
 	
 	EXEC SQL DECLARE vehicle_orders CURSOR FOR
 		SELECT * 
@@ -393,6 +392,7 @@ void items_by_procedure(){
 }
 
 // Query 8
+// Completed
 void all_procedures_by_order(){
 	struct procedure *procedure_recv;
 	int o_no;
@@ -428,8 +428,65 @@ void all_procedures_by_order(){
 }
 
 // Query 9
+// Incomplete, part missing
 void employee_invoices(){
+	struct employee *employee_recv;
+	int num_e;
+	int num_i;
+	int avg_i_per_e;
 
+	if((employee_recv = (struct employee *) malloc(sizeof(struct employee))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	EXEC SQL DECLARE employee_num CURSOR FOR
+		SELECT count(DISTINCT employee_no)
+			FROM Invoices;
+	
+	EXEC SQL OPEN employee_num;
+
+	while(1){
+		EXEC SQL FETCH employee_num INTO :num_e;
+	}
+
+	EXEC SQL CLOSE employee_num;
+
+	EXEC SQL DECLARE invoice_num CURSOR FOR
+		SELECT count(invoice_no)
+			FROM Invoices;
+
+	EXEC SQL OPEN invoice_num;
+
+	while(1){
+		EXEC SQL FETCH invoice_num INTO :num_i;
+	}
+
+	EXEC SQL CLOSE invoice_num;
+
+	avg_i_per_e = num_i / num_e;
+	printf("Num employees = %d, num invoices = %d, average = %d\n", num_e, num_i, avg_i_per_e);
+
+	EXEC SQL DECLARE above_average CURSOR FOR
+		SELECT employee_no
+			FROM Invoices
+			WHERE :avg_i_per_e < (SELECT count(employee_no)
+					FROM Invoices); 
+	
+	EXEC SQL OPEN above_average;
+	
+	// Table header
+	printf("fname            lname            num_invoices\n");
+	printf("---------------  ---------------  --------\n");
+
+	while(1){
+		EXEC SQL FETCH above_average INTO :employee_recv;
+	/*	printf("%-15s  %-15s\n", 
+			employee_recv -> fname,
+			employee_recv -> lname);	*/	
+	}
+
+	EXEC SQL CLOSE above_average;
 }
 
 // Query 10

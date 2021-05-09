@@ -47,6 +47,8 @@ INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
 VALUES (3003, '4nfs9fwsrg', 20210314, 20210315, 5001);
 INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
 VALUES (3004, 'dsds94wds', 20050926, 20050930, 5002);
+INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
+VALUES (3005, 'abc123xyz', 20210427, 20210429, 5001);
 
 -- Invoices
 INSERT INTO Invoices (invoice_no, customer_no, vin, order_no, employee_no, odometer_in, odometer_out, status, balance, date_printed, date_paid)
