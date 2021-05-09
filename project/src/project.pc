@@ -47,8 +47,8 @@ struct payment {
 struct order {
 	int order_no;
 	asciiz vin;
-	asciiz start_date;
-	asciiz end_date;
+	int start_date;
+	int end_date;
 	int employee_no;
 };
 
@@ -127,6 +127,7 @@ void main_menu(){
 }
 
 // Query 1
+// Completed
 void add_customer(){
 	struct customer new_customer;
 
@@ -157,6 +158,7 @@ void add_customer(){
 }
 
 // Query 2
+// Completed
 void delete_employee(){
 	int e_no;
 	
@@ -258,7 +260,13 @@ void show_line_items(){
 
 // Query 6
 void show_orders_by_date(){
-	struct order order_recv;
+	struct order *order_recv;
+
+	if((order_recv = (struct order *) malloc(sizeof(struct order))) == 0){
+                fprintf(stderr, "Memory allocation error\n");
+                exit(EXIT_FAILURE);
+        }
+
 
 	EXEC SQL DECLARE orders CURSOR FOR
 		SELECT * 
@@ -267,15 +275,17 @@ void show_orders_by_date(){
 			AND end_date <= 20051231
 			ORDER BY order_no;
 
+	EXEC SQL OPEN orders;
+
+	// Table header
+        printf("order_no  \n");
+
 	EXEC SQL WHENEVER NOT FOUND DO break;
 	
-	// Table header
-	printf("order_no  \n");
-
 	while(1){
 		EXEC SQL FETCH orders INTO :order_recv;
 		printf("%d\n", 
-			order_recv.order_no);
+			order_recv -> order_no);
 	}
 
 	EXEC SQL CLOSE orders;

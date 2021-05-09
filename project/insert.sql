@@ -38,7 +38,7 @@ VALUES (5001, 'Rob', 'Brown', 'Mechanic', '3052349999');
 INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
 VALUES (3001, 'abc123xyz', 20210311, 20210313, 5001);
 INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
-VALUES (3002, 'cyz83sfa', 20210311, 20210312, 5001);
+VALUES (3002, 'cyz83sfa', 20050711, 20050712, 5001);
 INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
 VALUES (3003, '4nfs9fwsrg', 20210314, 20210315, 5001);
 

@@ -136,6 +136,10 @@ extern void sqliem(/*_ unsigned char *, signed int * _*/);
 "select *  from Items where order_no=(select order_no  from Invoices where or\
 der_no=:b0)           ";
 
+ static char *sq0008 = 
+"select *  from Orders where (start_date>=20050601 and end_date<=20051231) or\
+der by order_no            ";
+
 typedef struct { unsigned short len; unsigned char arr[1]; } VARCHAR;
 typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 
@@ -143,21 +147,22 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 static short sqlcud0[] =
 {13,4130,1,0,0,
 5,0,0,1,0,0,32,110,0,0,0,0,0,1,0,
-20,0,0,2,140,0,3,145,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,
+20,0,0,2,140,0,3,153,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,
 1,97,0,0,1,97,0,0,1,97,0,0,1,97,0,0,
-71,0,0,3,0,0,29,147,0,0,0,0,0,1,0,
-86,0,0,4,45,0,2,159,0,0,1,1,0,1,0,1,3,0,0,
-105,0,0,5,0,0,29,161,0,0,0,0,0,1,0,
-120,0,0,6,67,0,9,196,0,0,1,1,0,1,0,1,97,0,0,
-139,0,0,6,0,0,13,205,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,2,97,0,0,2,3,0,0,
-174,0,0,6,0,0,15,212,0,0,0,0,0,1,0,
-189,0,0,7,98,0,9,231,0,0,1,1,0,1,0,1,3,0,0,
-208,0,0,7,0,0,13,240,0,0,5,0,0,1,0,2,3,0,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,
-243,0,0,7,0,0,15,248,0,0,0,0,0,1,0,
-258,0,0,8,0,0,13,269,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,2,97,0,0,2,3,0,0,
-293,0,0,8,0,0,15,274,0,0,0,0,0,1,0,
-308,0,0,0,0,0,27,323,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-339,0,0,11,0,0,30,336,0,0,0,0,0,1,0,
+71,0,0,3,0,0,29,155,0,0,0,0,0,1,0,
+86,0,0,4,45,0,2,168,0,0,1,1,0,1,0,1,3,0,0,
+105,0,0,5,0,0,29,170,0,0,0,0,0,1,0,
+120,0,0,6,67,0,9,205,0,0,1,1,0,1,0,1,97,0,0,
+139,0,0,6,0,0,13,214,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,2,3,0,0,
+174,0,0,6,0,0,15,221,0,0,0,0,0,1,0,
+189,0,0,7,98,0,9,240,0,0,1,1,0,1,0,1,3,0,0,
+208,0,0,7,0,0,13,249,0,0,5,0,0,1,0,2,3,0,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,
+243,0,0,7,0,0,15,257,0,0,0,0,0,1,0,
+258,0,0,8,103,0,9,278,0,0,0,0,0,1,0,
+273,0,0,8,0,0,13,286,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,2,3,0,0,
+308,0,0,8,0,0,15,291,0,0,0,0,0,1,0,
+323,0,0,0,0,0,27,340,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+354,0,0,11,0,0,30,353,0,0,0,0,0,1,0,
 };
 
 
@@ -211,8 +216,8 @@ struct payment {
 struct order {
 	int order_no;
 	asciiz vin;
-	asciiz start_date;
-	asciiz end_date;
+	int start_date;
+	int end_date;
 	int employee_no;
 };
 
@@ -295,13 +300,21 @@ void sql_error(char * msg){
 
 void main_menu(){
 	printf("Select an option to query the database:\n");
-	printf("0. Exit the program\n");
-	printf("1. Add customer\n");
-	printf("2. Delete employee\n");
-	printf("3. Update order description\n");
+	printf(" 0. Exit the program\n");
+	printf(" 1. Add customer\n");
+	printf(" 2. Delete employee\n");
+	printf(" 3. Update order description\n");
+	printf(" 4. Show a vehicle's orders\n");
+	printf(" 5. Show items for an invoice given an order\n");
+	printf(" 6. Show orders completed June 2005 to December 2005\n");
+	printf(" 7. Show items for a procedure\n");
+	printf(" 8. Show number of proceudres for an order\n");
+	printf(" 9. Show employee with higher than average number of invoices\n");
+	printf("10. Invoice information\n");
 }
 
 // Query 1
+// Completed
 void add_customer(){
 	struct customer new_customer;
 
@@ -450,6 +463,7 @@ et,city,state,phone,email) values (:s1 ,:s2 ,:s3 ,:s4 ,:s5 ,:s6 ,:s7 ,:s8 ,:s9\
 }
 
 // Query 2
+// Completed
 void delete_employee(){
 	int e_no;
 	
@@ -628,16 +642,16 @@ void show_orders_by_vehicle(){
   sqlstm.sqharm[1] = (unsigned long )0;
   sqlstm.sqadto[1] = (unsigned short )0;
   sqlstm.sqtdso[1] = (unsigned short )0;
-  sqlstm.sqhstv[2] = (unsigned char  *)order_recv->start_date;
-  sqlstm.sqhstl[2] = (unsigned long )25;
+  sqlstm.sqhstv[2] = (unsigned char  *)&order_recv->start_date;
+  sqlstm.sqhstl[2] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[2] = (         int  )0;
   sqlstm.sqindv[2] = (         short *)0;
   sqlstm.sqinds[2] = (         int  )0;
   sqlstm.sqharm[2] = (unsigned long )0;
   sqlstm.sqadto[2] = (unsigned short )0;
   sqlstm.sqtdso[2] = (unsigned short )0;
-  sqlstm.sqhstv[3] = (unsigned char  *)order_recv->end_date;
-  sqlstm.sqhstl[3] = (unsigned long )25;
+  sqlstm.sqhstv[3] = (unsigned char  *)&order_recv->end_date;
+  sqlstm.sqhstl[3] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[3] = (         int  )0;
   sqlstm.sqindv[3] = (         short *)0;
   sqlstm.sqinds[3] = (         int  )0;
@@ -859,7 +873,13 @@ void show_line_items(){
 
 // Query 6
 void show_orders_by_date(){
-	struct order order_recv;
+	struct order *order_recv;
+
+	if((order_recv = (struct order *) malloc(sizeof(struct order))) == 0){
+                fprintf(stderr, "Memory allocation error\n");
+                exit(EXIT_FAILURE);
+        }
+
 
 	/* EXEC SQL DECLARE orders CURSOR FOR
 		SELECT * 
@@ -869,12 +889,35 @@ void show_orders_by_date(){
 			ORDER BY order_no; */ 
 
 
+	/* EXEC SQL OPEN orders; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = sq0008;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )258;
+ sqlstm.selerr = (unsigned short)1;
+ sqlstm.sqlpfmem = (unsigned int  )0;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqcmod = (unsigned int )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	// Table header
+        printf("order_no  \n");
+
 	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
 
 	
-	// Table header
-	printf("order_no  \n");
-
 	while(1){
 		/* EXEC SQL FETCH orders INTO :order_recv; */ 
 
@@ -885,7 +928,7 @@ void show_orders_by_date(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )258;
+  sqlstm.offset = (unsigned int  )273;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -894,7 +937,7 @@ void show_orders_by_date(){
   sqlstm.occurs = (unsigned int  )0;
   sqlstm.sqfoff = (         int )0;
   sqlstm.sqfmod = (unsigned int )2;
-  sqlstm.sqhstv[0] = (unsigned char  *)&order_recv.order_no;
+  sqlstm.sqhstv[0] = (unsigned char  *)&order_recv->order_no;
   sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[0] = (         int  )0;
   sqlstm.sqindv[0] = (         short *)0;
@@ -902,7 +945,7 @@ void show_orders_by_date(){
   sqlstm.sqharm[0] = (unsigned long )0;
   sqlstm.sqadto[0] = (unsigned short )0;
   sqlstm.sqtdso[0] = (unsigned short )0;
-  sqlstm.sqhstv[1] = (unsigned char  *)order_recv.vin;
+  sqlstm.sqhstv[1] = (unsigned char  *)order_recv->vin;
   sqlstm.sqhstl[1] = (unsigned long )25;
   sqlstm.sqhsts[1] = (         int  )0;
   sqlstm.sqindv[1] = (         short *)0;
@@ -910,23 +953,23 @@ void show_orders_by_date(){
   sqlstm.sqharm[1] = (unsigned long )0;
   sqlstm.sqadto[1] = (unsigned short )0;
   sqlstm.sqtdso[1] = (unsigned short )0;
-  sqlstm.sqhstv[2] = (unsigned char  *)order_recv.start_date;
-  sqlstm.sqhstl[2] = (unsigned long )25;
+  sqlstm.sqhstv[2] = (unsigned char  *)&order_recv->start_date;
+  sqlstm.sqhstl[2] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[2] = (         int  )0;
   sqlstm.sqindv[2] = (         short *)0;
   sqlstm.sqinds[2] = (         int  )0;
   sqlstm.sqharm[2] = (unsigned long )0;
   sqlstm.sqadto[2] = (unsigned short )0;
   sqlstm.sqtdso[2] = (unsigned short )0;
-  sqlstm.sqhstv[3] = (unsigned char  *)order_recv.end_date;
-  sqlstm.sqhstl[3] = (unsigned long )25;
+  sqlstm.sqhstv[3] = (unsigned char  *)&order_recv->end_date;
+  sqlstm.sqhstl[3] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[3] = (         int  )0;
   sqlstm.sqindv[3] = (         short *)0;
   sqlstm.sqinds[3] = (         int  )0;
   sqlstm.sqharm[3] = (unsigned long )0;
   sqlstm.sqadto[3] = (unsigned short )0;
   sqlstm.sqtdso[3] = (unsigned short )0;
-  sqlstm.sqhstv[4] = (unsigned char  *)&order_recv.employee_no;
+  sqlstm.sqhstv[4] = (unsigned char  *)&order_recv->employee_no;
   sqlstm.sqhstl[4] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[4] = (         int  )0;
   sqlstm.sqindv[4] = (         short *)0;
@@ -949,7 +992,7 @@ void show_orders_by_date(){
 
 
 		printf("%d\n", 
-			order_recv.order_no);
+			order_recv -> order_no);
 	}
 
 	/* EXEC SQL CLOSE orders; */ 
@@ -961,7 +1004,7 @@ void show_orders_by_date(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )293;
+ sqlstm.offset = (unsigned int  )308;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -1030,7 +1073,7 @@ void main(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )308;
+ sqlstm.offset = (unsigned int  )323;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -1091,7 +1134,7 @@ void main(){
     sqlstm.sqladtp = &sqladt;
     sqlstm.sqltdsp = &sqltds;
     sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )339;
+    sqlstm.offset = (unsigned int  )354;
     sqlstm.cud = sqlcud0;
     sqlstm.sqlest = (unsigned char  *)&sqlca;
     sqlstm.sqlety = (unsigned short)4352;
