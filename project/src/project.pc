@@ -253,16 +253,16 @@ void show_line_items(){
 void show_orders_by_date(){
 	struct order order_recv;
 
-	EXEC SQL DECLARER orders CURSOR FOR
+	EXEC SQL DECLARE orders CURSOR FOR
 		SELECT * 
 			FROM Orders
 			WHERE start_date >= '01-JUN-2005' 
-			AND end_date <= '31-DEC'2005'
+			AND end_date <= '31-DEC-2005'
 			ORDER BY order_no;
 
 	EXEC SQL WHENEVER NOT FOUND DO break;
 	
-	/* Table header */
+	// Table header
 	printf("order_no  \n");
 
 	while(1){
@@ -293,7 +293,7 @@ void items_by_procedure(){
 
 	EXEC SQL WHENEVER NOT FOUND DO break;
 
-	/* Table header */
+	// Table header 
 	printf("\n");
 	printf("\n");
 }
@@ -382,4 +382,3 @@ void main(){
 		}
 	}
 }
-

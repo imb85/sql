@@ -47,8 +47,6 @@ CREATE TABLE Orders(
 	start_date date,
 	end_date date,
 	employee_no int NOT NULL,
-	odometer_in int NOT NULL,
-	odometer_out int NOT NULL,
 	PRIMARY KEY (order_no),
 	FOREIGN KEY (vin) REFERENCES Vehicles(vin),
 	FOREIGN KEY (employee_no) REFERENCES Employees(employee_no)
@@ -60,6 +58,8 @@ CREATE TABLE Invoices(
 	vin varchar (20),
 	order_no int NOT NULL,
 	employee_no int NOT NULL,
+	odometer_in int NOT NULL,
+	odometer_out int NOT NULL,
 	status varchar (20),
 	balance int NOT NULL,
 	date_printed date,

@@ -1,14 +1,18 @@
 
-Pro*C/C++: Release 19.0.0.0.0 - Production on Sat May 8 15:43:20 2021
+Pro*C/C++: Release 19.0.0.0.0 - Production on Sun May 9 13:27:16 2021
 Version 19.3.0.0.0
 
 Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
 
-Error at line 0, column 0 in file src/project.pc
-PCC-F-02102, Fatal error while doing C preprocessing
-Error at line 367, column 1 in file src/project.pc
-   367  
-   367  1
-   367  PCC-S-02010, found end-of-file while scanning string literal
-Error at line 367, column 1 in file src/project.pc
-   367  PCC-S-02022, Found end of file while scanning a SQL statement
+Error at line 205, column 39 in file src/project.pc
+   205                  EXEC SQL FETCH vehicle_orders INTO :order_recv;
+   205  ......................................1
+   205  PCC-S-02420, Incomplete (or missing) type specification
+Error at line 240, column 35 in file src/project.pc
+   240                  EXEC SQL FETCH line_items INTO :item_recv;
+   240  ..................................1
+   240  PCC-S-02420, Incomplete (or missing) type specification
+Error at line 269, column 31 in file src/project.pc
+   269                  EXEC SQL FETCH orders INTO :order_recv;
+   269  ..............................1
+   269  PCC-S-02420, Incomplete (or missing) type specification
