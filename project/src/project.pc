@@ -151,7 +151,7 @@ void add_customer(){
 	scanf("%s", &new_customer.email);
 
 	EXEC SQL INSERT INTO  Customers (customer_no, fname, lname, house_no, street, city, state, phone, email)
-	VALUES(:new_customer);
+		VALUES(:new_customer);
 	EXEC SQL COMMIT;
 
 	printf("New customer successfully added\n");
@@ -166,21 +166,66 @@ void delete_employee(){
 	scanf("%d", &e_no);
 
 	EXEC SQL DELETE FROM Employees
-	WHERE employee_no = :e_no;
+		WHERE employee_no = :e_no;
 	EXEC SQL COMMIT;
 
 	printf("Employee successfully deleted\n");	
 }
 
 // Query 3
+// Incomplete
 void update_order_description(){
+	struct note *note_recv;
 	int o_no;
+	int n_no;
+	char new_desc[40];	
+
+	if((note_recv = (struct note *) malloc(sizeof(struct note))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+                exit(EXIT_FAILURE);
+	}
 
 	printf("Enter order_no >> ");
 	scanf("%d", &o_no);
-	printf("Enter new description >> ");
+
+	EXEC SQL DECLARE order_desc CURSOR FOR
+		SELECT * 
+			FROM Notes
+			WHERE order_no = :o_no;
+
+	EXEC SQL OPEN order_desc;
+
+	// Table header
+	printf("note_no   description\n");
+	printf("--------  ---------------------\n");
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	while(1){
+		EXEC SQL FETCH order_desc INTO :note_recv; 
+		printf("%d  %s\n",
+			note_recv -> note_no,
+			note_recv -> description);
+	}
 	
-	/* Incomplete */
+	EXEC SQL CLOSE order_desc;
+
+	// Gets stuck in a loop
+
+	printf("Enter note_no >> ");
+	scanf("%d", &n_no);
+	printf("Enter new desciption >> ");
+	scanf("%d", new_desc);
+
+	EXEC SQL WHENEVER NOT FOUND stop;
+
+	EXEC SQL UPDATE Notes
+		SET description = :new_desc 
+		WHERE note_no = :n_no
+		AND order_no = :o_no;
+	EXEC SQL COMMIT;
+
+	printf("Note successfully updated\n");
 }
 
 // Query 4
