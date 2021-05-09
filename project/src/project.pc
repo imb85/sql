@@ -184,6 +184,7 @@ void update_order_description(){
 }
 
 // Query 4
+// Completed
 void show_orders_by_vehicle(){
 	struct order *order_recv;
 	char v[20];
@@ -195,6 +196,7 @@ void show_orders_by_vehicle(){
 
 	printf("Enter vin >> ");
 	scanf("%s", v);
+	printf("you entered %s \n", v);
 	
 	EXEC SQL DECLARE vehicle_orders CURSOR FOR
 		SELECT * 
@@ -204,7 +206,7 @@ void show_orders_by_vehicle(){
 
 	EXEC SQL OPEN vehicle_orders;
 
-	/* Table header */
+	// Table header
 	printf("order_no              start_date  end_date  \n");
 	printf("--------------------  ----------  ----------\n");
 
@@ -212,7 +214,7 @@ void show_orders_by_vehicle(){
 
 	while(1){
 		EXEC SQL FETCH vehicle_orders INTO :order_recv;
-		printf("%-20s  %-10s  %-10s\n",
+		printf("%-20d  %-10d  %-10d\n",
 			order_recv -> order_no,
 			order_recv -> start_date,
 			order_recv -> end_date);
@@ -222,6 +224,7 @@ void show_orders_by_vehicle(){
 }
 
 // Query 5
+// Completed
 void show_line_items(){
 	struct item item_recv;
 	int o_no;
@@ -259,6 +262,7 @@ void show_line_items(){
 
 
 // Query 6
+// Completed
 void show_orders_by_date(){
 	struct order *order_recv;
 
