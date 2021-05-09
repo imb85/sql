@@ -278,14 +278,19 @@ void show_orders_by_date(){
 	EXEC SQL OPEN orders;
 
 	// Table header
-        printf("order_no  \n");
+        printf("order_no  start_date   end_date  vin                   employee_no\n");
+	printf("--------  ----------   --------  --------------------  -----------\n");
 
 	EXEC SQL WHENEVER NOT FOUND DO break;
 	
 	while(1){
 		EXEC SQL FETCH orders INTO :order_recv;
-		printf("%d\n", 
-			order_recv -> order_no);
+		printf("%-8d  %-10d  %-8d  %-20s  %-11d\n", 
+			order_recv -> order_no,
+			order_recv -> start_date,
+			order_recv -> end_date,
+			order_recv -> vin,
+			order_recv -> employee_no);
 	}
 
 	EXEC SQL CLOSE orders;
