@@ -271,8 +271,13 @@ void show_orders_by_vehicle(){
 // Query 5
 // Completed
 void show_line_items(){
-	struct item item_recv;
+	struct item *item_recv;
 	int o_no;
+
+	if((item_recv = (struct item *) malloc(sizeof(struct item))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
 
 	printf("Enter order_no >> ");
 	scanf("%d", &o_no);
@@ -296,10 +301,10 @@ void show_line_items(){
 	while(1){
 		EXEC SQL FETCH line_items INTO :item_recv;
 		printf("%-13d  %-13d  %-20s  %-10d\n", 
-			item_recv.item_no,
-			item_recv.procedure_no,
-			item_recv.description,
-			item_recv.cost);
+			item_recv -> item_no,
+			item_recv -> procedure_no,
+			item_recv -> description,
+			item_recv -> cost);
 	}
 	
 	EXEC SQL CLOSE line_items;

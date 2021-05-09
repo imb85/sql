@@ -155,22 +155,22 @@ static short sqlcud0[] =
 71,0,0,3,0,0,29,155,0,0,0,0,0,1,0,
 86,0,0,4,45,0,2,168,0,0,1,1,0,1,0,1,3,0,0,
 105,0,0,5,0,0,29,170,0,0,0,0,0,1,0,
-120,0,0,6,50,0,9,195,0,0,1,1,0,1,0,1,3,0,0,
-139,0,0,6,0,0,13,204,0,0,3,0,0,1,0,2,3,0,0,2,3,0,0,2,97,0,0,
-166,0,0,6,0,0,15,210,0,0,0,0,0,1,0,
-181,0,0,7,70,0,5,219,0,0,3,3,0,1,0,1,97,0,0,1,3,0,0,1,3,0,0,
-208,0,0,8,0,0,29,223,0,0,0,0,0,1,0,
-223,0,0,9,67,0,9,249,0,0,1,1,0,1,0,1,97,0,0,
-242,0,0,9,0,0,13,258,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,2,3,0,0,
-277,0,0,9,0,0,15,265,0,0,0,0,0,1,0,
-292,0,0,10,98,0,9,285,0,0,1,1,0,1,0,1,3,0,0,
-311,0,0,10,0,0,13,294,0,0,5,0,0,1,0,2,3,0,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,
-346,0,0,10,0,0,15,302,0,0,0,0,0,1,0,
-361,0,0,11,103,0,9,324,0,0,0,0,0,1,0,
-376,0,0,11,0,0,13,333,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,2,3,0,0,
-411,0,0,11,0,0,15,342,0,0,0,0,0,1,0,
-426,0,0,0,0,0,27,391,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-457,0,0,14,0,0,30,404,0,0,0,0,0,1,0,
+120,0,0,6,50,0,9,196,0,0,1,1,0,1,0,1,3,0,0,
+139,0,0,6,0,0,13,205,0,0,3,0,0,1,0,2,3,0,0,2,3,0,0,2,97,0,0,
+166,0,0,6,0,0,15,211,0,0,0,0,0,1,0,
+181,0,0,7,70,0,5,222,0,0,3,3,0,1,0,1,97,0,0,1,3,0,0,1,3,0,0,
+208,0,0,8,0,0,29,226,0,0,0,0,0,1,0,
+223,0,0,9,67,0,9,252,0,0,1,1,0,1,0,1,97,0,0,
+242,0,0,9,0,0,13,261,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,2,3,0,0,
+277,0,0,9,0,0,15,268,0,0,0,0,0,1,0,
+292,0,0,10,98,0,9,293,0,0,1,1,0,1,0,1,3,0,0,
+311,0,0,10,0,0,13,302,0,0,5,0,0,1,0,2,3,0,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,
+346,0,0,10,0,0,15,310,0,0,0,0,0,1,0,
+361,0,0,11,103,0,9,332,0,0,0,0,0,1,0,
+376,0,0,11,0,0,13,341,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,2,3,0,0,
+411,0,0,11,0,0,15,350,0,0,0,0,0,1,0,
+426,0,0,0,0,0,27,399,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+457,0,0,14,0,0,30,412,0,0,0,0,0,1,0,
 };
 
 
@@ -538,6 +538,7 @@ void delete_employee(){
 }
 
 // Query 3
+// Incomplete
 void update_order_description(){
 	struct note *note_recv;
 	int o_no;
@@ -685,6 +686,8 @@ void update_order_description(){
 }
 
 
+
+	// Gets stuck in a loop
 
 	printf("Enter note_no >> ");
 	scanf("%d", &n_no);
@@ -944,8 +947,13 @@ void show_orders_by_vehicle(){
 // Query 5
 // Completed
 void show_line_items(){
-	struct item item_recv;
+	struct item *item_recv;
 	int o_no;
+
+	if((item_recv = (struct item *) malloc(sizeof(struct item))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
 
 	printf("Enter order_no >> ");
 	scanf("%d", &o_no);
@@ -1025,7 +1033,7 @@ void show_line_items(){
   sqlstm.occurs = (unsigned int  )0;
   sqlstm.sqfoff = (         int )0;
   sqlstm.sqfmod = (unsigned int )2;
-  sqlstm.sqhstv[0] = (unsigned char  *)&item_recv.item_no;
+  sqlstm.sqhstv[0] = (unsigned char  *)&item_recv->item_no;
   sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[0] = (         int  )0;
   sqlstm.sqindv[0] = (         short *)0;
@@ -1033,7 +1041,7 @@ void show_line_items(){
   sqlstm.sqharm[0] = (unsigned long )0;
   sqlstm.sqadto[0] = (unsigned short )0;
   sqlstm.sqtdso[0] = (unsigned short )0;
-  sqlstm.sqhstv[1] = (unsigned char  *)&item_recv.order_no;
+  sqlstm.sqhstv[1] = (unsigned char  *)&item_recv->order_no;
   sqlstm.sqhstl[1] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[1] = (         int  )0;
   sqlstm.sqindv[1] = (         short *)0;
@@ -1041,7 +1049,7 @@ void show_line_items(){
   sqlstm.sqharm[1] = (unsigned long )0;
   sqlstm.sqadto[1] = (unsigned short )0;
   sqlstm.sqtdso[1] = (unsigned short )0;
-  sqlstm.sqhstv[2] = (unsigned char  *)&item_recv.procedure_no;
+  sqlstm.sqhstv[2] = (unsigned char  *)&item_recv->procedure_no;
   sqlstm.sqhstl[2] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[2] = (         int  )0;
   sqlstm.sqindv[2] = (         short *)0;
@@ -1049,7 +1057,7 @@ void show_line_items(){
   sqlstm.sqharm[2] = (unsigned long )0;
   sqlstm.sqadto[2] = (unsigned short )0;
   sqlstm.sqtdso[2] = (unsigned short )0;
-  sqlstm.sqhstv[3] = (unsigned char  *)item_recv.description;
+  sqlstm.sqhstv[3] = (unsigned char  *)item_recv->description;
   sqlstm.sqhstl[3] = (unsigned long )25;
   sqlstm.sqhsts[3] = (         int  )0;
   sqlstm.sqindv[3] = (         short *)0;
@@ -1057,7 +1065,7 @@ void show_line_items(){
   sqlstm.sqharm[3] = (unsigned long )0;
   sqlstm.sqadto[3] = (unsigned short )0;
   sqlstm.sqtdso[3] = (unsigned short )0;
-  sqlstm.sqhstv[4] = (unsigned char  *)&item_recv.cost;
+  sqlstm.sqhstv[4] = (unsigned char  *)&item_recv->cost;
   sqlstm.sqhstl[4] = (unsigned long )sizeof(int);
   sqlstm.sqhsts[4] = (         int  )0;
   sqlstm.sqindv[4] = (         short *)0;
@@ -1080,10 +1088,10 @@ void show_line_items(){
 
 
 		printf("%-13d  %-13d  %-20s  %-10d\n", 
-			item_recv.item_no,
-			item_recv.procedure_no,
-			item_recv.description,
-			item_recv.cost);
+			item_recv -> item_no,
+			item_recv -> procedure_no,
+			item_recv -> description,
+			item_recv -> cost);
 	}
 	
 	/* EXEC SQL CLOSE line_items; */ 
