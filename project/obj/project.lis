@@ -1,0 +1,14 @@
+
+Pro*C/C++: Release 19.0.0.0.0 - Production on Sat May 8 15:43:20 2021
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle and/or its affiliates.  All rights reserved.
+
+Error at line 0, column 0 in file src/project.pc
+PCC-F-02102, Fatal error while doing C preprocessing
+Error at line 367, column 1 in file src/project.pc
+   367  
+   367  1
+   367  PCC-S-02010, found end-of-file while scanning string literal
+Error at line 367, column 1 in file src/project.pc
+   367  PCC-S-02022, Found end of file while scanning a SQL statement

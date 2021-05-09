@@ -119,6 +119,7 @@ void main_menu(){
 	printf("3. Update order description\n");
 }
 
+// Query 1
 void add_customer(){
 	struct customers new_customer;
 
@@ -148,6 +149,7 @@ void add_customer(){
 	printf("New customer successfully added\n");
 }
 
+// Query 2
 void delete_employee(){
 	int e_no;
 	
@@ -161,6 +163,7 @@ void delete_employee(){
 	printf("Employee successfully deleted\n");	
 }
 
+// Query 3
 void update_order_description(){
 	int o_no;
 
@@ -168,32 +171,144 @@ void update_order_description(){
 	scanf("%d", &o_no);
 	printf("Enter new description >> ");
 	
+	/* Incomplete */
 }
 
+// Query 4
 void show_orders_by_vehicle(){
+	struct order *order_recv;
+	asciiz v;
+	
+	if((order_recv = (struct order *)malloc(sizeof(struct order))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	} 
 
+	printf("Enter vin >> ");
+	scanf("%s", &v);
+	
+	EXEC SQL DECLARE vehicle_orders CURSOR FOR
+		SELECT * 
+			FROM Orders
+			WHERE vin = :v
+			ORDER BY start_date;
+
+	EXEC SQL OPEN vehicle_orders;
+
+	/* Table header */
+	printf("order_no              start_date  end_date  \n");
+	printf("--------------------  ----------  ----------\n");
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	while(1){
+		EXEC SQL FETCH vehicle_orders INTO :order_recv;
+		printf("%-20s  %-10s  %-10s\n",
+			order_recv -> order_no,
+			order_recv -> start_date,
+			order_recv -> end_date);
+	}
+	
+	EXEC SQL CLOSE vehicle_orders;
 }
 
+// Query 5
 void show_line_items(){
+	struct item item_recv;
+	int o_no;
 
+	printf("Enter order_no >> ");
+	scanf("%d", &o_no);
+
+	EXEC SQL DECLARE line_items CURSOR FOR
+		SELECT * 
+			FROM Items
+			WHERE order_no = (
+				SELECT order_no
+				FROM Invoices
+				WHERE order_no = :o_no);
+
+	EXEC SQL OPEN line_items;	
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	/* Table header */
+	printf("item_no         procedure_no  description                 cost\n");
+	printf("--------------  ------------  --------------------------  ----------\n");
+
+	while(1){
+		EXEC SQL FETCH line_items INTO :item_recv;
+		printf("%-13d  %-13d  %-20s  %-10d\n", 
+			item_recv.item_no,
+			item_recv.procedure_no,
+			item_recv.description,
+			item_recv.cost);
+	}
+	
+	EXEC SQL CLOSE line_items;
 }
 
+
+// Query 6
 void show_orders_by_date(){
+	struct order order_recv;
 
+	EXEC SQL DECLARER orders CURSOR FOR
+		SELECT * 
+			FROM Orders
+			WHERE start_date >= '01-JUN-2005' 
+			AND end_date <= '31-DEC'2005'
+			ORDER BY order_no;
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+	
+	/* Table header */
+	printf("order_no  \n");
+
+	while(1){
+		EXEC SQL FETCH orders INTO :order_recv;
+		printf("%d\n", 
+			order_recv.order_no);
+	}
+
+	EXEC SQL CLOSE orders;
 }
 
+// Query 7
 void items_by_procedure(){
+	struct item item_recv;
+	int o_no;
+	int p_no;
 
+	printf("Enter order_noo >> ");
+	scanf("%d", &o_no);
+	printf("Enter procedure_no >> ");
+	scanf("%d", &p_no);
+	
+	EXEC SQL DECLARE items CURSOR FOR
+		SELECT * 
+			FROM Items
+			WHERE procedure_no = :p_no
+			AND order_no = :o_no;
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	/* Table header */
+	printf("\n");
+	printf("\n");
 }
 
+// Query 8
 void all_procedures_by_order(){
 
 }
 
+// Query 9
 void employee_invoices(){
 
 }
 
+// Query 10
 void invoice_details(){
 
 }
