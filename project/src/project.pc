@@ -113,10 +113,17 @@ void sql_error(char * msg){
 
 void main_menu(){
 	printf("Select an option to query the database:\n");
-	printf("0. Exit the program\n");
-	printf("1. Add customer\n");
-	printf("2. Delete employee\n");
-	printf("3. Update order description\n");
+	printf(" 0. Exit the program\n");
+	printf(" 1. Add customer\n");
+	printf(" 2. Delete employee\n");
+	printf(" 3. Update order description\n");
+	printf(" 4. Show a vehicle's orders\n");
+	printf(" 5. Show items for an invoice given an order\n");
+	printf(" 6. Show orders completed June 2005 to December 2005\n");
+	printf(" 7. Show items for a procedure\n");
+	printf(" 8. Show number of proceudres for an order\n");
+	printf(" 9. Show employee with higher than average number of invoices\n");
+	printf("10. Invoice information\n");
 }
 
 // Query 1
