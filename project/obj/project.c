@@ -129,6 +129,13 @@ static int IAPFAIL = 1403;
 static int IAPFTL  = 535;
 extern void sqliem(/*_ unsigned char *, signed int * _*/);
 
+ static char *sq0006 = 
+"select *  from Orders where vin=:b0 order by start_date            ";
+
+ static char *sq0007 = 
+"select *  from Items where order_no=(select order_no  from Invoices where or\
+der_no=:b0)           ";
+
 typedef struct { unsigned short len; unsigned char arr[1]; } VARCHAR;
 typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 
@@ -136,13 +143,21 @@ typedef struct { unsigned short len; unsigned char arr[1]; } varchar;
 static short sqlcud0[] =
 {13,4130,1,0,0,
 5,0,0,1,0,0,32,110,0,0,0,0,0,1,0,
-20,0,0,2,140,0,3,144,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,
+20,0,0,2,140,0,3,145,0,0,9,9,0,1,0,1,3,0,0,1,97,0,0,1,97,0,0,1,3,0,0,1,97,0,0,
 1,97,0,0,1,97,0,0,1,97,0,0,1,97,0,0,
-71,0,0,3,0,0,29,146,0,0,0,0,0,1,0,
-86,0,0,4,45,0,2,157,0,0,1,1,0,1,0,1,3,0,0,
-105,0,0,5,0,0,29,159,0,0,0,0,0,1,0,
-120,0,0,0,0,0,27,208,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-151,0,0,7,0,0,30,221,0,0,0,0,0,1,0,
+71,0,0,3,0,0,29,147,0,0,0,0,0,1,0,
+86,0,0,4,45,0,2,159,0,0,1,1,0,1,0,1,3,0,0,
+105,0,0,5,0,0,29,161,0,0,0,0,0,1,0,
+120,0,0,6,67,0,9,196,0,0,1,1,0,1,0,1,97,0,0,
+139,0,0,6,0,0,13,205,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,2,97,0,0,2,3,0,0,
+174,0,0,6,0,0,15,212,0,0,0,0,0,1,0,
+189,0,0,7,98,0,9,231,0,0,1,1,0,1,0,1,3,0,0,
+208,0,0,7,0,0,13,240,0,0,5,0,0,1,0,2,3,0,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,
+243,0,0,7,0,0,15,248,0,0,0,0,0,1,0,
+258,0,0,8,0,0,13,269,0,0,5,0,0,1,0,2,3,0,0,2,97,0,0,2,97,0,0,2,97,0,0,2,3,0,0,
+293,0,0,8,0,0,15,274,0,0,0,0,0,1,0,
+308,0,0,0,0,0,27,323,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+339,0,0,11,0,0,30,336,0,0,0,0,0,1,0,
 };
 
 
@@ -163,7 +178,7 @@ typedef char asciiz[STR_LEN];
 asciiz username; 
 asciiz password; 
 
-struct customers {
+struct customer {
 	int customer_no;
 	asciiz fname;
 	asciiz lname;
@@ -175,7 +190,7 @@ struct customers {
 	asciiz email;
 };
 
-struct vehicles {
+struct vehicle {
 	int customer_no;
 	asciiz vin;
 	int year;
@@ -184,7 +199,7 @@ struct vehicles {
 	asciiz trim;
 };
 
-struct payments {
+struct payment {
 	int customer_no;
 	int payment_no;
 	asciiz card_no;
@@ -193,29 +208,29 @@ struct payments {
 };
 
 
-struct orders {
+struct order {
 	int order_no;
 	asciiz vin;
 	asciiz start_date;
 	asciiz end_date;
 	int employee_no;
-	int odometer_in;
-	int odometer_out;
 };
 
-struct invoices {
+struct invoice {
 	int invoice_no;
 	int customer_no;
 	asciiz vin;
 	int order_no;
 	int employee_no;
+	int odometer_in;
+	int odometer_out;
 	asciiz status;
 	int balance;
-	asciiz date_printed;
-	asciiz date_paid;
+	int date_printed;
+	int date_paid;
 };
 
-struct employees {
+struct employee {
 	int employee_no;
 	asciiz fname;
 	asciiz lname;
@@ -223,13 +238,13 @@ struct employees {
 	asciiz phone;
 };
 
-struct notes {
+struct note {
 	int note_no;
 	int order_no;
 	asciiz description;
 };
 
-struct items {
+struct item {
 	int item_no;
 	int order_no;
 	int procedure_no;
@@ -237,7 +252,7 @@ struct items {
 	int cost;
 };
 
-struct procedures {
+struct procedure {
 	int procedure_no;
 	int order_no;
 	asciiz description;
@@ -286,8 +301,9 @@ void main_menu(){
 	printf("3. Update order description\n");
 }
 
+// Query 1
 void add_customer(){
-	struct customers new_customer;
+	struct customer new_customer;
 
 	printf("Enter customer_no >> ");
 	scanf("%d", &new_customer.customer_no);
@@ -433,6 +449,7 @@ et,city,state,phone,email) values (:s1 ,:s2 ,:s3 ,:s4 ,:s5 ,:s6 ,:s7 ,:s8 ,:s9\
 	printf("New customer successfully added\n");
 }
 
+// Query 2
 void delete_employee(){
 	int e_no;
 	
@@ -498,6 +515,7 @@ void delete_employee(){
 	printf("Employee successfully deleted\n");	
 }
 
+// Query 3
 void update_order_description(){
 	int o_no;
 
@@ -505,32 +523,492 @@ void update_order_description(){
 	scanf("%d", &o_no);
 	printf("Enter new description >> ");
 	
+	/* Incomplete */
 }
 
+// Query 4
 void show_orders_by_vehicle(){
+	struct order *order_recv;
+	char v[20];
+	
+	if((order_recv = (struct order *) malloc(sizeof(struct order))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	} 
+
+	printf("Enter vin >> ");
+	scanf("%s", v);
+	
+	/* EXEC SQL DECLARE vehicle_orders CURSOR FOR
+		SELECT * 
+			FROM Orders
+			WHERE vin = :v
+			ORDER BY start_date; */ 
+
+
+	/* EXEC SQL OPEN vehicle_orders; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = sq0006;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )120;
+ sqlstm.selerr = (unsigned short)1;
+ sqlstm.sqlpfmem = (unsigned int  )0;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqcmod = (unsigned int )0;
+ sqlstm.sqhstv[0] = (unsigned char  *)v;
+ sqlstm.sqhstl[0] = (unsigned long )20;
+ sqlstm.sqhsts[0] = (         int  )0;
+ sqlstm.sqindv[0] = (         short *)0;
+ sqlstm.sqinds[0] = (         int  )0;
+ sqlstm.sqharm[0] = (unsigned long )0;
+ sqlstm.sqadto[0] = (unsigned short )0;
+ sqlstm.sqtdso[0] = (unsigned short )0;
+ sqlstm.sqphsv = sqlstm.sqhstv;
+ sqlstm.sqphsl = sqlstm.sqhstl;
+ sqlstm.sqphss = sqlstm.sqhsts;
+ sqlstm.sqpind = sqlstm.sqindv;
+ sqlstm.sqpins = sqlstm.sqinds;
+ sqlstm.sqparm = sqlstm.sqharm;
+ sqlstm.sqparc = sqlstm.sqharc;
+ sqlstm.sqpadto = sqlstm.sqadto;
+ sqlstm.sqptdso = sqlstm.sqtdso;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	/* Table header */
+	printf("order_no              start_date  end_date  \n");
+	printf("--------------------  ----------  ----------\n");
+
+	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
+
+
+	while(1){
+		/* EXEC SQL FETCH vehicle_orders INTO :order_recv; */ 
+
+{
+  struct sqlexd sqlstm;
+  sqlstm.sqlvsn = 13;
+  sqlstm.arrsiz = 9;
+  sqlstm.sqladtp = &sqladt;
+  sqlstm.sqltdsp = &sqltds;
+  sqlstm.iters = (unsigned int  )1;
+  sqlstm.offset = (unsigned int  )139;
+  sqlstm.selerr = (unsigned short)1;
+  sqlstm.sqlpfmem = (unsigned int  )0;
+  sqlstm.cud = sqlcud0;
+  sqlstm.sqlest = (unsigned char  *)&sqlca;
+  sqlstm.sqlety = (unsigned short)4352;
+  sqlstm.occurs = (unsigned int  )0;
+  sqlstm.sqfoff = (         int )0;
+  sqlstm.sqfmod = (unsigned int )2;
+  sqlstm.sqhstv[0] = (unsigned char  *)&order_recv->order_no;
+  sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[0] = (         int  )0;
+  sqlstm.sqindv[0] = (         short *)0;
+  sqlstm.sqinds[0] = (         int  )0;
+  sqlstm.sqharm[0] = (unsigned long )0;
+  sqlstm.sqadto[0] = (unsigned short )0;
+  sqlstm.sqtdso[0] = (unsigned short )0;
+  sqlstm.sqhstv[1] = (unsigned char  *)order_recv->vin;
+  sqlstm.sqhstl[1] = (unsigned long )25;
+  sqlstm.sqhsts[1] = (         int  )0;
+  sqlstm.sqindv[1] = (         short *)0;
+  sqlstm.sqinds[1] = (         int  )0;
+  sqlstm.sqharm[1] = (unsigned long )0;
+  sqlstm.sqadto[1] = (unsigned short )0;
+  sqlstm.sqtdso[1] = (unsigned short )0;
+  sqlstm.sqhstv[2] = (unsigned char  *)order_recv->start_date;
+  sqlstm.sqhstl[2] = (unsigned long )25;
+  sqlstm.sqhsts[2] = (         int  )0;
+  sqlstm.sqindv[2] = (         short *)0;
+  sqlstm.sqinds[2] = (         int  )0;
+  sqlstm.sqharm[2] = (unsigned long )0;
+  sqlstm.sqadto[2] = (unsigned short )0;
+  sqlstm.sqtdso[2] = (unsigned short )0;
+  sqlstm.sqhstv[3] = (unsigned char  *)order_recv->end_date;
+  sqlstm.sqhstl[3] = (unsigned long )25;
+  sqlstm.sqhsts[3] = (         int  )0;
+  sqlstm.sqindv[3] = (         short *)0;
+  sqlstm.sqinds[3] = (         int  )0;
+  sqlstm.sqharm[3] = (unsigned long )0;
+  sqlstm.sqadto[3] = (unsigned short )0;
+  sqlstm.sqtdso[3] = (unsigned short )0;
+  sqlstm.sqhstv[4] = (unsigned char  *)&order_recv->employee_no;
+  sqlstm.sqhstl[4] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[4] = (         int  )0;
+  sqlstm.sqindv[4] = (         short *)0;
+  sqlstm.sqinds[4] = (         int  )0;
+  sqlstm.sqharm[4] = (unsigned long )0;
+  sqlstm.sqadto[4] = (unsigned short )0;
+  sqlstm.sqtdso[4] = (unsigned short )0;
+  sqlstm.sqphsv = sqlstm.sqhstv;
+  sqlstm.sqphsl = sqlstm.sqhstl;
+  sqlstm.sqphss = sqlstm.sqhsts;
+  sqlstm.sqpind = sqlstm.sqindv;
+  sqlstm.sqpins = sqlstm.sqinds;
+  sqlstm.sqparm = sqlstm.sqharm;
+  sqlstm.sqparc = sqlstm.sqharc;
+  sqlstm.sqpadto = sqlstm.sqadto;
+  sqlstm.sqptdso = sqlstm.sqtdso;
+  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+  if (sqlca.sqlcode == 1403) break;
+}
+
+
+		printf("%-20s  %-10s  %-10s\n",
+			order_recv -> order_no,
+			order_recv -> start_date,
+			order_recv -> end_date);
+	}
+	
+	/* EXEC SQL CLOSE vehicle_orders; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )174;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
 
 }
 
+// Query 5
 void show_line_items(){
+	struct item item_recv;
+	int o_no;
+
+	printf("Enter order_no >> ");
+	scanf("%d", &o_no);
+
+	/* EXEC SQL DECLARE line_items CURSOR FOR
+		SELECT * 
+			FROM Items
+			WHERE order_no = (
+				SELECT order_no
+				FROM Invoices
+				WHERE order_no = :o_no); */ 
+
+
+	/* EXEC SQL OPEN line_items; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = sq0007;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )189;
+ sqlstm.selerr = (unsigned short)1;
+ sqlstm.sqlpfmem = (unsigned int  )0;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqcmod = (unsigned int )0;
+ sqlstm.sqhstv[0] = (unsigned char  *)&o_no;
+ sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+ sqlstm.sqhsts[0] = (         int  )0;
+ sqlstm.sqindv[0] = (         short *)0;
+ sqlstm.sqinds[0] = (         int  )0;
+ sqlstm.sqharm[0] = (unsigned long )0;
+ sqlstm.sqadto[0] = (unsigned short )0;
+ sqlstm.sqtdso[0] = (unsigned short )0;
+ sqlstm.sqphsv = sqlstm.sqhstv;
+ sqlstm.sqphsl = sqlstm.sqhstl;
+ sqlstm.sqphss = sqlstm.sqhsts;
+ sqlstm.sqpind = sqlstm.sqindv;
+ sqlstm.sqpins = sqlstm.sqinds;
+ sqlstm.sqparm = sqlstm.sqharm;
+ sqlstm.sqparc = sqlstm.sqharc;
+ sqlstm.sqpadto = sqlstm.sqadto;
+ sqlstm.sqptdso = sqlstm.sqtdso;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+	
+
+	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
+
+
+	/* Table header */
+	printf("item_no         procedure_no  description                 cost\n");
+	printf("--------------  ------------  --------------------------  ----------\n");
+
+	while(1){
+		/* EXEC SQL FETCH line_items INTO :item_recv; */ 
+
+{
+  struct sqlexd sqlstm;
+  sqlstm.sqlvsn = 13;
+  sqlstm.arrsiz = 9;
+  sqlstm.sqladtp = &sqladt;
+  sqlstm.sqltdsp = &sqltds;
+  sqlstm.iters = (unsigned int  )1;
+  sqlstm.offset = (unsigned int  )208;
+  sqlstm.selerr = (unsigned short)1;
+  sqlstm.sqlpfmem = (unsigned int  )0;
+  sqlstm.cud = sqlcud0;
+  sqlstm.sqlest = (unsigned char  *)&sqlca;
+  sqlstm.sqlety = (unsigned short)4352;
+  sqlstm.occurs = (unsigned int  )0;
+  sqlstm.sqfoff = (         int )0;
+  sqlstm.sqfmod = (unsigned int )2;
+  sqlstm.sqhstv[0] = (unsigned char  *)&item_recv.item_no;
+  sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[0] = (         int  )0;
+  sqlstm.sqindv[0] = (         short *)0;
+  sqlstm.sqinds[0] = (         int  )0;
+  sqlstm.sqharm[0] = (unsigned long )0;
+  sqlstm.sqadto[0] = (unsigned short )0;
+  sqlstm.sqtdso[0] = (unsigned short )0;
+  sqlstm.sqhstv[1] = (unsigned char  *)&item_recv.order_no;
+  sqlstm.sqhstl[1] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[1] = (         int  )0;
+  sqlstm.sqindv[1] = (         short *)0;
+  sqlstm.sqinds[1] = (         int  )0;
+  sqlstm.sqharm[1] = (unsigned long )0;
+  sqlstm.sqadto[1] = (unsigned short )0;
+  sqlstm.sqtdso[1] = (unsigned short )0;
+  sqlstm.sqhstv[2] = (unsigned char  *)&item_recv.procedure_no;
+  sqlstm.sqhstl[2] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[2] = (         int  )0;
+  sqlstm.sqindv[2] = (         short *)0;
+  sqlstm.sqinds[2] = (         int  )0;
+  sqlstm.sqharm[2] = (unsigned long )0;
+  sqlstm.sqadto[2] = (unsigned short )0;
+  sqlstm.sqtdso[2] = (unsigned short )0;
+  sqlstm.sqhstv[3] = (unsigned char  *)item_recv.description;
+  sqlstm.sqhstl[3] = (unsigned long )25;
+  sqlstm.sqhsts[3] = (         int  )0;
+  sqlstm.sqindv[3] = (         short *)0;
+  sqlstm.sqinds[3] = (         int  )0;
+  sqlstm.sqharm[3] = (unsigned long )0;
+  sqlstm.sqadto[3] = (unsigned short )0;
+  sqlstm.sqtdso[3] = (unsigned short )0;
+  sqlstm.sqhstv[4] = (unsigned char  *)&item_recv.cost;
+  sqlstm.sqhstl[4] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[4] = (         int  )0;
+  sqlstm.sqindv[4] = (         short *)0;
+  sqlstm.sqinds[4] = (         int  )0;
+  sqlstm.sqharm[4] = (unsigned long )0;
+  sqlstm.sqadto[4] = (unsigned short )0;
+  sqlstm.sqtdso[4] = (unsigned short )0;
+  sqlstm.sqphsv = sqlstm.sqhstv;
+  sqlstm.sqphsl = sqlstm.sqhstl;
+  sqlstm.sqphss = sqlstm.sqhsts;
+  sqlstm.sqpind = sqlstm.sqindv;
+  sqlstm.sqpins = sqlstm.sqinds;
+  sqlstm.sqparm = sqlstm.sqharm;
+  sqlstm.sqparc = sqlstm.sqharc;
+  sqlstm.sqpadto = sqlstm.sqadto;
+  sqlstm.sqptdso = sqlstm.sqtdso;
+  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+  if (sqlca.sqlcode == 1403) break;
+}
+
+
+		printf("%-13d  %-13d  %-20s  %-10d\n", 
+			item_recv.item_no,
+			item_recv.procedure_no,
+			item_recv.description,
+			item_recv.cost);
+	}
+	
+	/* EXEC SQL CLOSE line_items; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )243;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
 
 }
 
+
+// Query 6
 void show_orders_by_date(){
+	struct order order_recv;
+
+	/* EXEC SQL DECLARE orders CURSOR FOR
+		SELECT * 
+			FROM Orders
+			WHERE start_date >= 20050601 
+			AND end_date <= 20051231
+			ORDER BY order_no; */ 
+
+
+	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
+
+	
+	// Table header
+	printf("order_no  \n");
+
+	while(1){
+		/* EXEC SQL FETCH orders INTO :order_recv; */ 
+
+{
+  struct sqlexd sqlstm;
+  sqlstm.sqlvsn = 13;
+  sqlstm.arrsiz = 9;
+  sqlstm.sqladtp = &sqladt;
+  sqlstm.sqltdsp = &sqltds;
+  sqlstm.iters = (unsigned int  )1;
+  sqlstm.offset = (unsigned int  )258;
+  sqlstm.selerr = (unsigned short)1;
+  sqlstm.sqlpfmem = (unsigned int  )0;
+  sqlstm.cud = sqlcud0;
+  sqlstm.sqlest = (unsigned char  *)&sqlca;
+  sqlstm.sqlety = (unsigned short)4352;
+  sqlstm.occurs = (unsigned int  )0;
+  sqlstm.sqfoff = (         int )0;
+  sqlstm.sqfmod = (unsigned int )2;
+  sqlstm.sqhstv[0] = (unsigned char  *)&order_recv.order_no;
+  sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[0] = (         int  )0;
+  sqlstm.sqindv[0] = (         short *)0;
+  sqlstm.sqinds[0] = (         int  )0;
+  sqlstm.sqharm[0] = (unsigned long )0;
+  sqlstm.sqadto[0] = (unsigned short )0;
+  sqlstm.sqtdso[0] = (unsigned short )0;
+  sqlstm.sqhstv[1] = (unsigned char  *)order_recv.vin;
+  sqlstm.sqhstl[1] = (unsigned long )25;
+  sqlstm.sqhsts[1] = (         int  )0;
+  sqlstm.sqindv[1] = (         short *)0;
+  sqlstm.sqinds[1] = (         int  )0;
+  sqlstm.sqharm[1] = (unsigned long )0;
+  sqlstm.sqadto[1] = (unsigned short )0;
+  sqlstm.sqtdso[1] = (unsigned short )0;
+  sqlstm.sqhstv[2] = (unsigned char  *)order_recv.start_date;
+  sqlstm.sqhstl[2] = (unsigned long )25;
+  sqlstm.sqhsts[2] = (         int  )0;
+  sqlstm.sqindv[2] = (         short *)0;
+  sqlstm.sqinds[2] = (         int  )0;
+  sqlstm.sqharm[2] = (unsigned long )0;
+  sqlstm.sqadto[2] = (unsigned short )0;
+  sqlstm.sqtdso[2] = (unsigned short )0;
+  sqlstm.sqhstv[3] = (unsigned char  *)order_recv.end_date;
+  sqlstm.sqhstl[3] = (unsigned long )25;
+  sqlstm.sqhsts[3] = (         int  )0;
+  sqlstm.sqindv[3] = (         short *)0;
+  sqlstm.sqinds[3] = (         int  )0;
+  sqlstm.sqharm[3] = (unsigned long )0;
+  sqlstm.sqadto[3] = (unsigned short )0;
+  sqlstm.sqtdso[3] = (unsigned short )0;
+  sqlstm.sqhstv[4] = (unsigned char  *)&order_recv.employee_no;
+  sqlstm.sqhstl[4] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[4] = (         int  )0;
+  sqlstm.sqindv[4] = (         short *)0;
+  sqlstm.sqinds[4] = (         int  )0;
+  sqlstm.sqharm[4] = (unsigned long )0;
+  sqlstm.sqadto[4] = (unsigned short )0;
+  sqlstm.sqtdso[4] = (unsigned short )0;
+  sqlstm.sqphsv = sqlstm.sqhstv;
+  sqlstm.sqphsl = sqlstm.sqhstl;
+  sqlstm.sqphss = sqlstm.sqhsts;
+  sqlstm.sqpind = sqlstm.sqindv;
+  sqlstm.sqpins = sqlstm.sqinds;
+  sqlstm.sqparm = sqlstm.sqharm;
+  sqlstm.sqparc = sqlstm.sqharc;
+  sqlstm.sqpadto = sqlstm.sqadto;
+  sqlstm.sqptdso = sqlstm.sqtdso;
+  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+  if (sqlca.sqlcode == 1403) break;
+}
+
+
+		printf("%d\n", 
+			order_recv.order_no);
+	}
+
+	/* EXEC SQL CLOSE orders; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )293;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
 
 }
 
+// Query 7
 void items_by_procedure(){
+	struct item item_recv;
+	int o_no;
+	int p_no;
 
+	printf("Enter order_noo >> ");
+	scanf("%d", &o_no);
+	printf("Enter procedure_no >> ");
+	scanf("%d", &p_no);
+	
+	/* EXEC SQL DECLARE items CURSOR FOR
+		SELECT * 
+			FROM Items
+			WHERE procedure_no = :p_no
+			AND order_no = :o_no; */ 
+
+
+	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
+
+
+	// Table header 
+	printf("\n");
+	printf("\n");
 }
 
+// Query 8
 void all_procedures_by_order(){
 
 }
 
+// Query 9
 void employee_invoices(){
 
 }
 
+// Query 10
 void invoice_details(){
 
 }
@@ -552,7 +1030,7 @@ void main(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )120;
+ sqlstm.offset = (unsigned int  )308;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -613,7 +1091,7 @@ void main(){
     sqlstm.sqladtp = &sqladt;
     sqlstm.sqltdsp = &sqltds;
     sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )151;
+    sqlstm.offset = (unsigned int  )339;
     sqlstm.cud = sqlcud0;
     sqlstm.sqlest = (unsigned char  *)&sqlca;
     sqlstm.sqlety = (unsigned short)4352;
@@ -671,4 +1149,3 @@ void main(){
 		}
 	}
 }
-

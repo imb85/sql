@@ -14,7 +14,7 @@ EXEC SQL TYPE asciiz IS CHARZ(STR_LEN) REFERENCE;
 asciiz username; 
 asciiz password; 
 
-struct customers {
+struct customer {
 	int customer_no;
 	asciiz fname;
 	asciiz lname;
@@ -26,7 +26,7 @@ struct customers {
 	asciiz email;
 };
 
-struct vehicles {
+struct vehicle {
 	int customer_no;
 	asciiz vin;
 	int year;
@@ -35,7 +35,7 @@ struct vehicles {
 	asciiz trim;
 };
 
-struct payments {
+struct payment {
 	int customer_no;
 	int payment_no;
 	asciiz card_no;
@@ -44,29 +44,29 @@ struct payments {
 };
 
 
-struct orders {
+struct order {
 	int order_no;
 	asciiz vin;
 	asciiz start_date;
 	asciiz end_date;
 	int employee_no;
-	int odometer_in;
-	int odometer_out;
 };
 
-struct invoices {
+struct invoice {
 	int invoice_no;
 	int customer_no;
 	asciiz vin;
 	int order_no;
 	int employee_no;
+	int odometer_in;
+	int odometer_out;
 	asciiz status;
 	int balance;
-	asciiz date_printed;
-	asciiz date_paid;
+	int date_printed;
+	int date_paid;
 };
 
-struct employees {
+struct employee {
 	int employee_no;
 	asciiz fname;
 	asciiz lname;
@@ -74,13 +74,13 @@ struct employees {
 	asciiz phone;
 };
 
-struct notes {
+struct note {
 	int note_no;
 	int order_no;
 	asciiz description;
 };
 
-struct items {
+struct item {
 	int item_no;
 	int order_no;
 	int procedure_no;
@@ -88,7 +88,7 @@ struct items {
 	int cost;
 };
 
-struct procedures {
+struct procedure {
 	int procedure_no;
 	int order_no;
 	asciiz description;
@@ -121,7 +121,7 @@ void main_menu(){
 
 // Query 1
 void add_customer(){
-	struct customers new_customer;
+	struct customer new_customer;
 
 	printf("Enter customer_no >> ");
 	scanf("%d", &new_customer.customer_no);
@@ -177,15 +177,15 @@ void update_order_description(){
 // Query 4
 void show_orders_by_vehicle(){
 	struct order *order_recv;
-	asciiz v;
+	char v[20];
 	
-	if((order_recv = (struct order *)malloc(sizeof(struct order))) == 0){
+	if((order_recv = (struct order *) malloc(sizeof(struct order))) == 0){
 		fprintf(stderr, "Memory allocation error\n");
 		exit(EXIT_FAILURE);
 	} 
 
 	printf("Enter vin >> ");
-	scanf("%s", &v);
+	scanf("%s", v);
 	
 	EXEC SQL DECLARE vehicle_orders CURSOR FOR
 		SELECT * 
@@ -256,8 +256,8 @@ void show_orders_by_date(){
 	EXEC SQL DECLARE orders CURSOR FOR
 		SELECT * 
 			FROM Orders
-			WHERE start_date >= '01-JUN-2005' 
-			AND end_date <= '31-DEC-2005'
+			WHERE start_date >= 20050601 
+			AND end_date <= 20051231
 			ORDER BY order_no;
 
 	EXEC SQL WHENEVER NOT FOUND DO break;

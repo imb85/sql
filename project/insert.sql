@@ -30,26 +30,30 @@ VALUES (1001, 2002, '2222333344445555', '321', '1222');
 INSERT INTO Payments (customer_no, payment_no, card_no, ccv, exp_date)
 VALUES (1004, 2003, '1234123412341234', '555', '1024');
 
--- Orders
-INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no, odometer_in, odometer_out)
-VALUES (3001, 'abc123xyz', );
-
--- Invoices
-INSERT INTO Invoices (invoice_no, customer_no, vin, order_no, employee_no, status, balance, date_printed, date_paid)
-VALUES ();
-
 -- Employees
 INSERT INTO Employees (employee_no, fname, lname, position, phone)
-VALUES ();
+VALUES (5001, 'Rob', 'Brown', 'Mechanic', '3052349999');
+
+-- Orders
+INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
+VALUES (3001, 'abc123xyz', 20210311, 20210313, 5001);
+INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
+VALUES (3002, 'cyz83sfa', 20210311, 20210312, 5001);
+INSERT INTO Orders(order_no, vin, start_date, end_date, employee_no)
+VALUES (3003, '4nfs9fwsrg', 20210314, 20210315, 5001);
+
+-- Invoices
+INSERT INTO Invoices (invoice_no, customer_no, vin, order_no, employee_no, odometer_in, odometer_out, status, balance, date_printed, date_paid)
+VALUES (4001, 1001, 'abc123xyz', 3001, 5001, 20000, 20008, 'Completed', 150, 20210313, 20210313);
 
 -- Notes
 INSERT INTO Notes (note_no, order_no, description)
-VALUES ();
-
--- Items 
-INSERT INTO Items (item_no, order_no, procedure_no, description, cost)
-VALUES ();
+VALUES (6001, 3001, 'Starter motor broken');
 
 -- Procedures 
 INSERT INTO Procedures (procedure_no, order_no, description, cost)
-VALUES ();
+VALUES (8001, 3001, 'Replace starter motor', 150);
+
+-- Items 
+INSERT INTO Items (item_no, order_no, procedure_no, description, cost)
+VALUES (7001, 3001, 8001, 'Starter motor', 100);
