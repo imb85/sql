@@ -351,12 +351,18 @@ void show_orders_by_date(){
 }
 
 // Query 7
+// Completed
 void items_by_procedure(){
-	struct item item_recv;
+	struct item *item_recv;
 	int o_no;
 	int p_no;
 
-	printf("Enter order_noo >> ");
+	if((item_recv = (struct item *) malloc(sizeof(struct item))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	printf("Enter order_no >> ");
 	scanf("%d", &o_no);
 	printf("Enter procedure_no >> ");
 	scanf("%d", &p_no);
@@ -367,11 +373,23 @@ void items_by_procedure(){
 			WHERE procedure_no = :p_no
 			AND order_no = :o_no;
 
-	EXEC SQL WHENEVER NOT FOUND DO break;
+	EXEC SQL OPEN items;
 
 	// Table header 
-	printf("\n");
-	printf("\n");
+	printf("item_no   description           cost\n");
+	printf("--------  --------------------  --------\n");
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+
+	while(1){
+		EXEC SQL FETCH items INTO :item_recv;
+		printf("%-8d  %-20s  %-8d\n",
+			item_recv -> item_no,
+			item_recv -> description,
+			item_recv -> cost);		
+	}
+
+	EXEC SQL CLOSE items;
 }
 
 // Query 8
