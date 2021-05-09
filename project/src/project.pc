@@ -394,7 +394,37 @@ void items_by_procedure(){
 
 // Query 8
 void all_procedures_by_order(){
+	struct procedure *procedure_recv;
+	int o_no;
 
+	if((procedure_recv = (struct procedure *) malloc(sizeof(struct procedure))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	EXEC SQL DECLARE procedures CURSOR FOR
+		SELECT *
+			FROM procedures
+			ORDER BY order_no DESC;
+
+	EXEC SQL OPEN procedures;
+
+	// Table header
+	printf("order_no  procedure_no  description                cost    \n");
+	printf("--------  ------------  -------------------------  --------\n");
+
+	EXEC SQL WHENEVER NOT FOUND DO break;
+	
+	while(1){
+		EXEC SQL FETCH procedures INTO :procedure_recv;
+		printf("%-8d  %-12d  %-25s  %-8d\n",
+			procedure_recv -> order_no,
+			procedure_recv -> procedure_no,
+			procedure_recv -> description,
+			procedure_recv -> cost);	
+	}
+
+	EXEC SQL CLOSE procedures;
 }
 
 // Query 9

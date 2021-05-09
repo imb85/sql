@@ -147,9 +147,12 @@ der by order_no            ";
 "select *  from Items where (procedure_no=:b0 and order_no=:b1)           ";
 
  static char *sq0013 = 
-"select *  from Invoices where invoice_no=:b0           ";
+"select *  from procedures  order by order_no desc             ";
 
  static char *sq0014 = 
+"select *  from Invoices where invoice_no=:b0           ";
+
+ static char *sq0015 = 
 "select *  from Vehicles where vin=(select vin  from Invoices where invoice_n\
 o=:b0)           ";
 
@@ -182,16 +185,19 @@ static short sqlcud0[] =
 426,0,0,12,73,0,9,376,0,0,2,2,0,1,0,1,3,0,0,1,3,0,0,
 449,0,0,12,0,0,13,385,0,0,5,0,0,1,0,2,3,0,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,
 484,0,0,12,0,0,15,392,0,0,0,0,0,1,0,
-499,0,0,13,55,0,9,430,0,0,1,1,0,1,0,1,3,0,0,
-518,0,0,13,0,0,13,435,0,0,11,0,0,1,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,
+499,0,0,13,62,0,9,410,0,0,0,0,0,1,0,
+514,0,0,13,0,0,13,419,0,0,4,0,0,1,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,
+545,0,0,13,0,0,15,427,0,0,0,0,0,1,0,
+560,0,0,14,55,0,9,460,0,0,1,1,0,1,0,1,3,0,0,
+579,0,0,14,0,0,13,465,0,0,11,0,0,1,0,2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,
 2,3,0,0,2,3,0,0,2,97,0,0,2,3,0,0,2,3,0,0,2,3,0,0,
-577,0,0,13,0,0,15,439,0,0,0,0,0,1,0,
-592,0,0,14,93,0,9,448,0,0,1,1,0,1,0,1,3,0,0,
-611,0,0,14,0,0,13,453,0,0,6,0,0,1,0,2,3,0,0,2,97,0,0,2,3,0,0,2,97,0,0,2,97,0,0,
+638,0,0,14,0,0,15,468,0,0,0,0,0,1,0,
+653,0,0,15,93,0,9,477,0,0,1,1,0,1,0,1,3,0,0,
+672,0,0,15,0,0,13,482,0,0,6,0,0,1,0,2,3,0,0,2,97,0,0,2,3,0,0,2,97,0,0,2,97,0,0,
 2,97,0,0,
-650,0,0,14,0,0,15,456,0,0,0,0,0,1,0,
-665,0,0,0,0,0,27,480,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
-696,0,0,16,0,0,30,493,0,0,0,0,0,1,0,
+711,0,0,15,0,0,15,485,0,0,0,0,0,1,0,
+726,0,0,0,0,0,27,509,0,0,4,4,0,1,0,1,97,0,0,1,97,0,0,1,10,0,0,1,10,0,0,
+757,0,0,17,0,0,30,522,0,0,0,0,0,1,0,
 };
 
 
@@ -1466,6 +1472,139 @@ void items_by_procedure(){
 
 // Query 8
 void all_procedures_by_order(){
+	struct procedure *procedure_recv;
+	int o_no;
+
+	if((procedure_recv = (struct procedure *) malloc(sizeof(struct procedure))) == 0){
+		fprintf(stderr, "Memory allocation error\n");
+		exit(EXIT_FAILURE);
+	}
+
+	/* EXEC SQL DECLARE procedures CURSOR FOR
+		SELECT *
+			FROM procedures
+			ORDER BY order_no DESC; */ 
+
+
+	/* EXEC SQL OPEN procedures; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.stmt = sq0013;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )499;
+ sqlstm.selerr = (unsigned short)1;
+ sqlstm.sqlpfmem = (unsigned int  )0;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlstm.sqcmod = (unsigned int )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
+
+
+	// Table header
+	printf("order_no  procedure_no  description                cost    \n");
+	printf("--------  ------------  -------------------------  --------\n");
+
+	/* EXEC SQL WHENEVER NOT FOUND DO break; */ 
+
+	
+	while(1){
+		/* EXEC SQL FETCH procedures INTO :procedure_recv; */ 
+
+{
+  struct sqlexd sqlstm;
+  sqlstm.sqlvsn = 13;
+  sqlstm.arrsiz = 9;
+  sqlstm.sqladtp = &sqladt;
+  sqlstm.sqltdsp = &sqltds;
+  sqlstm.iters = (unsigned int  )1;
+  sqlstm.offset = (unsigned int  )514;
+  sqlstm.selerr = (unsigned short)1;
+  sqlstm.sqlpfmem = (unsigned int  )0;
+  sqlstm.cud = sqlcud0;
+  sqlstm.sqlest = (unsigned char  *)&sqlca;
+  sqlstm.sqlety = (unsigned short)4352;
+  sqlstm.occurs = (unsigned int  )0;
+  sqlstm.sqfoff = (         int )0;
+  sqlstm.sqfmod = (unsigned int )2;
+  sqlstm.sqhstv[0] = (unsigned char  *)&procedure_recv->procedure_no;
+  sqlstm.sqhstl[0] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[0] = (         int  )0;
+  sqlstm.sqindv[0] = (         short *)0;
+  sqlstm.sqinds[0] = (         int  )0;
+  sqlstm.sqharm[0] = (unsigned long )0;
+  sqlstm.sqadto[0] = (unsigned short )0;
+  sqlstm.sqtdso[0] = (unsigned short )0;
+  sqlstm.sqhstv[1] = (unsigned char  *)&procedure_recv->order_no;
+  sqlstm.sqhstl[1] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[1] = (         int  )0;
+  sqlstm.sqindv[1] = (         short *)0;
+  sqlstm.sqinds[1] = (         int  )0;
+  sqlstm.sqharm[1] = (unsigned long )0;
+  sqlstm.sqadto[1] = (unsigned short )0;
+  sqlstm.sqtdso[1] = (unsigned short )0;
+  sqlstm.sqhstv[2] = (unsigned char  *)procedure_recv->description;
+  sqlstm.sqhstl[2] = (unsigned long )25;
+  sqlstm.sqhsts[2] = (         int  )0;
+  sqlstm.sqindv[2] = (         short *)0;
+  sqlstm.sqinds[2] = (         int  )0;
+  sqlstm.sqharm[2] = (unsigned long )0;
+  sqlstm.sqadto[2] = (unsigned short )0;
+  sqlstm.sqtdso[2] = (unsigned short )0;
+  sqlstm.sqhstv[3] = (unsigned char  *)&procedure_recv->cost;
+  sqlstm.sqhstl[3] = (unsigned long )sizeof(int);
+  sqlstm.sqhsts[3] = (         int  )0;
+  sqlstm.sqindv[3] = (         short *)0;
+  sqlstm.sqinds[3] = (         int  )0;
+  sqlstm.sqharm[3] = (unsigned long )0;
+  sqlstm.sqadto[3] = (unsigned short )0;
+  sqlstm.sqtdso[3] = (unsigned short )0;
+  sqlstm.sqphsv = sqlstm.sqhstv;
+  sqlstm.sqphsl = sqlstm.sqhstl;
+  sqlstm.sqphss = sqlstm.sqhsts;
+  sqlstm.sqpind = sqlstm.sqindv;
+  sqlstm.sqpins = sqlstm.sqinds;
+  sqlstm.sqparm = sqlstm.sqharm;
+  sqlstm.sqparc = sqlstm.sqharc;
+  sqlstm.sqpadto = sqlstm.sqadto;
+  sqlstm.sqptdso = sqlstm.sqtdso;
+  sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+  if (sqlca.sqlcode == 1403) break;
+}
+
+
+		printf("%-8d  %-12d  %-25s  %-8d\n",
+			procedure_recv -> order_no,
+			procedure_recv -> procedure_no,
+			procedure_recv -> description,
+			procedure_recv -> cost);	
+	}
+
+	/* EXEC SQL CLOSE procedures; */ 
+
+{
+ struct sqlexd sqlstm;
+ sqlstm.sqlvsn = 13;
+ sqlstm.arrsiz = 9;
+ sqlstm.sqladtp = &sqladt;
+ sqlstm.sqltdsp = &sqltds;
+ sqlstm.iters = (unsigned int  )1;
+ sqlstm.offset = (unsigned int  )545;
+ sqlstm.cud = sqlcud0;
+ sqlstm.sqlest = (unsigned char  *)&sqlca;
+ sqlstm.sqlety = (unsigned short)4352;
+ sqlstm.occurs = (unsigned int  )0;
+ sqlcxt((void **)0, &sqlctx, &sqlstm, &sqlfpn);
+}
+
 
 }
 
@@ -1475,11 +1614,11 @@ void employee_invoices(){
 }
 
 // Query 10
+// Completed
 void invoice_details(){
 	struct invoice *invoice_recv;
 	struct vehicle *vehicle_recv;
 	int i_no;
-	char * v_no;
 
 	if((invoice_recv = (struct invoice *) malloc(sizeof(struct invoice))) == 0){
 		fprintf(stderr, "Memory allocation error\n");
@@ -1508,9 +1647,9 @@ void invoice_details(){
  sqlstm.arrsiz = 9;
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
- sqlstm.stmt = sq0013;
+ sqlstm.stmt = sq0014;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )499;
+ sqlstm.offset = (unsigned int  )560;
  sqlstm.selerr = (unsigned short)1;
  sqlstm.sqlpfmem = (unsigned int  )0;
  sqlstm.cud = sqlcud0;
@@ -1553,7 +1692,7 @@ void invoice_details(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )518;
+  sqlstm.offset = (unsigned int  )579;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -1664,7 +1803,6 @@ void invoice_details(){
 }
 
 	
-		v_no = invoice_recv -> vin;
 	}
 
 	/* EXEC SQL CLOSE invoices; */ 
@@ -1676,7 +1814,7 @@ void invoice_details(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )577;
+ sqlstm.offset = (unsigned int  )638;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -1702,9 +1840,9 @@ void invoice_details(){
  sqlstm.arrsiz = 11;
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
- sqlstm.stmt = sq0014;
+ sqlstm.stmt = sq0015;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )592;
+ sqlstm.offset = (unsigned int  )653;
  sqlstm.selerr = (unsigned short)1;
  sqlstm.sqlpfmem = (unsigned int  )0;
  sqlstm.cud = sqlcud0;
@@ -1747,7 +1885,7 @@ void invoice_details(){
   sqlstm.sqladtp = &sqladt;
   sqlstm.sqltdsp = &sqltds;
   sqlstm.iters = (unsigned int  )1;
-  sqlstm.offset = (unsigned int  )611;
+  sqlstm.offset = (unsigned int  )672;
   sqlstm.selerr = (unsigned short)1;
   sqlstm.sqlpfmem = (unsigned int  )0;
   sqlstm.cud = sqlcud0;
@@ -1829,7 +1967,7 @@ void invoice_details(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )1;
- sqlstm.offset = (unsigned int  )650;
+ sqlstm.offset = (unsigned int  )711;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -1871,7 +2009,7 @@ void main(){
  sqlstm.sqladtp = &sqladt;
  sqlstm.sqltdsp = &sqltds;
  sqlstm.iters = (unsigned int  )10;
- sqlstm.offset = (unsigned int  )665;
+ sqlstm.offset = (unsigned int  )726;
  sqlstm.cud = sqlcud0;
  sqlstm.sqlest = (unsigned char  *)&sqlca;
  sqlstm.sqlety = (unsigned short)4352;
@@ -1932,7 +2070,7 @@ void main(){
     sqlstm.sqladtp = &sqladt;
     sqlstm.sqltdsp = &sqltds;
     sqlstm.iters = (unsigned int  )1;
-    sqlstm.offset = (unsigned int  )696;
+    sqlstm.offset = (unsigned int  )757;
     sqlstm.cud = sqlcud0;
     sqlstm.sqlest = (unsigned char  *)&sqlca;
     sqlstm.sqlety = (unsigned short)4352;
